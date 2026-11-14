@@ -10,35 +10,48 @@
   <link href="https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="site.css" />
 </head>
-<body>
+<body class="guide-page">
   <a class="skip" href="#guide">Skip to guide</a>
 
-  <div class="guide-top">
-    <a class="brand-mark" href="index.html">Timed</a>
-    <nav aria-label="Site">
-      <a href="index.html">Home</a>
-      &nbsp;·&nbsp;
-      <a href="https://github.com/nuclearfessel/Timed/releases">Releases</a>
-    </nav>
-  </div>
-
-  <article class="guide-wrap" id="guide">
-    <header>
+  <header class="guide-hero">
+    <div class="guide-hero-bands" aria-hidden="true">
+      <span class="standby"></span>
+      <span class="work"></span>
+      <span class="rest"></span>
+    </div>
+    <div class="guide-top guide-top-on-color">
+      <a class="brand-mark" href="index.html">Timed</a>
+      <nav aria-label="Site">
+        <a href="index.html">Home</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/nuclearfessel/Timed/releases">Releases</a>
+      </nav>
+    </div>
+    <div class="guide-hero-core">
+      <p class="guide-kicker">Guide</p>
       <h1>Using Timed</h1>
       <p>Create your own workout timers, stack standby / work / rest, and run them with full-screen phase colors and alert sounds.</p>
-    </header>
+      <div class="phase-legend" aria-label="Phase colors">
+        <span><i class="standby"></i>Standby</span>
+        <span><i class="work"></i>Work</span>
+        <span><i class="rest"></i>Rest</span>
+      </div>
+    </div>
+  </header>
 
+  <article class="guide-wrap" id="guide">
     <nav class="jump" aria-label="On this page">
-      <a href="#start">Start</a>
-      <a href="#simple">Simple</a>
-      <a href="#advanced">Advanced</a>
-      <a href="#run">Run</a>
-      <a href="#sounds">Sounds</a>
-      <a href="#settings">Settings</a>
-      <a href="#install">Install</a>
+      <a class="jump-standby" href="#start">Start</a>
+      <a class="jump-work" href="#simple">Simple</a>
+      <a class="jump-rest" href="#advanced">Advanced</a>
+      <a class="jump-work" href="#run">Run</a>
+      <a class="jump-standby" href="#sounds">Sounds</a>
+      <a class="jump-rest" href="#settings">Settings</a>
+      <a class="jump-work" href="#install">Install</a>
     </nav>
 
     <section class="standby" id="start">
+      <p class="section-phase">Standby</p>
       <h2>Get started</h2>
       <ol>
         <li>Open Timed. Your saved timers appear on the home screen.</li>
@@ -49,18 +62,20 @@
     </section>
 
     <section class="work" id="simple">
+      <p class="section-phase">Work</p>
       <h2>Simple timers</h2>
       <p>A simple timer is the classic interval shape:</p>
-      <ul>
-        <li><strong>Standby</strong> — optional get-ready time before the first work bout</li>
-        <li><strong>Work</strong> — effort interval</li>
-        <li><strong>Rest</strong> — recovery between rounds</li>
+      <ul class="phase-list">
+        <li><span class="swatch standby" aria-hidden="true"></span><strong>Standby</strong> — optional get-ready time before the first work bout</li>
+        <li><span class="swatch work" aria-hidden="true"></span><strong>Work</strong> — effort interval</li>
+        <li><span class="swatch rest" aria-hidden="true"></span><strong>Rest</strong> — recovery between rounds</li>
         <li><strong>Rounds</strong> — how many work bouts to run</li>
       </ul>
       <p>Rest is skipped after the last round. Save the timer with a name you will recognize later.</p>
     </section>
 
     <section class="rest" id="advanced">
+      <p class="section-phase">Rest</p>
       <h2>Advanced timers</h2>
       <p>Advanced mode builds a <strong>phase stack</strong> you control:</p>
       <ul>
@@ -70,9 +85,16 @@
         <li>Set <strong>cycles</strong> to repeat the whole stack</li>
       </ul>
       <p>Delete any phase you do not need. Keep at least one phase with a duration greater than zero.</p>
+      <div class="mini-strip" role="img" aria-label="Example advanced stack">
+        <span class="standby">Standby</span>
+        <span class="work">Work</span>
+        <span class="rest">Rest</span>
+        <span class="work">Work</span>
+      </div>
     </section>
 
     <section class="work" id="run">
+      <p class="section-phase">Work</p>
       <h2>Running a workout</h2>
       <ol>
         <li>Open a timer from home.</li>
@@ -83,6 +105,7 @@
     </section>
 
     <section class="standby" id="sounds">
+      <p class="section-phase">Standby</p>
       <h2>Sounds</h2>
       <p>By default Timed plays:</p>
       <ul>
@@ -94,6 +117,7 @@
     </section>
 
     <section class="rest" id="settings">
+      <p class="section-phase">Rest</p>
       <h2>Settings</h2>
       <p>Open Settings from the gear on the home screen.</p>
       <h3>Appearance</h3>
@@ -108,6 +132,7 @@
     </section>
 
     <section class="work" id="install">
+      <p class="section-phase">Work</p>
       <h2>Install</h2>
       <p>Android release builds are on <a href="https://github.com/nuclearfessel/Timed/releases">GitHub Releases</a> (<code>.apk</code> for direct install, <code>.aab</code> for Play upload).</p>
       <p>iOS release packages need a Mac with Xcode signing. When an IPA is published, it will appear on the same Releases page.</p>
@@ -115,7 +140,7 @@
     </section>
   </article>
 
-  <footer class="site-foot">
+  <footer class="site-foot guide-foot">
     <p><a href="index.html">Timed home</a> · Guide · Flutter for iOS and Android</p>
   </footer>
 </body>

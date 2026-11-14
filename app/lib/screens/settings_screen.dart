@@ -107,7 +107,7 @@ class SettingsScreen extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Timed'),
                 subtitle: Text(
-                  'Workout interval timer · v1.0.1',
+                  'Workout interval timer · v1.0.2',
                   style: TextStyle(color: colors.mute),
                 ),
               ),
