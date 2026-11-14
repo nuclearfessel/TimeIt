@@ -440,9 +440,11 @@ footer.site-foot a:hover {
 .guide-hero-core {
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: flex-end;
+  text-align: center;
   padding: 1.5rem clamp(1.25rem, 4vw, 3rem) 2.25rem;
-  max-width: 42rem;
+  width: 100%;
 }
 
 .guide-kicker {
@@ -463,14 +465,15 @@ footer.site-foot a:hover {
 }
 
 .guide-hero-core > p {
-  margin: 0.75rem 0 0;
+  margin: 0.75rem auto 0;
   color: rgba(255, 255, 255, 0.9);
   font-size: 1.05rem;
-  max-width: 32rem;
+  max-width: 34rem;
 }
 
 .guide-hero-core .phase-legend {
   margin-top: 1.25rem;
+  justify-content: center;
 }
 
 .guide-wrap {
@@ -665,6 +668,41 @@ footer.site-foot a:hover {
 
 .guide-foot {
   border-top-color: color-mix(in srgb, var(--work) 25%, var(--line));
+}
+
+/* —— Back to top (home + guide) —— */
+
+.back-to-top {
+  position: fixed;
+  right: max(1rem, calc((100vw - 1100px) / 2));
+  bottom: 1.25rem;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  max-width: calc(100vw - 2rem);
+  padding: 0.55rem 0.95rem;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  color: var(--ink);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 650;
+  white-space: nowrap;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--ink) 10%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.back-to-top[hidden] {
+  display: none !important;
+}
+
+.back-to-top:hover {
+  border-color: var(--work);
+  color: var(--work);
 }
 
 @media (max-width: 560px) {
