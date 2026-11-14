@@ -1,0 +1,13 @@
+---
+description: Project rules for Timed (interval timer app). Always apply.
+alwaysApply: true
+---
+
+Read `AGENTS.md` at the project root before doing anything. It holds the owner's instructions, decisions, fonts and working preferences.
+
+Key rules (full detail in `AGENTS.md`):
+- Nothing is built yet. Do not start building the app until the owner asks.
+- No Pomodoro features. No pre-built exercises; users create and delete their own timers and timer sets.
+- Fonts (Google Fonts): Hepta Slab for large numbers and headers; Plus Jakarta Sans for everything else.
+- Confirm before downloads, commits, pushes or other outward-facing actions.
+- Separate verified facts from inference, and say when something was not tested hands-on.

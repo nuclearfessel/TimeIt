@@ -2,6 +2,8 @@
 
 Read this first. It carries everything the project owner has told the previous assistant, so you can continue without the earlier conversation. Then read `README.md`, `docs/reference-apps.md` and `docs/research.md`.
 
+The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` and the rule in `.cursor/rules/timed.mdc`, which points back here.
+
 ## Who and what
 - The owner is a **designer** who wants to create a **new interval timer app for iOS and Android**.
 - Nothing is built yet. The work so far is research, references and decisions. Do not start building the app until the owner asks.
