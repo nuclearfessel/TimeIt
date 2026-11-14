@@ -20,7 +20,7 @@ The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` a
 8. **GitHub repo named `Timed`** (created as private).
 9. **Save the info locally** so the work can continue in a non-Claude AI app. That is why this file exists.
 10. **Shipping targets only:** an **Android app** and an **iOS app** (phone apps).
-11. **Keep the GitHub repo private for now.**
+11. **GitHub repo visibility:** was private; owner made it **public** on 2026-11-14.
 12. **Product intent (owner, 2026-11-13):** workout interval timer with **simple and advanced** timers. Advanced stacks **standby, work, and rest** timers. **Alert sounds.** **One tech stack**, deployable to both iOS and Android (not separate native codebases).
 
 ## Decisions so far
@@ -30,7 +30,7 @@ The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` a
 - Reference apps: Seconds (iOS and Android), Intervals Pro (iOS), Allez (Android).
 - Platforms: iOS app and Android app only.
 - Tech: **Flutter** (one codebase → iOS + Android). Chosen when the owner asked to build. Research still notes native strengths for Live Activity / AlarmKit / Watch if those matter later; see `docs/research.md` section 4.
-- Repo visibility: private for now (`nuclearfessel/Timed`).
+- Repo visibility: **public** (`nuclearfessel/Timed`).
 - Landscape: only Seconds is confirmed (iOS by listing and review; Android very likely from a screenshot). Intervals Pro and Allez are unconfirmed, so test them.
 
 ## Open questions for the owner
@@ -50,11 +50,12 @@ The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` a
 ## Workflow trigger phrases (owner, 2026-11-14)
 Full detail: `.cursor/rules/workflow-triggers.mdc`.
 1. **`implement` / `implement it`** (case-insensitive) or **`New!`** (case-sensitive): create and check out `feature-update-<YYYYMMDD-HHmmss>`, then continue the request.
-2. **`Go!`** (case-sensitive): commit, push, merge to `main`, start release builds, then clean/delete merged feature branches (never delete `main`). `Go!` is explicit approval for those steps.
+2. **`Go!`** (case-sensitive): commit, push, merge to `main`, run **Android and iOS** release builds, publish a **GitHub Release** with both platforms’ artifacts (APK/AAB + IPA when available), then clean/delete merged feature branches (never delete `main`). `Go!` is explicit approval for those steps. iOS builds need a Mac; if unavailable, still publish the GitHub Release with Android and state that iOS is blocked.
 
 ## Project contents
 - `README.md`: overview, decisions, open questions.
 - `app/`: Flutter app (iOS + Android).
+- `docs/index.html` + `docs/guide.html` + `docs/site.css`: site + guide (phase-band layout, distinct from Shopped/EncodeIt). Publish like the other apps: `main` → `/docs`.
 - `docs/reference-apps.md`: shortlist details, why others were dropped, hands-on test checklist.
 - `docs/research.md`: market, design, accessibility and technical research with evidence tags and gaps.
 - `reference/index.html`: single-file screen reference board. Two views (By app, By pattern), platform and model filters. Open directly in a browser; it needs internet because store screenshots are hotlinked from Apple and Google Play (nothing was stored in the repo). Each screenshot has a pattern tag in the `TAGS` object in the file.

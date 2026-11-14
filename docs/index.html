@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Timed — Workout interval timer</title>
+  <meta name="description" content="Timed is a workout interval timer for iOS and Android. Simple and advanced timers with stacked standby, work, and rest — plus alert sounds." />
+  <meta property="og:title" content="Timed — Workout interval timer" />
+  <meta property="og:description" content="Simple and advanced interval timers. Stack standby, work, and rest. Alert sounds. Built with Flutter for iPhone and Android." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="hero" id="top">
+    <div class="hero-bands" aria-hidden="true">
+      <span class="standby"></span>
+      <span class="work"></span>
+      <span class="rest"></span>
+    </div>
+
+    <div class="topbar">
+      <div class="brand-mark">Timed</div>
+      <nav aria-label="Site">
+        <a href="guide.html">Guide</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/nuclearfessel/Timed">Source</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/nuclearfessel/Timed/releases">Releases</a>
+      </nav>
+    </div>
+
+    <div class="hero-core" id="main">
+      <h1>Timed</h1>
+      <p>A workout interval timer for iPhone and Android — simple rounds or an advanced stack of standby, work, and rest.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/nuclearfessel/Timed/releases/latest">Download</a>
+        <a class="btn btn-ghost" href="guide.html">Using Timed</a>
+      </div>
+      <div class="phase-legend" aria-label="Phase colors">
+        <span><i class="standby"></i>Standby</span>
+        <span><i class="work"></i>Work</span>
+        <span><i class="rest"></i>Rest</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="section" aria-labelledby="session-heading">
+    <h2 id="session-heading">One session, end to end</h2>
+    <p class="lede">Phases read across the room. Each block has its own color so you know where you are without staring at the digits.</p>
+
+    <div class="session-strip" role="img" aria-label="Example session: standby, work, rest, work, rest">
+      <div class="standby">
+        <span class="label">Standby</span>
+        <span class="digits">0:10</span>
+      </div>
+      <div class="work">
+        <span class="label">Work</span>
+        <span class="digits">0:40</span>
+      </div>
+      <div class="rest">
+        <span class="label">Rest</span>
+        <span class="digits">0:20</span>
+      </div>
+      <div class="work">
+        <span class="label">Work</span>
+        <span class="digits">0:40</span>
+      </div>
+      <div class="rest">
+        <span class="label">Rest</span>
+        <span class="digits">0:20</span>
+      </div>
+    </div>
+
+    <div class="modes">
+      <div>
+        <h3>Simple</h3>
+        <p>Standby, work, rest, and rounds. Build a classic HIIT or Tabata-style timer in a few taps, then save it as your own.</p>
+      </div>
+      <div>
+        <h3>Advanced</h3>
+        <p>Stack standby, work, and rest in any order. Reorder the stack, set cycles, and run the whole sequence with phase alerts.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="download-heading">
+    <h2 id="download-heading">Download</h2>
+    <p class="lede">Current release is on GitHub. Android packages are attached today; iOS builds need a Mac signing pass and will land on the same Releases page.</p>
+    <div class="download-row">
+      <a class="btn btn-ink" href="https://github.com/nuclearfessel/Timed/releases/tag/v1.0.0">v1.0.0 on GitHub</a>
+      <a class="btn btn-line" href="https://github.com/nuclearfessel/Timed/releases/download/v1.0.0/app-release.apk">Android APK</a>
+      <a class="btn btn-line" href="https://github.com/nuclearfessel/Timed/releases/download/v1.0.0/app-release.aab">Android AAB</a>
+    </div>
+    <p class="note">Source and releases are on the public GitHub repo. iOS packages appear on Releases when a signed Mac build is attached.</p>
+  </section>
+
+  <footer class="site-foot">
+    <p>
+      Timed · Flutter · Hepta Slab &amp; Plus Jakarta Sans ·
+      <a href="guide.html">Guide</a> ·
+      <a href="https://github.com/nuclearfessel/Timed">Source</a>
+    </p>
+  </footer>
+</body>
+</html>

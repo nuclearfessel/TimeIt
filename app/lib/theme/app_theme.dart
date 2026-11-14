@@ -21,65 +21,148 @@ class PhaseColors {
   }
 }
 
-class AppTheme {
-  static const bg = Color(0xFF0B0B0C);
-  static const surface = Color(0xFF161618);
-  static const line = Color(0xFF2A2A2E);
-  static const fg = Color(0xFFF4F4F5);
-  static const mute = Color(0xFF9A9AA3);
-  static const accent = Color(0xFFD55E00);
+/// App chrome colors that switch with Appearance (Light / Dark).
+class TimedColors extends ThemeExtension<TimedColors> {
+  const TimedColors({
+    required this.bg,
+    required this.surface,
+    required this.line,
+    required this.fg,
+    required this.mute,
+    required this.accent,
+  });
 
-  static ThemeData dark() {
+  final Color bg;
+  final Color surface;
+  final Color line;
+  final Color fg;
+  final Color mute;
+  final Color accent;
+
+  static const dark = TimedColors(
+    bg: Color(0xFF0B0B0C),
+    surface: Color(0xFF161618),
+    line: Color(0xFF2A2A2E),
+    fg: Color(0xFFF4F4F5),
+    mute: Color(0xFF9A9AA3),
+    accent: Color(0xFFD55E00),
+  );
+
+  static const light = TimedColors(
+    bg: Color(0xFFF7F6F3),
+    surface: Color(0xFFFFFFFF),
+    line: Color(0xFFD9D6CF),
+    fg: Color(0xFF161618),
+    mute: Color(0xFF6B6B76),
+    accent: Color(0xFFD55E00),
+  );
+
+  static TimedColors of(BuildContext context) {
+    return Theme.of(context).extension<TimedColors>() ?? TimedColors.dark;
+  }
+
+  @override
+  TimedColors copyWith({
+    Color? bg,
+    Color? surface,
+    Color? line,
+    Color? fg,
+    Color? mute,
+    Color? accent,
+  }) {
+    return TimedColors(
+      bg: bg ?? this.bg,
+      surface: surface ?? this.surface,
+      line: line ?? this.line,
+      fg: fg ?? this.fg,
+      mute: mute ?? this.mute,
+      accent: accent ?? this.accent,
+    );
+  }
+
+  @override
+  TimedColors lerp(ThemeExtension<TimedColors>? other, double t) {
+    if (other is! TimedColors) return this;
+    return TimedColors(
+      bg: Color.lerp(bg, other.bg, t)!,
+      surface: Color.lerp(surface, other.surface, t)!,
+      line: Color.lerp(line, other.line, t)!,
+      fg: Color.lerp(fg, other.fg, t)!,
+      mute: Color.lerp(mute, other.mute, t)!,
+      accent: Color.lerp(accent, other.accent, t)!,
+    );
+  }
+}
+
+class AppTheme {
+  static ThemeData dark() => _build(Brightness.dark, TimedColors.dark);
+
+  static ThemeData light() => _build(Brightness.light, TimedColors.light);
+
+  static ThemeData _build(Brightness brightness, TimedColors colors) {
     final base = ThemeData(
       useMaterial3: true,
-      brightness: Brightness.dark,
-      scaffoldBackgroundColor: bg,
-      colorScheme: const ColorScheme.dark(
-        surface: surface,
-        primary: accent,
-        onPrimary: fg,
-        onSurface: fg,
-        outline: line,
+      brightness: brightness,
+      scaffoldBackgroundColor: colors.bg,
+      colorScheme: ColorScheme(
+        brightness: brightness,
+        primary: colors.accent,
+        onPrimary: Colors.white,
+        secondary: colors.accent,
+        onSecondary: Colors.white,
+        error: const Color(0xFFB00020),
+        onError: Colors.white,
+        surface: colors.surface,
+        onSurface: colors.fg,
+        outline: colors.line,
       ),
+      extensions: [colors],
     );
 
     return base.copyWith(
       textTheme: base.textTheme.apply(
         fontFamily: 'PlusJakartaSans',
-        bodyColor: fg,
-        displayColor: fg,
+        bodyColor: colors.fg,
+        displayColor: colors.fg,
       ),
-      appBarTheme: const AppBarTheme(
-        backgroundColor: bg,
-        foregroundColor: fg,
+      appBarTheme: AppBarTheme(
+        backgroundColor: colors.bg,
+        foregroundColor: colors.fg,
         elevation: 0,
         centerTitle: false,
         titleTextStyle: TextStyle(
           fontFamily: 'HeptaSlab',
           fontWeight: FontWeight.w600,
           fontSize: 22,
-          color: fg,
+          color: colors.fg,
         ),
       ),
       cardTheme: CardThemeData(
-        color: surface,
+        color: colors.surface,
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: const BorderSide(color: line),
+          side: BorderSide(color: colors.line),
         ),
       ),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: accent,
-        foregroundColor: fg,
+      floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: colors.accent,
+        foregroundColor: Colors.white,
       ),
-      dividerColor: line,
-      snackBarTheme: const SnackBarThemeData(
-        backgroundColor: surface,
+      dividerColor: colors.line,
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: colors.surface,
         contentTextStyle: TextStyle(
           fontFamily: 'PlusJakartaSans',
-          color: fg,
+          color: colors.fg,
         ),
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: colors.surface,
+      ),
+      listTileTheme: ListTileThemeData(
+        iconColor: colors.fg,
+        textColor: colors.fg,
       ),
     );
   }
