@@ -96,11 +96,14 @@ img {
   background: linear-gradient(180deg, var(--rest) 0%, #024a73 100%);
 }
 
+/* Shared site chrome — same size and top inset on home + guide */
 .topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  box-sizing: border-box;
+  min-height: 3.75rem;
   padding: 1.1rem clamp(1.25rem, 4vw, 3rem);
   color: #fff;
 }
@@ -108,8 +111,10 @@ img {
 .topbar a {
   color: #fff;
   text-decoration: none;
+  font-family: var(--font-body);
   font-weight: 600;
   font-size: 0.95rem;
+  line-height: 1.2;
 }
 
 .topbar a:hover {
@@ -117,10 +122,19 @@ img {
   color: #fff;
 }
 
+.topbar nav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  font-size: 0.95rem;
+  line-height: 1.2;
+}
+
 .brand-mark {
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 1.35rem;
+  line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
@@ -418,25 +432,6 @@ footer.site-foot a:hover {
   background: linear-gradient(180deg, var(--rest) 0%, #024a73 100%);
 }
 
-.guide-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.85rem clamp(1.25rem, 4vw, 3rem);
-}
-
-.guide-top-on-color a {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.guide-top-on-color a:hover {
-  color: #fff;
-  text-decoration: underline;
-}
-
 .guide-hero-core {
   display: flex;
   flex-direction: column;
@@ -674,35 +669,41 @@ footer.site-foot a:hover {
 
 .back-to-top {
   position: fixed;
-  right: max(1rem, calc((100vw - 1100px) / 2));
+  right: 1.25rem;
   bottom: 1.25rem;
-  z-index: 40;
-  display: inline-flex;
+  z-index: 1000;
+  display: none;
   align-items: center;
   justify-content: center;
-  min-height: 2.75rem;
+  min-height: 2.85rem;
   max-width: calc(100vw - 2rem);
-  padding: 0.55rem 0.95rem;
-  border: 1.5px solid var(--line);
+  padding: 0.6rem 1.05rem;
+  border: 2px solid var(--work);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--paper) 92%, transparent);
-  color: var(--ink);
+  background: var(--ink);
+  color: #fff;
   text-decoration: none;
   font-family: var(--font-body);
-  font-size: 0.85rem;
-  font-weight: 650;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   white-space: nowrap;
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--ink) 10%, transparent);
-  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 28px rgba(22, 22, 24, 0.28);
 }
 
 .back-to-top[hidden] {
   display: none !important;
 }
 
-.back-to-top:hover {
+.back-to-top.is-visible {
+  display: inline-flex;
+}
+
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  background: var(--work);
   border-color: var(--work);
-  color: var(--work);
+  color: #fff;
 }
 
 @media (max-width: 560px) {
