@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interval timer – screen reference board</title>
+<style>
+  :root { color-scheme: dark; --bg:#0f0f11; --card:#18181b; --line:#2a2a30; --fg:#ececf0; --mute:#9a9aa6; --acc:#ff7a3d; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:14px/1.45 system-ui, sans-serif; }
+  header { position:sticky; top:0; z-index:5; background:rgba(15,15,17,.94); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); padding:12px 20px; }
+  h1 { margin:0 0 8px; font-size:18px; }
+  .filters { display:flex; flex-wrap:wrap; gap:6px 18px; align-items:center; }
+  .group { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  .group b { color:var(--mute); font-weight:500; margin-right:2px; }
+  button.chip { background:var(--card); color:var(--fg); border:1px solid var(--line); border-radius:999px; padding:4px 12px; cursor:pointer; font:inherit; }
+  button.chip[aria-pressed="true"] { background:var(--acc); color:#111; border-color:var(--acc); }
+  main { padding:16px 20px 60px; max-width:1500px; margin:0 auto; }
+  .notes { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 18px; margin-bottom:22px; }
+  .notes h2 { margin:0 0 6px; font-size:15px; }
+  .notes ul { margin:0; padding-left:18px; color:var(--mute); }
+  .notes li { margin:3px 0; }
+  .app { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px 14px 14px; margin-bottom:16px; }
+  .app[hidden] { display:none; }
+  .head { display:flex; flex-wrap:wrap; gap:6px 10px; align-items:baseline; margin-bottom:8px; }
+  .head h3 { margin:0; font-size:15px; }
+  .tag { font-size:11px; border:1px solid var(--line); border-radius:6px; padding:1px 7px; color:var(--mute); }
+  .tag.ios { color:#7cc4ff; } .tag.android { color:#8be28b; } .tag.web { color:#ffd166; }
+  .tag.open-source { color:#c9a7ff; } .tag.shareware { color:#ff9f7a; }
+  .head a { margin-left:auto; color:var(--acc); text-decoration:none; font-size:12px; }
+  .note { color:var(--mute); margin:0 0 10px; }
+  .row { display:flex; gap:10px; overflow-x:auto; padding-bottom:6px; }
+  .row img { height:340px; width:auto; border-radius:10px; flex:none; background:#222; }
+  .row img.wide { height:300px; }
+  .pat { margin-bottom:26px; }
+  .pat h2 { font-size:16px; margin:0 0 2px; }
+  .pat p.d { color:var(--mute); margin:0 0 10px; }
+  .tile { flex:none; width:max-content; }
+  .tile img { display:block; }
+  .tile small { display:block; color:var(--mute); font-size:11px; margin-top:3px; max-width:200px; }
+  .tile small a { color:var(--acc); text-decoration:none; }
+  footer { color:var(--mute); padding:0 20px 40px; max-width:1500px; margin:0 auto; font-size:12px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Interval timer – screen reference board <span style="color:var(--mute);font-weight:400;font-size:13px">(no Pomodoro) · <span id="count"></span></span></h1>
+  <div class="filters">
+    <div class="group" id="fView"><b>View</b></div>
+    <div class="group" id="fPlatform"><b>Platform</b></div>
+    <div class="group" id="fModel"><b>Model</b></div>
+  </div>
+</header>
+<main>
+  <section class="notes">
+    <h2>The three shortlisted apps: basic + advanced timers, stacking, your own timers and sets</h2>
+    <ul>
+      <li><b>Seconds</b> (iOS + Android): quick Countdown and Stopwatch modes beside a Circuit Timer. The circuit editor has a name, number of sets and a list of your own exercises, each with a time pill and an "Add Exercise" row, plus cut / copy / paste. Saved timers live in folders. Run screen is full-screen color with an "up next" panel.</li>
+      <li><b>Intervals Pro</b> (iOS): the "Add New Timer" screen sets the ladder from simple to advanced: HIIT Timer, Custom Interval Timer, Set Timer. A separate Workout Templates list gives optional starting points.</li>
+      <li><b>Allez</b> (Android): a "Quick routine" screen (Get ready, Warm-up, Work, Rest, Sets, Recovery, Cycles, Cooldown) next to saved Routines built from blocks ("Add block" is marked PRO). Bottom tabs: Quick, Templates, Routines, History, Settings. Templates are a separate tab, so your own routines stay separate.</li>
+      <li><b>Not verified:</b> whether you can delete the sample or template content, and how the create / edit / delete flows behave. That needs hands-on use. Store screenshots are curated marketing frames.</li>
+    </ul>
+  </section>
+  <div id="apps"></div>
+  <div id="patterns" hidden></div>
+</main>
+<footer>
+  Store images are hotlinked from the Apple App Store, Google Play and F-Droid for private reference and belong to their owners. Models marked "unverified" were not checked on the store page.
+</footer>
+
+<script>
+const IOS = (path, ext) => `https://is1-ssl.mzstatic.com/image/thumb/${path}/392x696bb.${ext}`;
+const PLAY = id => `https://play-lh.googleusercontent.com/${id}=h560`;
+
+const apps = [
+  {n:"Seconds Interval Timer", p:"ios", m:["shareware"], model:"Free; each timer locks after one run until $7.99 unlock (Seconds Pro is a $7.99 paid app)", r:"4.68 (23.8K)", link:"https://apps.apple.com/us/app/seconds-interval-timer/id475816966", note:"Bold red marketing style; full-screen phase color with up-next strip and Watch screens.", ios:[
+    "PurpleSource116/v4/ea/f0/22/eaf02223-646d-8ab3-5e81-1d238e49ac3a/dc5a60f1-4e07-4e0d-9c19-764f213667d1_0_APP_IPHONE_55_0.png|png",
+    "PurpleSource126/v4/5a/90/55/5a90554b-4529-9d4b-0260-70641c4739e1/d4fbc3f4-92a4-4bbc-8aa8-b0c7dae27c21_1_APP_IPHONE_55_1.png|png",
+    "PurpleSource126/v4/5d/2f/33/5d2f3367-359e-4a64-aa8c-47088d509c48/f4b5b145-f7ee-4427-8e82-9138e004474d_2_APP_IPHONE_55_2.png|png",
+    "PurpleSource126/v4/f4/15/00/f415006d-767e-ba88-b718-e9e437c39e5a/3b53471f-46d8-44ad-bc37-2537703d019e_3_APP_IPHONE_55_3.png|png",
+    "PurpleSource116/v4/2e/b8/cb/2eb8cb79-0a94-dda3-d54f-959556a09077/529c127c-fc6d-4b6f-83c1-81318f34424a_4_APP_IPHONE_55_4.png|png"]},
+  {n:"Intervals Pro: HIIT Timer", p:"ios", m:["freemium"], model:"Free single timer; $2.99/mo, $19.99/yr, $69.99 lifetime", r:"4.77 (13.7K)", link:"https://apps.apple.com/us/app/intervals-pro-hiit-timer/id957586938", note:"Blue and white, utilitarian: timer-type picker, workout templates, standalone Watch.", ios:[
+    "Purple126/v4/77/b8/31/77b8317d-42bd-b895-2438-d6c437f8088f/a310f0b3-8398-4e87-b907-3fe86aac3cc3_iPhone_8_Hero_1.png|png",
+    "Purple126/v4/61/22/ce/6122ceba-2b49-736e-95e3-5f665bb17fb4/bd667946-bf1d-443c-a259-00511506edde_iPhone_8_Hero_2.png|png",
+    "Purple116/v4/80/89/2a/80892a8b-9cbd-5f80-3ec2-6d3740f08834/e66ab9f6-1347-40d9-8add-ed0e713a510e_iPhone_8_Share.png|png",
+    "Purple116/v4/56/86/55/56865544-67ad-e714-3d88-398c36eeb0f5/1900ff24-97fc-4f94-9dc6-a5a8ffd4fa18_iPhone_8_Timer_Types.png|png",
+    "Purple116/v4/f6/bd/30/f6bd3074-2ae5-139d-7498-2a295229ab81/32d302d6-32d6-41ab-898c-916dfcb88e55_iPhone_8_Timer_Templates.png|png"]},
+  {n:"Allez – HIIT Interval Timer", p:"android", m:["unverified"], model:"Model unverified", r:"–", link:"https://play.google.com/store/apps/details?id=app.allez.timer", note:"Newer entrant (boxing rounds, circuits).", play:[
+    "INB3RSbLYQ7swCsMyAIaUOQi4RDDiUgOq2UCL9XmHAq5XD0S7rypQPOXJVxsy7NUgvgfQRnIFoQgrtka_ZXJng",
+    "2EeA4SYogBal-mG1Oq2ohu_Y6umUqJdOt4WQkDq_CiFdODhtAFqDgiDRqaWWZbhr4Vy-bEJ7E9E5DP2c-CRd",
+    "SyP2gou-h4pNi3aSRG0X-HQe7eizcJv1-X9CSbX9bTNioG_GdYNC7W9AjEqXU2GTvqrNFnuuvBGAlDwJ78v_9Q",
+    "th7lLfH33SRLQXH4PCCDr_B4VyFkGiM5IS0zrSBU5rntVbHtrjZxN0-vg3P84KhK8ALidsfIze8LX7XUNZUHdw",
+    "vD6_a7qN30WirUDCPux2_k9LMRwVI_asUHXnoLeHGqUegQS1l_CkK9akHAt8l33UiTeIUUmhlo5spBN68RNw"]},
+  {n:"Seconds Interval Timer (Android)", p:"android", m:["shareware"], model:"Free with unlock (same model as iOS; Android pricing unverified)", r:"–", link:"https://play.google.com/store/apps/details?id=com.runloop.seconds.free", note:"Cross-platform counterpart of the iOS app.", play:[
+    "GfT0jUd3k9XoQ0GmAvCNa1LR0_5xroO-M1fQkpFODggB5Iq2LTQoj2YlhDX5sF0IJ0d_IYnALpYAkH4KQ4CWe0U",
+    "nV_RTx747O2Q_SHmnsZtX3xJEqLzOTg3IVzYEQPA7jIIdJxXXctOlZTIEr2Y7G45dvMu2-tzlMABydN4iN-iIw",
+    "ZHONJkJo0S0jDn3PcmvPAhYhvKWbYtByrQvfSk6h7gr-dMz0-7FCMsWJ1ewyIecPNy7fJ1FBKUkQKHC-P45mOQ",
+    "zxJ9QKAotjzg5JHGxwBAhf9Qqee16wZFVvyyZpeqVQMNQw9NswsFWKakUZA6mI5n-rge8a7_46wT1IK8F9SchA",
+    "LKI3CaLRb1ZRyoEC0KKHrrMydCBFeHUn-KpNY3LRb18IEk-ridoo0HQpxJvJFdH-P4I4CLrTPcunnUqPeMUi"]},
+];
+
+const modelLabels = {free:"free", freemium:"freemium", shareware:"shareware / trial / unlock", "open-source":"open-source", unverified:"unverified"};
+const state = {platform:null, model:null};
+
+function el(tag, props={}, ...kids){ const e=document.createElement(tag); Object.assign(e,props); for(const k of kids) e.append(k); return e; }
+
+function imgsFor(a){
+  if(a.ios) return a.ios.map(s=>{const [p,x]=s.split("|"); return IOS(p,x);});
+  if(a.play) return a.play.map(PLAY);
+  return a.urls;
+}
+
+const host = document.getElementById("apps");
+const cards = apps.map(a=>{
+  const head = el("div",{className:"head"},
+    el("h3",{textContent:a.n}),
+    el("span",{className:"tag "+a.p,textContent:a.p==="ios"?"iOS":a.p==="android"?"Android":"Web"}),
+    ...a.m.map(m=>el("span",{className:"tag "+m,textContent:modelLabels[m]})),
+    el("span",{className:"tag",textContent:a.model}),
+    a.r!=="–" ? el("span",{className:"tag",textContent:"★ "+a.r}) : "",
+    el("a",{href:a.link,target:"_blank",rel:"noreferrer",textContent:"source ↗"})
+  );
+  const row = el("div",{className:"row"});
+  for(const u of imgsFor(a)){ const i=el("img",{src:u,loading:"lazy",alt:a.n+" screenshot"}); if(a.wide) i.className="wide"; i.onerror=()=>{i.style.display="none"}; row.append(i); }
+  const card = el("section",{className:"app"}, head, a.note?el("p",{className:"note",textContent:a.note}):"", row);
+  host.append(card);
+  return {a, card};
+});
+
+function chip(group, value, label){
+  const b = el("button",{className:"chip",textContent:label,type:"button"});
+  b.setAttribute("aria-pressed", String(state[group]===value));
+  b.onclick=()=>{ state[group] = state[group]===value ? null : value; render(); };
+  b.dataset.group=group; b.dataset.value=value;
+  return b;
+}
+const platformLabels={ios:"iOS",android:"Android",web:"Web"};
+const platforms=Object.entries(platformLabels).filter(([v])=>apps.some(a=>a.p===v));
+const models=Object.entries(modelLabels).filter(([v])=>apps.some(a=>a.m.includes(v)));
+platforms.forEach(([v,l])=>document.getElementById("fPlatform").append(chip("platform",v,l)));
+models.forEach(([v,l])=>document.getElementById("fModel").append(chip("model",v,l)));
+
+/* ---- Pattern view ----
+   One tag per screenshot, in image order; null = not yet reviewed.
+   Every screenshot was viewed and tagged (from the visible UI/caption). Marketing-heavy frames are tagged by the screen they show. */
+const PATTERNS = {
+  run:      ["Run screen", "The live countdown: numerals, phase color, progress, controls, up-next."],
+  editor:   ["Sequence editor", "Building or editing work / rest / rounds / sets."],
+  presets:  ["Presets, templates and saved lists", "Quick-start times, templates, saved workouts and routines."],
+  history:  ["History, stats and completion", "Calendars, charts, journals and post-workout summaries."],
+  themes:   ["Themes, sounds and settings", "Color themes, sound choices and options."],
+  widgets:  ["Widgets, Watch and sharing", "Home-screen widgets, Apple Watch and share cards."],
+  promo:    ["Marketing / feature screens", "Store promo frames; the UI inside is incidental."],
+  none:     ["Not yet reviewed", "Screens I have not looked at closely enough to tag honestly."],
+};
+const TAGS = {
+  "Seconds Interval Timer": ["run","presets","run","editor","editor"],
+  "Allez – HIIT Interval Timer": ["run","editor","run","presets","presets"],
+  "Seconds Interval Timer (Android)": ["run","run","presets","editor","editor"],
+  "Intervals Pro: HIIT Timer": ["promo","widgets","widgets","editor","presets"],
+};
+const tiles = [];
+apps.forEach(a=>{
+  const imgs = imgsFor(a), tags = TAGS[a.n] || [];
+  imgs.forEach((u,i)=>tiles.push({a, u, i, tag: tags[i] ?? "none"}));
+});
+const pHost = document.getElementById("patterns");
+const pSections = Object.keys(PATTERNS).map(k=>{
+  const sec = el("section",{className:"pat"}, el("h2",{textContent:PATTERNS[k][0]}), el("p",{className:"d",textContent:PATTERNS[k][1]}));
+  const row = el("div",{className:"row"}); sec.append(row); pHost.append(sec);
+  return {k, sec, row};
+});
+tiles.forEach(t=>{
+  const s = pSections.find(x=>x.k===t.tag);
+  const img = el("img",{src:t.u,loading:"lazy",alt:t.a.n}); img.style.height = t.a.wide?"300px":"340px"; img.style.borderRadius="10px"; img.onerror=()=>{img.style.display="none"};
+  const cap = el("small",{}, t.a.n+" ", el("a",{href:t.a.link,target:"_blank",rel:"noreferrer",textContent:"↗"}));
+  t.node = el("div",{className:"tile"}, img, cap);
+  s.row.append(t.node);
+});
+
+let view = "app";
+const fView = document.getElementById("fView");
+[["app","By app"],["pattern","By pattern"]].forEach(([v,l])=>{
+  const b = el("button",{className:"chip",textContent:l,type:"button"}); b.dataset.view=v;
+  b.onclick=()=>{ view=v; render(); }; fView.append(b);
+});
+
+function render(){
+  const pass = a => (!state.platform||a.p===state.platform)&&(!state.model||a.m.includes(state.model));
+  let shown=0;
+  for(const {a,card} of cards){ const ok=pass(a); card.hidden=!ok; if(ok) shown++; }
+  let shownTiles=0;
+  for(const t of tiles){ const ok=pass(t.a); t.node.hidden=!ok; if(ok) shownTiles++; }
+  for(const s of pSections){ s.sec.hidden = ![...s.row.children].some(c=>!c.hidden); }
+  host.hidden = view!=="app"; pHost.hidden = view!=="pattern";
+  document.querySelector(".notes").hidden = view!=="app";
+  document.querySelectorAll("button.chip[data-group]").forEach(b=>b.setAttribute("aria-pressed",String(state[b.dataset.group]===b.dataset.value)));
+  document.querySelectorAll("button.chip[data-view]").forEach(b=>b.setAttribute("aria-pressed",String(view===b.dataset.view)));
+  document.getElementById("count").textContent = view==="app" ? shown+" of "+cards.length+" apps" : shownTiles+" screens";
+}
+render();
+</script>
+</body>
+</html>
