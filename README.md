@@ -5,18 +5,20 @@ A workout interval timer for iOS and Android. Research and references live at th
 ## Decisions so far
 - **Scope:** workout interval timer with simple and advanced timers. Advanced stacks **standby, work, and rest**. Alert sounds. No Pomodoro. No pre-built exercises; users create and delete their own timers and sets.
 - **Platforms:** iOS app and Android app only, from **one tech stack**.
-- **Framework:** **Flutter** (branch `feature/flutter-interval-timer`).
+- **Framework:** **Flutter** (one codebase → iOS + Android).
 - **Typefaces (Google Fonts):**
   - **Hepta Slab** for large numbers (timer digits) and headers.
   - **Plus Jakarta Sans** for everything else (body, labels, controls).
 - **Shortlisted reference apps:** Seconds (iOS + Android), Intervals Pro (iOS), Allez (Android).
-- **Repo:** private for now (`nuclearfessel/Timed`).
+- **Repo:** public (`nuclearfessel/Timed`).
+- **Site / guide:** `docs/` → GitHub Pages at `https://nuclearfessel.github.io/Timed/` (after the docs site is merged to `main`).
 
 If you are an AI assistant, read `AGENTS.md` first.
 
 ## Contents
 - `AGENTS.md`: all of the owner's instructions, decisions and working preferences, for continuing in any AI app.
 - `app/`: Flutter app — see `app/README.md`.
+- `docs/index.html` + `docs/guide.html`: public site and user guide (Pages).
 - `docs/research.md`: market, design, accessibility and technical research.
 - `docs/reference-apps.md`: the shortlist, what each does, and orientation support.
 - `reference/index.html`: screen reference board (open in a browser). Views: By app, By pattern. Store images are linked from Apple and Google Play, so it needs internet.

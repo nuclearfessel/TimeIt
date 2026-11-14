@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../models/workout_timer.dart';
+import '../services/settings_store.dart';
 import '../services/timer_engine.dart';
 import '../theme/app_theme.dart';
 import '../utils/format.dart';
 
 class RunScreen extends StatefulWidget {
-  const RunScreen({super.key, required this.timer});
+  const RunScreen({
+    super.key,
+    required this.timer,
+    required this.settings,
+  });
 
   final WorkoutTimer timer;
+  final SettingsStore settings;
 
   @override
   State<RunScreen> createState() => _RunScreenState();
@@ -21,7 +27,7 @@ class _RunScreenState extends State<RunScreen> {
   @override
   void initState() {
     super.initState();
-    engine = TimerEngine();
+    engine = TimerEngine(settings: widget.settings);
     engine.load(widget.timer.expand());
   }
 
@@ -31,10 +37,10 @@ class _RunScreenState extends State<RunScreen> {
     super.dispose();
   }
 
-  Color get _bg {
+  Color _bg(BuildContext context) {
     if (engine.status == EngineStatus.finished) return PhaseColors.complete;
     final phase = engine.phase;
-    if (phase == null) return AppTheme.bg;
+    if (phase == null) return TimedColors.of(context).bg;
     return PhaseColors.of(phase);
   }
 
@@ -48,7 +54,7 @@ class _RunScreenState extends State<RunScreen> {
     return AnimatedBuilder(
       animation: engine,
       builder: (context, _) {
-        final bg = _bg;
+        final bg = _bg(context);
         final onBg = Colors.white;
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light,

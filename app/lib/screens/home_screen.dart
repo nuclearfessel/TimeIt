@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 
 import '../models/workout_timer.dart';
+import '../services/settings_store.dart';
 import '../services/timer_store.dart';
 import '../theme/app_theme.dart';
 import '../utils/format.dart';
 import 'editor_screen.dart';
 import 'run_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key, required this.store});
+  const HomeScreen({
+    super.key,
+    required this.store,
+    required this.settings,
+  });
 
   final TimerStore store;
+  final SettingsStore settings;
 
   Future<void> _create(BuildContext context, TimerKind kind) async {
     final draft =
@@ -27,6 +34,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = TimedColors.of(context);
     return AnimatedBuilder(
       animation: store,
       builder: (context, _) {
@@ -34,6 +42,19 @@ class HomeScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Timed'),
+            actions: [
+              IconButton(
+                tooltip: 'Settings',
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => SettingsScreen(settings: settings),
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.settings_outlined),
+              ),
+            ],
           ),
           body: !store.loaded
               ? const Center(child: CircularProgressIndicator())
@@ -53,7 +74,10 @@ class HomeScreen extends StatelessWidget {
                           onStart: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) => RunScreen(timer: timer),
+                                builder: (_) => RunScreen(
+                                  timer: timer,
+                                  settings: settings,
+                                ),
                               ),
                             );
                           },
@@ -99,7 +123,7 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () async {
                     final kind = await showModalBottomSheet<TimerKind>(
                       context: context,
-                      backgroundColor: AppTheme.surface,
+                      backgroundColor: colors.surface,
                       builder: (ctx) {
                         return SafeArea(
                           child: Column(
@@ -148,6 +172,7 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = TimedColors.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(28),
@@ -159,10 +184,10 @@ class _EmptyState extends StatelessWidget {
               style: AppTheme.header.copyWith(fontSize: 28),
             ),
             const SizedBox(height: 10),
-            const Text(
+            Text(
               'Create a simple work/rest timer, or an advanced stack of standby, work, and rest.',
               textAlign: TextAlign.center,
-              style: TextStyle(color: AppTheme.mute, height: 1.4),
+              style: TextStyle(color: colors.mute, height: 1.4),
             ),
             const SizedBox(height: 28),
             FilledButton(
@@ -196,6 +221,7 @@ class _TimerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = TimedColors.of(context);
     final kindLabel =
         timer.kind == TimerKind.simple ? 'Simple' : 'Advanced';
     final summary = timer.kind == TimerKind.simple
@@ -203,10 +229,10 @@ class _TimerCard extends StatelessWidget {
         : '${timer.steps.length} phases · ${timer.cycles} cycles · ${formatSeconds(timer.totalSeconds)}';
 
     return Material(
-      color: AppTheme.surface,
+      color: colors.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: AppTheme.line),
+        side: BorderSide(color: colors.line),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(16),
@@ -226,8 +252,8 @@ class _TimerCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       '$kindLabel · $summary',
-                      style: const TextStyle(
-                        color: AppTheme.mute,
+                      style: TextStyle(
+                        color: colors.mute,
                         fontSize: 13,
                       ),
                     ),

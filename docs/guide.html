@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Using Timed — Guide</title>
+  <meta name="description" content="How to use Timed: simple timers, advanced stacks, running a workout, sounds, and settings." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+  <a class="skip" href="#guide">Skip to guide</a>
+
+  <div class="guide-top">
+    <a class="brand-mark" href="index.html">Timed</a>
+    <nav aria-label="Site">
+      <a href="index.html">Home</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/nuclearfessel/Timed/releases">Releases</a>
+    </nav>
+  </div>
+
+  <article class="guide-wrap" id="guide">
+    <header>
+      <h1>Using Timed</h1>
+      <p>Create your own workout timers, stack standby / work / rest, and run them with full-screen phase colors and alert sounds.</p>
+    </header>
+
+    <nav class="jump" aria-label="On this page">
+      <a href="#start">Start</a>
+      <a href="#simple">Simple</a>
+      <a href="#advanced">Advanced</a>
+      <a href="#run">Run</a>
+      <a href="#sounds">Sounds</a>
+      <a href="#settings">Settings</a>
+      <a href="#install">Install</a>
+    </nav>
+
+    <section class="standby" id="start">
+      <h2>Get started</h2>
+      <ol>
+        <li>Open Timed. Your saved timers appear on the home screen.</li>
+        <li>If the list is empty, create a <strong>simple</strong> or <strong>advanced</strong> timer.</li>
+        <li>Tap a timer to run it, or use edit / delete on the row.</li>
+      </ol>
+      <p>Timed does not ship pre-built exercises. You create and delete your own timers and sets.</p>
+    </section>
+
+    <section class="work" id="simple">
+      <h2>Simple timers</h2>
+      <p>A simple timer is the classic interval shape:</p>
+      <ul>
+        <li><strong>Standby</strong> — optional get-ready time before the first work bout</li>
+        <li><strong>Work</strong> — effort interval</li>
+        <li><strong>Rest</strong> — recovery between rounds</li>
+        <li><strong>Rounds</strong> — how many work bouts to run</li>
+      </ul>
+      <p>Rest is skipped after the last round. Save the timer with a name you will recognize later.</p>
+    </section>
+
+    <section class="rest" id="advanced">
+      <h2>Advanced timers</h2>
+      <p>Advanced mode builds a <strong>phase stack</strong> you control:</p>
+      <ul>
+        <li>Add standby, work, or rest phases in any order</li>
+        <li>Set each phase duration</li>
+        <li>Drag to reorder the stack (fully rounded rows while dragging)</li>
+        <li>Set <strong>cycles</strong> to repeat the whole stack</li>
+      </ul>
+      <p>Delete any phase you do not need. Keep at least one phase with a duration greater than zero.</p>
+    </section>
+
+    <section class="work" id="run">
+      <h2>Running a workout</h2>
+      <ol>
+        <li>Open a timer from home.</li>
+        <li>Tap <strong>Start</strong>. The screen fills with the current phase color.</li>
+        <li>Use <strong>Pause</strong> / <strong>Resume</strong>, <strong>Skip</strong> to jump ahead, or <strong>Reset</strong> to return to the first phase.</li>
+      </ol>
+      <p>Large Hepta Slab digits show time left in the phase. An “up next” strip previews the following block. When the sequence finishes, the screen shows <strong>Done</strong> and you can restart.</p>
+    </section>
+
+    <section class="standby" id="sounds">
+      <h2>Sounds</h2>
+      <p>By default Timed plays:</p>
+      <ul>
+        <li>A cue when a phase begins</li>
+        <li>Short beeps in the last three seconds</li>
+        <li>A completion sound when the workout ends</li>
+      </ul>
+      <p>Turn these on or off in Settings. Lowering music during a workout and vibrate-on-alert are saved preferences for upcoming builds.</p>
+    </section>
+
+    <section class="rest" id="settings">
+      <h2>Settings</h2>
+      <p>Open Settings from the gear on the home screen.</p>
+      <h3>Appearance</h3>
+      <p>Choose <strong>Light</strong> or <strong>Dark</strong>. Timed does <em>not</em> follow the system theme — the choice is yours and stays until you change it.</p>
+      <h3>Sound</h3>
+      <ul>
+        <li>Alert sounds — phase changes and complete</li>
+        <li>Countdown beeps — last three seconds</li>
+        <li>Lower music during workout — preference saved; audio ducking wiring comes next</li>
+        <li>Vibrate on alert — preference saved; haptics wiring comes next</li>
+      </ul>
+    </section>
+
+    <section class="work" id="install">
+      <h2>Install</h2>
+      <p>Android release builds are on <a href="https://github.com/nuclearfessel/Timed/releases">GitHub Releases</a> (<code>.apk</code> for direct install, <code>.aab</code> for Play upload).</p>
+      <p>iOS release packages need a Mac with Xcode signing. When an IPA is published, it will appear on the same Releases page.</p>
+      <p>Source and issue tracking live in the <a href="https://github.com/nuclearfessel/Timed">Timed repository</a>.</p>
+    </section>
+  </article>
+
+  <footer class="site-foot">
+    <p><a href="index.html">Timed home</a> · Guide · Flutter for iOS and Android</p>
+  </footer>
+</body>
+</html>

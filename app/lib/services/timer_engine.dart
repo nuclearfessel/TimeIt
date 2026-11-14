@@ -5,11 +5,13 @@ import 'package:flutter/foundation.dart';
 import '../models/interval_step.dart';
 import '../models/phase_type.dart';
 import 'cue_audio.dart';
+import 'settings_store.dart';
 
 enum EngineStatus { idle, running, paused, finished }
 
 class TimerEngine extends ChangeNotifier {
-  TimerEngine({CueAudio? audio}) : _audio = audio ?? CueAudio();
+  TimerEngine({SettingsStore? settings, CueAudio? audio})
+      : _audio = audio ?? CueAudio(settings: settings);
 
   final CueAudio _audio;
   List<IntervalStep> _schedule = [];

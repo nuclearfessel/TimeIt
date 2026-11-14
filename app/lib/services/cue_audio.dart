@@ -1,19 +1,25 @@
 import 'package:audioplayers/audioplayers.dart';
 
+import 'settings_store.dart';
+
 enum CueKind { phase, countdown, complete }
 
 class CueAudio {
-  CueAudio() {
+  CueAudio({SettingsStore? this._settings}) {
     _player = AudioPlayer();
     _player.setReleaseMode(ReleaseMode.stop);
     _player.setPlayerMode(PlayerMode.lowLatency);
   }
 
+  final SettingsStore? _settings;
   late final AudioPlayer _player;
-  bool muted = false;
 
   Future<void> play(CueKind kind) async {
-    if (muted) return;
+    final settings = _settings;
+    if (settings != null) {
+      if (kind == CueKind.countdown && !settings.countdownBeeps) return;
+      if (kind != CueKind.countdown && !settings.alertSounds) return;
+    }
     final asset = switch (kind) {
       CueKind.phase => 'sounds/phase.wav',
       CueKind.countdown => 'sounds/countdown.wav',

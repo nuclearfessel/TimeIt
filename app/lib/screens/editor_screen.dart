@@ -110,15 +110,15 @@ class _EditorScreenState extends State<EditorScreen> {
           const SizedBox(height: 16),
           Text(
             draft.kind == TimerKind.simple ? 'Simple' : 'Advanced',
-            style: const TextStyle(color: AppTheme.mute),
+            style: TextStyle(color: TimedColors.of(context).mute),
           ),
           const SizedBox(height: 12),
           if (draft.kind == TimerKind.simple) ..._simpleFields(),
-          if (draft.kind == TimerKind.advanced) ..._advancedFields(),
+          if (draft.kind == TimerKind.advanced) ..._advancedFields(context),
           const SizedBox(height: 24),
           Text(
             'Total ${formatSeconds(draft.totalSeconds)}',
-            style: const TextStyle(color: AppTheme.mute),
+            style: TextStyle(color: TimedColors.of(context).mute),
           ),
         ],
       ),
@@ -165,7 +165,8 @@ class _EditorScreenState extends State<EditorScreen> {
     ];
   }
 
-  List<Widget> _advancedFields() {
+  List<Widget> _advancedFields(BuildContext context) {
+    final colors = TimedColors.of(context);
     return [
       _ValueTile(
         label: 'Cycles',
@@ -181,6 +182,7 @@ class _EditorScreenState extends State<EditorScreen> {
       ReorderableListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
+        proxyDecorator: _stackProxyDecorator,
         itemCount: draft.steps.length,
         onReorderItem: (oldIndex, newIndex) {
           setState(() {
@@ -197,7 +199,7 @@ class _EditorScreenState extends State<EditorScreen> {
             onType: () async {
               final next = await showModalBottomSheet<PhaseType>(
                 context: context,
-                backgroundColor: AppTheme.surface,
+                backgroundColor: colors.surface,
                 builder: (ctx) => SafeArea(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -303,6 +305,41 @@ class _ValueTile extends StatelessWidget {
   }
 }
 
+/// Dragging proxy: fully rounded tile + soft alpha shadow (no opaque underlay).
+Widget _stackProxyDecorator(
+  Widget child,
+  int index,
+  Animation<double> animation,
+) {
+  return AnimatedBuilder(
+    animation: animation,
+    builder: (context, child) {
+      final t = Curves.easeOutCubic.transform(animation.value);
+      return Material(
+        type: MaterialType.transparency,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        color: Colors.transparent,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(999),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.35 * t),
+                blurRadius: 18 * t,
+                spreadRadius: 0,
+                offset: Offset(0, 10 * t),
+              ),
+            ],
+          ),
+          child: child,
+        ),
+      );
+    },
+    child: child,
+  );
+}
+
 class _StepTile extends StatelessWidget {
   const _StepTile({
     super.key,
@@ -319,44 +356,56 @@ class _StepTile extends StatelessWidget {
   final VoidCallback onDuration;
   final VoidCallback onDelete;
 
+  static const _radius = BorderRadius.all(Radius.circular(999));
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      key: key,
-      margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        leading: ReorderableDragStartListener(
-          index: index,
-          child: const Icon(Icons.drag_handle, color: AppTheme.mute),
+    final colors = TimedColors.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Material(
+        color: colors.surface,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        shape: StadiumBorder(
+          side: BorderSide(color: colors.line),
         ),
-        title: InkWell(
-          onTap: onType,
-          child: Row(
+        clipBehavior: Clip.antiAlias,
+        child: ListTile(
+          leading: ReorderableDragStartListener(
+            index: index,
+            child: Icon(Icons.drag_handle, color: colors.mute),
+          ),
+          title: InkWell(
+            onTap: onType,
+            borderRadius: _radius,
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: PhaseColors.of(step.type),
+                  radius: 7,
+                ),
+                const SizedBox(width: 8),
+                Text(step.type.label),
+              ],
+            ),
+          ),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              CircleAvatar(
-                backgroundColor: PhaseColors.of(step.type),
-                radius: 7,
+              TextButton(
+                onPressed: onDuration,
+                child: Text(
+                  formatSeconds(step.seconds),
+                  style: AppTheme.header.copyWith(fontSize: 16),
+                ),
               ),
-              const SizedBox(width: 8),
-              Text(step.type.label),
+              IconButton(
+                onPressed: onDelete,
+                icon: const Icon(Icons.close),
+              ),
             ],
           ),
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextButton(
-              onPressed: onDuration,
-              child: Text(
-                formatSeconds(step.seconds),
-                style: AppTheme.header.copyWith(fontSize: 16),
-              ),
-            ),
-            IconButton(
-              onPressed: onDelete,
-              icon: const Icon(Icons.close),
-            ),
-          ],
         ),
       ),
     );
