@@ -1,7 +1,7 @@
 name: timed
 description: Workout interval timer for iOS and Android — simple and advanced stacked timers.
 publish_to: 'none'
-version: 1.0.2+3
+version: 1.0.1+2
 
 environment:
   sdk: ^3.13.3
