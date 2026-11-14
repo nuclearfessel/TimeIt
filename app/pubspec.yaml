@@ -1,0 +1,46 @@
+name: timed
+description: Workout interval timer for iOS and Android — simple and advanced stacked timers.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  shared_preferences: ^2.5.6
+  audioplayers: ^6.8.1
+  uuid: ^4.6.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/sounds/
+  fonts:
+    - family: HeptaSlab
+      fonts:
+        - asset: assets/fonts/HeptaSlab-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/HeptaSlab-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/HeptaSlab-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/HeptaSlab-Bold.ttf
+          weight: 700
+    - family: PlusJakartaSans
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/PlusJakartaSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/PlusJakartaSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/PlusJakartaSans-Bold.ttf
+          weight: 700

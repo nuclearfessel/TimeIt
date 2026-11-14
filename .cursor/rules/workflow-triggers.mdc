@@ -1,0 +1,42 @@
+---
+description: Owner trigger phrases for feature branches and Go! release workflow.
+alwaysApply: true
+---
+
+# Workflow trigger phrases
+
+These phrases in the owner's message are commands. Act on them immediately.
+
+## Start work → new feature branch
+
+**Triggers** (any one is enough):
+- `implement` or `implement it` (case-insensitive; whole word)
+- `New!` (**case-sensitive**, including the exclamation mark)
+
+**Action:**
+1. Create and check out a new branch named `feature-update-<timestamp>`.
+2. Timestamp format: `YYYYMMDD-HHmmss` local time (example: `feature-update-20261114-142830`).
+3. Branch from the current default integration branch (`main` unless the owner says otherwise).
+4. If already on a dirty `feature-update-*` branch, stash or commit only if the owner already authorized it; otherwise create the new branch carrying uncommitted work only when git allows (`git checkout -b`), and tell the owner what came along.
+5. Confirm the branch name and that you are on it, then continue with their request.
+
+## Ship → Go!
+
+**Trigger:** the exact word `Go!` (**case-sensitive**, including the exclamation mark).
+
+**`Go!` is explicit approval** for commit, push, merge, release builds, and branch cleanup. Do not ask again for those steps when `Go!` was said.
+
+**Action (in order):**
+1. **Commit** all intended project changes on the current feature branch (follow the repo commit protocol: status, diff, log, stage, commit). Skip secrets. If there is nothing to commit, say so and continue.
+2. **Push** the feature branch to `origin`.
+3. **Merge** into `main` (prefer PR merge via `gh pr create` + merge if that is the repo norm; otherwise merge locally into `main` and push `main`). Resolve conflicts only with owner input if non-trivial.
+4. **Release builds** from `main` (or the merged result):
+   - Android: `flutter build appbundle --release` and `flutter build apk --release` in `app/`.
+   - iOS: run release build only when a Mac/Xcode environment is available; on Windows, report that iOS release must wait for a Mac.
+5. **Clean branches:** delete the merged feature branch locally and on `origin`. Delete other fully merged `feature-update-*` / `feature/*` branches locally and on `origin` if safe. **Never delete `main`.** Do not force-delete unmerged work without asking.
+6. Report: commit SHA, PR/merge result, build artifact paths or failures, and which branches were deleted.
+
+## Notes
+- These triggers override the usual “confirm before commit/push” preference **only** for the actions listed under `Go!`.
+- Downloads and other outward actions still need confirmation unless covered by `Go!`.
+- Keep `AGENTS.md` in sync if these workflows change.
