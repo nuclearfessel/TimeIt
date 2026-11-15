@@ -78,12 +78,17 @@ class _EditorScreenState extends State<EditorScreen> {
     });
   }
 
+  static const int _maxPhaseSeconds =
+      _DurationWheelSheet.maxMinutes * 60 + _DurationWheelSheet.maxSeconds;
+
   Future<int?> _pickSeconds(String title, int current) {
-    return showDialog<int>(
+    return showModalBottomSheet<int>(
       context: context,
-      builder: (_) => _SecondsPickerDialog(
+      isScrollControlled: true,
+      showDragHandle: true,
+      builder: (_) => _DurationWheelSheet(
         title: title,
-        initial: current,
+        initialSeconds: current,
       ),
     );
   }
@@ -95,6 +100,7 @@ class _EditorScreenState extends State<EditorScreen> {
   Future<void> _pickRounds() async {
     final next = await showModalBottomSheet<int>(
       context: context,
+      isScrollControlled: true,
       showDragHandle: true,
       builder: (_) => _RoundsWheelSheet(initial: draft.rounds),
     );
@@ -222,7 +228,10 @@ class _EditorScreenState extends State<EditorScreen> {
               if (v != null) {
                 setState(() {
                   draft.simpleSteps[index].seconds =
-                      v.clamp(step.type == PhaseType.work ? 1 : 0, 3600);
+                      v.clamp(
+                        step.type == PhaseType.work ? 1 : 0,
+                        _maxPhaseSeconds,
+                      );
                   draft.syncSimpleScalarsFromSteps();
                 });
               }
@@ -328,7 +337,9 @@ class _EditorScreenState extends State<EditorScreen> {
               final step = round.steps[stepIndex];
               final v = await _pickSeconds(step.type.label, step.seconds);
               if (v != null) {
-                setState(() => step.seconds = v.clamp(1, 3600));
+                setState(
+                  () => step.seconds = v.clamp(1, _maxPhaseSeconds),
+                );
               }
             },
             onDeletePhase: (stepIndex) {
@@ -638,26 +649,50 @@ class _RoundsWheelSheetState extends State<_RoundsWheelSheet> {
 
   late int _selected;
   late final FixedExtentScrollController _scroll;
+  late final TextEditingController _text;
 
   @override
   void initState() {
     super.initState();
     _selected = widget.initial.clamp(_min, _max);
     _scroll = FixedExtentScrollController(initialItem: _selected - _min);
+    _text = TextEditingController(text: '$_selected');
   }
 
   @override
   void dispose() {
     _scroll.dispose();
+    _text.dispose();
     super.dispose();
+  }
+
+  void _setSelected(int value, {bool updateText = true, bool jumpWheel = false}) {
+    final next = value.clamp(_min, _max);
+    setState(() => _selected = next);
+    if (updateText && _text.text != '$next') {
+      _text.value = TextEditingValue(
+        text: '$next',
+        selection: TextSelection.collapsed(offset: '$next'.length),
+      );
+    }
+    if (jumpWheel) {
+      _scroll.jumpToItem(next - _min);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final colors = TimeItColors.of(context);
+    final inset = MediaQuery.viewInsetsOf(context).bottom;
+    final fieldFill = Color.lerp(colors.bg, colors.surface, 0.22)!;
+    final border = OutlineInputBorder(
+      borderSide: BorderSide(color: colors.line),
+      borderRadius: BorderRadius.circular(10),
+    );
+
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        padding: EdgeInsets.fromLTRB(16, 0, 16, 16 + inset),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -675,7 +710,7 @@ class _RoundsWheelSheetState extends State<_RoundsWheelSheet> {
                 diameterRatio: 1.4,
                 physics: const FixedExtentScrollPhysics(),
                 onSelectedItemChanged: (i) {
-                  setState(() => _selected = i + _min);
+                  _setSelected(i + _min);
                 },
                 childDelegate: ListWheelChildBuilderDelegate(
                   childCount: _max - _min + 1,
@@ -692,6 +727,33 @@ class _RoundsWheelSheetState extends State<_RoundsWheelSheet> {
                       ),
                     );
                   },
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            // Same keyboard path as Name — default text IME, digits only.
+            TextField(
+              controller: _text,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              autocorrect: false,
+              enableSuggestions: false,
+              onChanged: (raw) {
+                final parsed = int.tryParse(raw);
+                if (parsed == null) return;
+                _setSelected(parsed, updateText: false, jumpWheel: true);
+              },
+              onSubmitted: (_) => Navigator.pop(context, _selected),
+              decoration: InputDecoration(
+                labelText: 'Or type rounds',
+                filled: true,
+                fillColor: fieldFill,
+                border: border,
+                enabledBorder: border,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: colors.accent, width: 1.5),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
@@ -1016,85 +1078,230 @@ class _StepTile extends StatelessWidget {
   }
 }
 
-/// Compact seconds dialog — no FocusNode / TextInput.show. Tap the field to type.
-class _SecondsPickerDialog extends StatefulWidget {
-  const _SecondsPickerDialog({
+/// Minutes (0–99) + seconds (0–60) wheels for phase duration — simple & advanced.
+class _DurationWheelSheet extends StatefulWidget {
+  const _DurationWheelSheet({
     required this.title,
-    required this.initial,
+    required this.initialSeconds,
   });
 
+  static const int maxMinutes = 99;
+  static const int maxSeconds = 60;
+
   final String title;
-  final int initial;
+  final int initialSeconds;
 
   @override
-  State<_SecondsPickerDialog> createState() => _SecondsPickerDialogState();
+  State<_DurationWheelSheet> createState() => _DurationWheelSheetState();
 }
 
-class _SecondsPickerDialogState extends State<_SecondsPickerDialog> {
-  late final TextEditingController _controller;
+class _DurationWheelSheetState extends State<_DurationWheelSheet> {
+  late int _minutes;
+  late int _seconds;
+  late final FixedExtentScrollController _minScroll;
+  late final FixedExtentScrollController _secScroll;
+  late final TextEditingController _text;
+
+  int get _maxTotal =>
+      _DurationWheelSheet.maxMinutes * 60 + _DurationWheelSheet.maxSeconds;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(text: '${widget.initial}');
+    final total = widget.initialSeconds.clamp(0, _maxTotal);
+    _minutes = (total ~/ 60).clamp(0, _DurationWheelSheet.maxMinutes);
+    _seconds = (total - _minutes * 60).clamp(0, _DurationWheelSheet.maxSeconds);
+    _minScroll = FixedExtentScrollController(initialItem: _minutes);
+    _secScroll = FixedExtentScrollController(initialItem: _seconds);
+    _text = TextEditingController(text: '$total');
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _minScroll.dispose();
+    _secScroll.dispose();
+    _text.dispose();
     super.dispose();
   }
 
-  int get _parsed {
-    final raw = int.tryParse(_controller.text);
-    if (raw == null) return widget.initial.clamp(0, 60 * 60);
-    return raw.clamp(0, 60 * 60);
+  int get _totalSeconds => _minutes * 60 + _seconds;
+
+  void _syncTextFromWheels() {
+    final t = '$_totalSeconds';
+    if (_text.text != t) {
+      _text.value = TextEditingValue(
+        text: t,
+        selection: TextSelection.collapsed(offset: t.length),
+      );
+    }
+  }
+
+  void _applyTotalSeconds(int total, {bool updateText = true}) {
+    final clamped = total.clamp(0, _maxTotal);
+    final minutes =
+        (clamped ~/ 60).clamp(0, _DurationWheelSheet.maxMinutes);
+    final seconds =
+        (clamped - minutes * 60).clamp(0, _DurationWheelSheet.maxSeconds);
+    setState(() {
+      _minutes = minutes;
+      _seconds = seconds;
+    });
+    _minScroll.jumpToItem(_minutes);
+    _secScroll.jumpToItem(_seconds);
+    if (updateText) {
+      final t = '$clamped';
+      if (_text.text != t) {
+        _text.value = TextEditingValue(
+          text: t,
+          selection: TextSelection.collapsed(offset: t.length),
+        );
+      }
+    }
+  }
+
+  Widget _wheel({
+    required TimeItColors colors,
+    required FixedExtentScrollController controller,
+    required int count,
+    required int selected,
+    required ValueChanged<int> onChanged,
+    required String unit,
+  }) {
+    return Expanded(
+      child: Column(
+        children: [
+          Text(
+            unit,
+            style: TextStyle(
+              color: colors.mute,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 4),
+          SizedBox(
+            height: 160,
+            child: ListWheelScrollView.useDelegate(
+              controller: controller,
+              itemExtent: 40,
+              perspective: 0.003,
+              diameterRatio: 1.4,
+              physics: const FixedExtentScrollPhysics(),
+              onSelectedItemChanged: onChanged,
+              childDelegate: ListWheelChildBuilderDelegate(
+                childCount: count,
+                builder: (context, index) {
+                  final selectedItem = index == selected;
+                  return Center(
+                    child: Text(
+                      '$index',
+                      style: AppTheme.header.copyWith(
+                        fontSize: selectedItem ? 28 : 20,
+                        color: selectedItem ? colors.fg : colors.mute,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final colors = TimeItColors.of(context);
+    final inset = MediaQuery.viewInsetsOf(context).bottom;
     final fieldFill = Color.lerp(colors.bg, colors.surface, 0.22)!;
     final border = OutlineInputBorder(
       borderSide: BorderSide(color: colors.line),
       borderRadius: BorderRadius.circular(10),
     );
 
-    return AlertDialog(
-      title: Text(widget.title),
-      content: TextField(
-        controller: _controller,
-        keyboardType: TextInputType.number,
-        textInputAction: TextInputAction.done,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        autocorrect: false,
-        enableSuggestions: false,
-        onTap: () {
-          SystemChannels.textInput.invokeMethod<void>('TextInput.show');
-        },
-        onSubmitted: (_) => Navigator.pop(context, _parsed),
-        decoration: InputDecoration(
-          suffixText: 'seconds',
-          filled: true,
-          fillColor: fieldFill,
-          border: border,
-          enabledBorder: border,
-          focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: colors.accent, width: 1.5),
-            borderRadius: BorderRadius.circular(10),
-          ),
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(16, 0, 16, 16 + inset),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              widget.title,
+              style: AppTheme.header.copyWith(fontSize: 20, color: colors.fg),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                _wheel(
+                  colors: colors,
+                  controller: _minScroll,
+                  count: _DurationWheelSheet.maxMinutes + 1,
+                  selected: _minutes,
+                  onChanged: (i) {
+                    setState(() => _minutes = i);
+                    _syncTextFromWheels();
+                  },
+                  unit: 'min',
+                ),
+                _wheel(
+                  colors: colors,
+                  controller: _secScroll,
+                  count: _DurationWheelSheet.maxSeconds + 1,
+                  selected: _seconds,
+                  onChanged: (i) {
+                    setState(() => _seconds = i);
+                    _syncTextFromWheels();
+                  },
+                  unit: 'sec',
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            // Same keyboard path as Name — default text IME, digits only.
+            TextField(
+              controller: _text,
+              keyboardType: TextInputType.text,
+              textInputAction: TextInputAction.done,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              autocorrect: false,
+              enableSuggestions: false,
+              onChanged: (raw) {
+                final parsed = int.tryParse(raw);
+                if (parsed == null) return;
+                _applyTotalSeconds(parsed, updateText: false);
+              },
+              onSubmitted: (_) => Navigator.pop(context, _totalSeconds),
+              decoration: InputDecoration(
+                labelText: 'Or type total seconds',
+                filled: true,
+                fillColor: fieldFill,
+                border: border,
+                enabledBorder: border,
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: colors.accent, width: 1.5),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel'),
+                ),
+                const SizedBox(width: 8),
+                FilledButton(
+                  onPressed: () => Navigator.pop(context, _totalSeconds),
+                  child: const Text('Set'),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pop(context, _parsed),
-          child: const Text('Set'),
-        ),
-      ],
     );
   }
 }
