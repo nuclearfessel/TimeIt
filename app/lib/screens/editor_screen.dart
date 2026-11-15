@@ -25,20 +25,17 @@ class EditorScreen extends StatefulWidget {
 class _EditorScreenState extends State<EditorScreen> {
   late WorkoutTimer draft;
   late TextEditingController _name;
-  late TextEditingController _rounds;
 
   @override
   void initState() {
     super.initState();
     draft = widget.timer.copy();
     _name = TextEditingController(text: draft.name);
-    _rounds = TextEditingController(text: '${draft.rounds}');
   }
 
   @override
   void dispose() {
     _name.dispose();
-    _rounds.dispose();
     super.dispose();
   }
 
@@ -92,27 +89,16 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   void _setRounds(int next) {
-    final clamped = next.clamp(1, 99);
-    setState(() => draft.rounds = clamped);
-    if (_rounds.text != '$clamped') {
-      _rounds.value = TextEditingValue(
-        text: '$clamped',
-        selection: TextSelection.collapsed(offset: '$clamped'.length),
-      );
-    }
+    setState(() => draft.rounds = next.clamp(1, 99));
   }
 
-  void _onRoundsTextChanged(String raw) {
-    final parsed = int.tryParse(raw);
-    // Don't rewrite the field while typing — only accept in-range values.
-    if (parsed != null && parsed >= 1 && parsed <= 99 && draft.rounds != parsed) {
-      setState(() => draft.rounds = parsed);
-    }
-  }
-
-  void _commitRoundsField() {
-    final parsed = int.tryParse(_rounds.text);
-    _setRounds(parsed ?? draft.rounds);
+  Future<void> _pickRounds() async {
+    final next = await showModalBottomSheet<int>(
+      context: context,
+      showDragHandle: true,
+      builder: (_) => _RoundsWheelSheet(initial: draft.rounds),
+    );
+    if (next != null) _setRounds(next);
   }
 
   Future<PhaseType?> _pickPhase(BuildContext context) {
@@ -265,13 +251,10 @@ class _EditorScreenState extends State<EditorScreen> {
           ),
         ),
       const SizedBox(height: 16),
-      // Inline on the editor (same scaffold as Name) so the soft keyboard works.
-      _RoundsInlineField(
-        controller: _rounds,
+      _RoundsStepper(
         value: draft.rounds,
         onNudge: _setRounds,
-        onTextChanged: _onRoundsTextChanged,
-        onSubmit: _commitRoundsField,
+        onPick: _pickRounds,
       ),
     ];
   }
@@ -505,76 +488,17 @@ class _RoundCard extends StatelessWidget {
   }
 }
 
-/// Rounds editor with −/+, a text field, and an in-app number pad.
-/// The OS soft keyboard has been unreliable on device; the pad always works.
-class _RoundsInlineField extends StatefulWidget {
-  const _RoundsInlineField({
-    required this.controller,
+/// Compact rounds control: − / + for nudges; tap the value for a scroll wheel.
+class _RoundsStepper extends StatelessWidget {
+  const _RoundsStepper({
     required this.value,
     required this.onNudge,
-    required this.onTextChanged,
-    required this.onSubmit,
+    required this.onPick,
   });
 
-  final TextEditingController controller;
   final int value;
   final ValueChanged<int> onNudge;
-  final ValueChanged<String> onTextChanged;
-  final VoidCallback onSubmit;
-
-  @override
-  State<_RoundsInlineField> createState() => _RoundsInlineFieldState();
-}
-
-class _RoundsInlineFieldState extends State<_RoundsInlineField> {
-  late final FocusNode _focus;
-
-  @override
-  void initState() {
-    super.initState();
-    _focus = FocusNode(debugLabel: 'rounds-field');
-  }
-
-  @override
-  void dispose() {
-    _focus.dispose();
-    super.dispose();
-  }
-
-  Future<void> _showIme() async {
-    _focus.requestFocus();
-    await Future<void>.delayed(Duration.zero);
-    if (!mounted) return;
-    await SystemChannels.textInput.invokeMethod<void>('TextInput.show');
-  }
-
-  void _typeDigit(String digit) {
-    final current = widget.controller.text;
-    // Fresh entry after focusing a full selection, or append.
-    final selectedAll = widget.controller.selection.baseOffset == 0 &&
-        widget.controller.selection.extentOffset == current.length &&
-        current.isNotEmpty;
-    final next = selectedAll ? digit : '$current$digit';
-    final parsed = int.tryParse(next);
-    if (parsed == null || parsed > 99) return;
-    widget.controller.value = TextEditingValue(
-      text: next,
-      selection: TextSelection.collapsed(offset: next.length),
-    );
-    widget.onTextChanged(next);
-  }
-
-  void _backspace() {
-    final current = widget.controller.text;
-    if (current.isEmpty) return;
-    final next = current.substring(0, current.length - 1);
-    widget.controller.value = TextEditingValue(
-      text: next,
-      selection: TextSelection.collapsed(offset: next.length),
-    );
-    if (next.isEmpty) return;
-    widget.onTextChanged(next);
-  }
+  final VoidCallback onPick;
 
   Widget _stepper({
     required TimeItColors colors,
@@ -583,57 +507,21 @@ class _RoundsInlineFieldState extends State<_RoundsInlineField> {
     required bool enabled,
     required VoidCallback onPressed,
   }) {
-    return ExcludeFocus(
-      child: IconButton(
-        onPressed: enabled ? onPressed : null,
-        tooltip: tooltip,
-        visualDensity: VisualDensity.compact,
-        style: IconButton.styleFrom(
-          foregroundColor: colors.fg,
-          disabledForegroundColor: colors.mute.withValues(alpha: 0.35),
-          padding: const EdgeInsets.all(8),
-        ).copyWith(
-          overlayColor: AppTheme.pressOverlay(
-            pressed: colors.accent.withValues(alpha: 0.20),
-            hovered: colors.accent.withValues(alpha: 0.10),
-          ),
-        ),
-        icon: Icon(icon, size: 22),
-      ),
-    );
-  }
-
-  Widget _padKey({
-    required TimeItColors colors,
-    required String label,
-    required VoidCallback onPressed,
-    IconData? icon,
-  }) {
-    return Material(
-      color: Color.lerp(colors.surface, colors.bg, 0.35),
-      borderRadius: BorderRadius.circular(10),
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(10),
+    return IconButton(
+      onPressed: enabled ? onPressed : null,
+      tooltip: tooltip,
+      visualDensity: VisualDensity.compact,
+      style: IconButton.styleFrom(
+        foregroundColor: colors.fg,
+        disabledForegroundColor: colors.mute.withValues(alpha: 0.35),
+        padding: const EdgeInsets.all(8),
+      ).copyWith(
         overlayColor: AppTheme.pressOverlay(
           pressed: colors.accent.withValues(alpha: 0.20),
           hovered: colors.accent.withValues(alpha: 0.10),
         ),
-        child: SizedBox(
-          height: 48,
-          child: Center(
-            child: icon != null
-                ? Icon(icon, color: colors.fg, size: 22)
-                : Text(
-                    label,
-                    style: AppTheme.header.copyWith(
-                      fontSize: 20,
-                      color: colors.fg,
-                    ),
-                  ),
-          ),
-        ),
       ),
+      icon: Icon(icon, size: 22),
     );
   }
 
@@ -645,18 +533,19 @@ class _RoundsInlineFieldState extends State<_RoundsInlineField> {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
+        child: Row(
           children: [
-            Text(
-              'Rounds',
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                color: colors.fg,
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Rounds',
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: colors.fg,
+                ),
               ),
             ),
-            const SizedBox(height: 8),
             DecoratedBox(
               decoration: BoxDecoration(
                 color: fieldFill,
@@ -664,47 +553,35 @@ class _RoundsInlineFieldState extends State<_RoundsInlineField> {
                 border: Border.all(color: colors.line),
               ),
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   _stepper(
                     colors: colors,
                     icon: Icons.remove,
                     tooltip: 'Decrease',
-                    enabled: widget.value > 1,
-                    onPressed: () => widget.onNudge(widget.value - 1),
+                    enabled: value > 1,
+                    onPressed: () => onNudge(value - 1),
                   ),
-                  Expanded(
-                    child: TextField(
-                      controller: widget.controller,
-                      focusNode: _focus,
-                      keyboardType: TextInputType.number,
-                      textInputAction: TextInputAction.done,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                      ],
-                      textAlign: TextAlign.center,
-                      autocorrect: false,
-                      enableSuggestions: false,
-                      style: AppTheme.header.copyWith(
-                        fontSize: 22,
-                        color: colors.fg,
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: onPick,
+                      borderRadius: BorderRadius.circular(8),
+                      overlayColor: AppTheme.pressOverlay(
+                        pressed: colors.accent.withValues(alpha: 0.20),
+                        hovered: colors.accent.withValues(alpha: 0.10),
                       ),
-                      onTap: () {
-                        widget.controller.selection = TextSelection(
-                          baseOffset: 0,
-                          extentOffset: widget.controller.text.length,
-                        );
-                        _showIme();
-                      },
-                      onChanged: widget.onTextChanged,
-                      onSubmitted: (_) => widget.onSubmit(),
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        focusedBorder: InputBorder.none,
-                        isDense: true,
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 12,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 10,
+                        ),
+                        child: Text(
+                          '$value',
+                          style: AppTheme.header.copyWith(
+                            fontSize: 22,
+                            color: colors.fg,
+                          ),
                         ),
                       ),
                     ),
@@ -713,52 +590,104 @@ class _RoundsInlineFieldState extends State<_RoundsInlineField> {
                     colors: colors,
                     icon: Icons.add,
                     tooltip: 'Increase',
-                    enabled: widget.value < 99,
-                    onPressed: () => widget.onNudge(widget.value + 1),
+                    enabled: value < 99,
+                    onPressed: () => onNudge(value + 1),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 12),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Short wheel sheet for picking 1–99 — no soft keyboard required.
+class _RoundsWheelSheet extends StatefulWidget {
+  const _RoundsWheelSheet({required this.initial});
+
+  final int initial;
+
+  @override
+  State<_RoundsWheelSheet> createState() => _RoundsWheelSheetState();
+}
+
+class _RoundsWheelSheetState extends State<_RoundsWheelSheet> {
+  static const int _min = 1;
+  static const int _max = 99;
+
+  late int _selected;
+  late final FixedExtentScrollController _scroll;
+
+  @override
+  void initState() {
+    super.initState();
+    _selected = widget.initial.clamp(_min, _max);
+    _scroll = FixedExtentScrollController(initialItem: _selected - _min);
+  }
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = TimeItColors.of(context);
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
             Text(
-              'Tap digits to set rounds (1–99)',
-              style: TextStyle(
-                color: colors.mute,
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
+              'Rounds',
+              style: AppTheme.header.copyWith(fontSize: 20, color: colors.fg),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              height: 160,
+              child: ListWheelScrollView.useDelegate(
+                controller: _scroll,
+                itemExtent: 40,
+                perspective: 0.003,
+                diameterRatio: 1.4,
+                physics: const FixedExtentScrollPhysics(),
+                onSelectedItemChanged: (i) {
+                  setState(() => _selected = i + _min);
+                },
+                childDelegate: ListWheelChildBuilderDelegate(
+                  childCount: _max - _min + 1,
+                  builder: (context, index) {
+                    final n = index + _min;
+                    final selected = n == _selected;
+                    return Center(
+                      child: Text(
+                        '$n',
+                        style: AppTheme.header.copyWith(
+                          fontSize: selected ? 28 : 20,
+                          color: selected ? colors.fg : colors.mute,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
             const SizedBox(height: 8),
-            // In-app pad — works even when the OS soft keyboard will not show.
-            GridView.count(
-              crossAxisCount: 3,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childAspectRatio: 1.85,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                for (final d in ['1', '2', '3', '4', '5', '6', '7', '8', '9'])
-                  _padKey(
-                    colors: colors,
-                    label: d,
-                    onPressed: () => _typeDigit(d),
-                  ),
-                _padKey(
-                  colors: colors,
-                  label: '',
-                  icon: Icons.backspace_outlined,
-                  onPressed: _backspace,
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel'),
                 ),
-                _padKey(
-                  colors: colors,
-                  label: '0',
-                  onPressed: () => _typeDigit('0'),
-                ),
-                _padKey(
-                  colors: colors,
-                  label: 'OK',
-                  onPressed: widget.onSubmit,
+                const SizedBox(width: 8),
+                FilledButton(
+                  onPressed: () => Navigator.pop(context, _selected),
+                  child: const Text('Set'),
                 ),
               ],
             ),
