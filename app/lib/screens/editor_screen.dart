@@ -25,17 +25,20 @@ class EditorScreen extends StatefulWidget {
 class _EditorScreenState extends State<EditorScreen> {
   late WorkoutTimer draft;
   late TextEditingController _name;
+  late TextEditingController _rounds;
 
   @override
   void initState() {
     super.initState();
     draft = widget.timer.copy();
     _name = TextEditingController(text: draft.name);
+    _rounds = TextEditingController(text: '${draft.rounds}');
   }
 
   @override
   void dispose() {
     _name.dispose();
+    _rounds.dispose();
     super.dispose();
   }
 
@@ -79,36 +82,38 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   Future<int?> _pickSeconds(String title, int current) {
-    // Bottom sheet (not AlertDialog): iOS soft keyboard attaches reliably.
-    return showModalBottomSheet<int>(
+    return showDialog<int>(
       context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      showDragHandle: true,
-      builder: (_) => _NumberPickerSheet(
+      builder: (_) => _SecondsPickerDialog(
         title: title,
         initial: current,
-        min: 0,
-        max: 60 * 60,
-        suffixText: 'seconds',
       ),
     );
   }
 
-  Future<int?> _pickRounds(int current) {
-    return showModalBottomSheet<int>(
-      context: context,
-      isScrollControlled: true,
-      useSafeArea: true,
-      showDragHandle: true,
-      builder: (_) => _NumberPickerSheet(
-        title: 'Rounds',
-        initial: current,
-        min: 1,
-        max: 99,
-        showSteppers: true,
-      ),
-    );
+  void _setRounds(int next) {
+    final clamped = next.clamp(1, 99);
+    setState(() => draft.rounds = clamped);
+    if (_rounds.text != '$clamped') {
+      _rounds.value = TextEditingValue(
+        text: '$clamped',
+        selection: TextSelection.collapsed(offset: '$clamped'.length),
+      );
+    }
+  }
+
+  void _onRoundsTextChanged(String raw) {
+    final parsed = int.tryParse(raw);
+    // Don't rewrite the field while typing — only accept in-range values.
+    if (parsed != null && parsed >= 1 && parsed <= 99 && draft.rounds != parsed) {
+      setState(() => draft.rounds = parsed);
+    }
+  }
+
+  void _commitRoundsField() {
+    final parsed = int.tryParse(_rounds.text);
+    _setRounds(parsed ?? draft.rounds);
+    FocusScope.of(context).unfocus();
   }
 
   Future<PhaseType?> _pickPhase(BuildContext context) {
@@ -256,13 +261,13 @@ class _EditorScreenState extends State<EditorScreen> {
           ),
         ),
       const SizedBox(height: 16),
-      _ValueTile(
-        label: 'Rounds',
-        value: '${draft.rounds}',
-        onTap: () async {
-          final v = await _pickRounds(draft.rounds);
-          if (v != null) setState(() => draft.rounds = v);
-        },
+      // Inline on the editor (same scaffold as Name) so the soft keyboard works.
+      _RoundsInlineField(
+        controller: _rounds,
+        value: draft.rounds,
+        onNudge: _setRounds,
+        onTextChanged: _onRoundsTextChanged,
+        onSubmit: _commitRoundsField,
       ),
     ];
   }
@@ -496,30 +501,121 @@ class _RoundCard extends StatelessWidget {
   }
 }
 
-class _ValueTile extends StatelessWidget {
-  const _ValueTile({
-    required this.label,
+/// Rounds live on the editor list — no dialog/sheet — so typing uses the same
+/// keyboard path as the Name field. − / + sit inside the field chrome.
+class _RoundsInlineField extends StatelessWidget {
+  const _RoundsInlineField({
+    required this.controller,
     required this.value,
-    required this.onTap,
+    required this.onNudge,
+    required this.onTextChanged,
+    required this.onSubmit,
   });
 
-  final String label;
-  final String value;
-  final VoidCallback onTap;
+  final TextEditingController controller;
+  final int value;
+  final ValueChanged<int> onNudge;
+  final ValueChanged<String> onTextChanged;
+  final VoidCallback onSubmit;
 
   @override
   Widget build(BuildContext context) {
+    final colors = TimeItColors.of(context);
+    final fieldFill = Color.lerp(colors.bg, colors.surface, 0.22)!;
+
+    Widget stepper({
+      required IconData icon,
+      required String tooltip,
+      required bool enabled,
+      required VoidCallback onPressed,
+    }) {
+      return ExcludeFocus(
+        child: IconButton(
+          onPressed: enabled ? onPressed : null,
+          tooltip: tooltip,
+          visualDensity: VisualDensity.compact,
+          style: IconButton.styleFrom(
+            foregroundColor: colors.fg,
+            disabledForegroundColor: colors.mute.withValues(alpha: 0.35),
+            padding: const EdgeInsets.all(8),
+          ).copyWith(
+            overlayColor: AppTheme.pressOverlay(
+              pressed: colors.accent.withValues(alpha: 0.20),
+              hovered: colors.accent.withValues(alpha: 0.10),
+            ),
+          ),
+          icon: Icon(icon, size: 22),
+        ),
+      );
+    }
+
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
-      child: ListTile(
-        onTap: onTap,
-        title: Text(
-          label,
-          style: const TextStyle(fontWeight: FontWeight.w500),
-        ),
-        trailing: Text(
-          value,
-          style: AppTheme.header.copyWith(fontSize: 18),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Rounds',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: colors.fg,
+              ),
+            ),
+            const SizedBox(height: 8),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: fieldFill,
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: colors.line),
+              ),
+              child: Row(
+                children: [
+                  stepper(
+                    icon: Icons.remove,
+                    tooltip: 'Decrease',
+                    enabled: value > 1,
+                    onPressed: () => onNudge(value - 1),
+                  ),
+                  Expanded(
+                    child: TextField(
+                      controller: controller,
+                      keyboardType: TextInputType.number,
+                      textInputAction: TextInputAction.done,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      textAlign: TextAlign.center,
+                      autocorrect: false,
+                      enableSuggestions: false,
+                      style: AppTheme.header.copyWith(
+                        fontSize: 22,
+                        color: colors.fg,
+                      ),
+                      onChanged: onTextChanged,
+                      onSubmitted: (_) => onSubmit(),
+                      onEditingComplete: onSubmit,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        enabledBorder: InputBorder.none,
+                        focusedBorder: InputBorder.none,
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                  stepper(
+                    icon: Icons.add,
+                    tooltip: 'Increase',
+                    enabled: value < 99,
+                    onPressed: () => onNudge(value + 1),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -825,250 +921,82 @@ class _StepTile extends StatelessWidget {
   }
 }
 
-/// Number picker as a bottom sheet — AlertDialog + TextField is unreliable for
-/// the iOS soft keyboard. Optional in-field −/+ for counts like rounds.
-class _NumberPickerSheet extends StatefulWidget {
-  const _NumberPickerSheet({
+/// Compact seconds dialog — no FocusNode / TextInput.show. Tap the field to type.
+class _SecondsPickerDialog extends StatefulWidget {
+  const _SecondsPickerDialog({
     required this.title,
     required this.initial,
-    required this.min,
-    required this.max,
-    this.suffixText,
-    this.showSteppers = false,
   });
 
   final String title;
   final int initial;
-  final int min;
-  final int max;
-  final String? suffixText;
-  final bool showSteppers;
 
   @override
-  State<_NumberPickerSheet> createState() => _NumberPickerSheetState();
+  State<_SecondsPickerDialog> createState() => _SecondsPickerDialogState();
 }
 
-class _NumberPickerSheetState extends State<_NumberPickerSheet> {
+class _SecondsPickerDialogState extends State<_SecondsPickerDialog> {
   late final TextEditingController _controller;
-  late final FocusNode _focus;
-  Animation<double>? _routeAnimation;
-  bool _scheduledKeyboard = false;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController(text: '${widget.initial}');
-    _focus = FocusNode(debugLabel: 'number-picker');
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final animation = ModalRoute.of(context)?.animation;
-    if (!identical(animation, _routeAnimation)) {
-      _routeAnimation?.removeStatusListener(_onRouteStatus);
-      _routeAnimation = animation;
-      _scheduledKeyboard = false;
-      if (animation == null || animation.status == AnimationStatus.completed) {
-        _scheduleKeyboard();
-      } else {
-        animation.addStatusListener(_onRouteStatus);
-      }
-    }
-  }
-
-  void _onRouteStatus(AnimationStatus status) {
-    if (status == AnimationStatus.completed) {
-      _routeAnimation?.removeStatusListener(_onRouteStatus);
-      _scheduleKeyboard();
-    }
-  }
-
-  void _scheduleKeyboard() {
-    if (_scheduledKeyboard) return;
-    _scheduledKeyboard = true;
-    WidgetsBinding.instance.addPostFrameCallback((_) => _ensureKeyboard());
   }
 
   @override
   void dispose() {
-    _routeAnimation?.removeStatusListener(_onRouteStatus);
     _controller.dispose();
-    _focus.dispose();
     super.dispose();
-  }
-
-  Future<void> _ensureKeyboard() async {
-    if (!mounted) return;
-    FocusScope.of(context).requestFocus(_focus);
-    _controller.selection = TextSelection(
-      baseOffset: 0,
-      extentOffset: _controller.text.length,
-    );
-    await Future<void>.delayed(const Duration(milliseconds: 50));
-    if (!mounted) return;
-    if (!_focus.hasFocus) {
-      _focus.requestFocus();
-    }
-    await SystemChannels.textInput.invokeMethod<void>('TextInput.show');
   }
 
   int get _parsed {
     final raw = int.tryParse(_controller.text);
-    if (raw == null) return widget.initial.clamp(widget.min, widget.max);
-    return raw.clamp(widget.min, widget.max);
-  }
-
-  void _setValue(int next) {
-    final clamped = next.clamp(widget.min, widget.max);
-    _controller.value = TextEditingValue(
-      text: '$clamped',
-      selection: TextSelection.collapsed(offset: '$clamped'.length),
-    );
-  }
-
-  void _nudge(int delta) {
-    _setValue(_parsed + delta);
-    _ensureKeyboard();
-  }
-
-  Widget _stepperButton({
-    required TimeItColors colors,
-    required IconData icon,
-    required String tooltip,
-    required bool enabled,
-    required VoidCallback onPressed,
-  }) {
-    return ExcludeFocus(
-      child: IconButton(
-        onPressed: enabled ? onPressed : null,
-        tooltip: tooltip,
-        visualDensity: VisualDensity.compact,
-        style: IconButton.styleFrom(
-          foregroundColor: colors.fg,
-          disabledForegroundColor: colors.mute.withValues(alpha: 0.35),
-          padding: const EdgeInsets.all(8),
-        ).copyWith(
-          overlayColor: AppTheme.pressOverlay(
-            pressed: colors.accent.withValues(alpha: 0.20),
-            hovered: colors.accent.withValues(alpha: 0.10),
-          ),
-        ),
-        icon: Icon(icon, size: 22),
-      ),
-    );
-  }
-
-  Widget _stepper({
-    required TimeItColors colors,
-    required IconData icon,
-    required String tooltip,
-    required int Function(int current) nextFrom,
-  }) {
-    return ValueListenableBuilder<TextEditingValue>(
-      valueListenable: _controller,
-      builder: (context, value, _) {
-        final current = _parsed;
-        final next = nextFrom(current);
-        return _stepperButton(
-          colors: colors,
-          icon: icon,
-          tooltip: tooltip,
-          enabled: next != current,
-          onPressed: () => _nudge(next - current),
-        );
-      },
-    );
+    if (raw == null) return widget.initial.clamp(0, 60 * 60);
+    return raw.clamp(0, 60 * 60);
   }
 
   @override
   Widget build(BuildContext context) {
     final colors = TimeItColors.of(context);
     final fieldFill = Color.lerp(colors.bg, colors.surface, 0.22)!;
-    final inset = MediaQuery.viewInsetsOf(context).bottom;
-
-    // Keep this TextField stable in the tree — rebuilding it on focus changes
-    // drops the iOS soft-keyboard connection.
-    final field = TextField(
-      controller: _controller,
-      focusNode: _focus,
-      autofocus: true,
-      keyboardType: TextInputType.number,
-      textInputAction: TextInputAction.done,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-      textAlign: widget.showSteppers ? TextAlign.center : TextAlign.start,
-      enableInteractiveSelection: true,
-      autocorrect: false,
-      enableSuggestions: false,
-      onTap: _ensureKeyboard,
-      onSubmitted: (_) => Navigator.pop(context, _parsed),
-      decoration: InputDecoration(
-        suffixText: widget.showSteppers ? null : widget.suffixText,
-        border: InputBorder.none,
-        enabledBorder: InputBorder.none,
-        focusedBorder: InputBorder.none,
-        filled: false,
-        isDense: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-      ),
+    final border = OutlineInputBorder(
+      borderSide: BorderSide(color: colors.line),
+      borderRadius: BorderRadius.circular(10),
     );
 
-    final chrome = DecoratedBox(
-      decoration: BoxDecoration(
-        color: fieldFill,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: colors.line),
-      ),
-      child: widget.showSteppers
-          ? Row(
-              children: [
-                _stepper(
-                  colors: colors,
-                  icon: Icons.remove,
-                  tooltip: 'Decrease',
-                  nextFrom: (c) => (c - 1).clamp(widget.min, widget.max),
-                ),
-                Expanded(child: field),
-                _stepper(
-                  colors: colors,
-                  icon: Icons.add,
-                  tooltip: 'Increase',
-                  nextFrom: (c) => (c + 1).clamp(widget.min, widget.max),
-                ),
-              ],
-            )
-          : field,
-    );
-
-    return Padding(
-      padding: EdgeInsets.fromLTRB(20, 4, 20, 16 + inset),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            widget.title,
-            style: AppTheme.header.copyWith(fontSize: 20, color: colors.fg),
+    return AlertDialog(
+      title: Text(widget.title),
+      content: TextField(
+        controller: _controller,
+        keyboardType: TextInputType.number,
+        textInputAction: TextInputAction.done,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        autocorrect: false,
+        enableSuggestions: false,
+        onSubmitted: (_) => Navigator.pop(context, _parsed),
+        decoration: InputDecoration(
+          suffixText: 'seconds',
+          filled: true,
+          fillColor: fieldFill,
+          border: border,
+          enabledBorder: border,
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: colors.accent, width: 1.5),
+            borderRadius: BorderRadius.circular(10),
           ),
-          const SizedBox(height: 14),
-          chrome,
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-              const SizedBox(width: 8),
-              FilledButton(
-                onPressed: () => Navigator.pop(context, _parsed),
-                child: const Text('Set'),
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, _parsed),
+          child: const Text('Set'),
+        ),
+      ],
     );
   }
 }

@@ -131,7 +131,7 @@ class SettingsScreen extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 title: const Text('TimeIt'),
                 subtitle: Text(
-                  'Workout interval timer · v1.0.13',
+                  'Workout interval timer · v1.0.14',
                   style: TextStyle(
                     color: colors.mute,
                     fontWeight: FontWeight.w500,
