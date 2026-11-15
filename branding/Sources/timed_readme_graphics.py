@@ -6,7 +6,7 @@ def phone(g,c,x,y,w,h,p,phase,label,time):
     c.rect(x+9,y+9,w-18,h-18,p["surface"],radius=34)
     c.rect(x+w/2-35,y+18,70,7,p["ink"],radius=4)
     g.mark(c,x+24,y+48,30)
-    g.t(c,x+68,y+63,"Timed",25,p["ink"],"Hepta")
+    g.t(c,x+68,y+63,"TimeIt",25,p["ink"],"Hepta")
     c.rect(x+20,y+114,w-40,h-242,phase,radius=16)
     ink="#FFFFFF" if phase==g.BLUE else "#060909"
     g.t(c,x+w/2,y+160,label,22,ink,"JakartaBold","center")
@@ -19,7 +19,7 @@ def phone(g,c,x,y,w,h,p,phase,label,time):
 
 
 def session(g,mode):
-    p=g.theme(mode);c=g.Canvas(1600,1000,"Timed / session overview",p["bg"])
+    p=g.theme(mode);c=g.Canvas(1600,1000,"TimeIt / session overview",p["bg"])
     g.masthead(c,p,"YOUR SESSION, AT A GLANCE")
     g.t(c,72,184,"Your next interval, in focus.",58,p["ink"],"Hepta")
     phone(g,c,1144,274,324,596,p,g.ORANGE,"WORK","00:45")
@@ -42,7 +42,7 @@ def session(g,mode):
 
 
 def controls(g,mode):
-    p=g.theme(mode);c=g.Canvas(1600,900,"Timed / run controls",p["bg"])
+    p=g.theme(mode);c=g.Canvas(1600,900,"TimeIt / run controls",p["bg"])
     g.masthead(c,p,"YOU CONTROL THE SESSION")
     g.t(c,72,184,"Keep your own pace.",62,p["ink"],"Hepta")
     items=[
@@ -78,7 +78,7 @@ def controls(g,mode):
 
 
 def platforms(g,mode):
-    p=g.theme(mode);c=g.Canvas(1600,960,"Timed / mobile platforms",p["bg"])
+    p=g.theme(mode);c=g.Canvas(1600,960,"TimeIt / mobile platforms",p["bg"])
     g.masthead(c,p,"BUILT FOR YOUR PHONE")
     g.t(c,72,184,"One timer. Two platforms.",60,p["ink"],"Hepta")
     phone(g,c,152,286,280,540,p,g.GREEN,"STANDBY","00:10")
@@ -86,7 +86,7 @@ def platforms(g,mode):
     g.t(c,292,866,"iOS",26,p["ink"],"JakartaBold","center")
     g.t(c,648,866,"Android",26,p["ink"],"JakartaBold","center")
     g.mark(c,946,296,116)
-    g.t(c,1092,350,"Timed",70,p["ink"],"Hepta")
+    g.t(c,1092,350,"TimeIt",70,p["ink"],"Hepta")
     for i,line in enumerate(["Your own timers.","Simple rounds or custom stacks.","Standby, work and rest."]):
         g.t(c,944,484+i*57,line,27,p["ink"])
     g.t(c,944,720,"Downloads and install instructions:",20,p["muted"])
@@ -94,7 +94,7 @@ def platforms(g,mode):
     c.line(72,902,1528,902,p["line"])
     g.t(c,72,936,"CONCEPT DEVICES · NOT SCREENSHOTS · RELEASE AVAILABILITY VARIES BY PLATFORM",14,p["muted"],"JakartaBold")
     g.save(c,"Graphics",f"mobile-platforms-{mode}",
-           "Timed for iOS and Android, with conceptual phone illustrations, not screenshots. Check GitHub Releases and the guide for current packages and signing requirements.")
+           "TimeIt for iOS and Android, with conceptual phone illustrations, not screenshots. Check GitHub Releases and the guide for current packages and signing requirements.")
 
 
 def build(g):

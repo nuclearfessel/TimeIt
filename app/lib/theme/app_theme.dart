@@ -99,11 +99,35 @@ class AppTheme {
 
   static ThemeData light() => _build(Brightness.light, TimeItColors.light);
 
+  /// Clear press / hover / focus overlays for any ButtonStyle, light or dark.
+  static WidgetStateProperty<Color?> pressOverlay({
+    required Color pressed,
+    Color? hovered,
+    Color? focused,
+  }) {
+    final hover = hovered ?? pressed.withValues(alpha: pressed.a * 0.65);
+    final focus = focused ?? pressed.withValues(alpha: pressed.a * 0.5);
+    return WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.pressed)) return pressed;
+      if (states.contains(WidgetState.hovered)) return hover;
+      if (states.contains(WidgetState.focused)) return focus;
+      return null;
+    });
+  }
+
   static ThemeData _build(Brightness brightness, TimeItColors colors) {
+    final onAccentPress = Colors.white.withValues(alpha: 0.28);
+    final onAccentHover = Colors.white.withValues(alpha: 0.14);
+    final onSurfacePress = colors.accent.withValues(alpha: 0.20);
+    final onSurfaceHover = colors.accent.withValues(alpha: 0.10);
+
     final base = ThemeData(
       useMaterial3: true,
       brightness: brightness,
       scaffoldBackgroundColor: colors.bg,
+      splashFactory: InkRipple.splashFactory,
+      splashColor: onSurfacePress,
+      highlightColor: onSurfaceHover,
       colorScheme: ColorScheme(
         brightness: brightness,
         primary: colors.accent,
@@ -150,6 +174,8 @@ class AppTheme {
           fontSize: 22,
           color: colors.fg,
         ),
+        iconTheme: IconThemeData(color: colors.fg),
+        actionsIconTheme: IconThemeData(color: colors.fg),
       ),
       cardTheme: CardThemeData(
         color: colors.surface,
@@ -162,6 +188,9 @@ class AppTheme {
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: colors.accent,
         foregroundColor: Colors.white,
+        splashColor: onAccentPress,
+        focusColor: onAccentHover,
+        hoverColor: onAccentHover,
         extendedPadding: const EdgeInsets.symmetric(horizontal: 22),
         extendedIconLabelSpacing: 10,
         extendedTextStyle: const TextStyle(
@@ -181,22 +210,70 @@ class AppTheme {
             fontWeight: FontWeight.w700,
             fontSize: 15,
           ),
+        ).copyWith(
+          overlayColor: pressOverlay(
+            pressed: onAccentPress,
+            hovered: onAccentHover,
+          ),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
+          foregroundColor: colors.fg,
+          side: BorderSide(color: colors.line),
+          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
           textStyle: const TextStyle(
             fontFamily: 'PlusJakartaSans',
-            fontWeight: FontWeight.w500,
-            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            fontSize: 15,
+          ),
+        ).copyWith(
+          overlayColor: pressOverlay(
+            pressed: onSurfacePress,
+            hovered: onSurfaceHover,
           ),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
+          foregroundColor: colors.fg,
           textStyle: const TextStyle(
             fontFamily: 'PlusJakartaSans',
             fontWeight: FontWeight.w500,
+          ),
+        ).copyWith(
+          overlayColor: pressOverlay(
+            pressed: onSurfacePress,
+            hovered: onSurfaceHover,
+          ),
+        ),
+      ),
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+          foregroundColor: colors.fg,
+        ).copyWith(
+          overlayColor: pressOverlay(
+            pressed: onSurfacePress,
+            hovered: onSurfaceHover,
+          ),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: colors.accent,
+          foregroundColor: Colors.white,
+        ).copyWith(
+          overlayColor: pressOverlay(
+            pressed: onAccentPress,
+            hovered: onAccentHover,
+          ),
+        ),
+      ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          overlayColor: pressOverlay(
+            pressed: onSurfacePress,
+            hovered: onSurfaceHover,
           ),
         ),
       ),
@@ -222,6 +299,7 @@ class AppTheme {
       listTileTheme: ListTileThemeData(
         iconColor: colors.fg,
         textColor: colors.fg,
+        selectedColor: colors.accent,
       ),
     );
   }

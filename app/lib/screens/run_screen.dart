@@ -312,6 +312,11 @@ class _Controls extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
+        ).copyWith(
+          overlayColor: AppTheme.pressOverlay(
+            pressed: Colors.black.withValues(alpha: 0.18),
+            hovered: Colors.black.withValues(alpha: 0.08),
+          ),
         ),
         onPressed: () {
           if (finished) {
@@ -411,6 +416,8 @@ class _RoundButton extends StatelessWidget {
         child: InkWell(
           onTap: onPressed,
           borderRadius: BorderRadius.circular(14),
+          splashColor: color.withValues(alpha: 0.28),
+          highlightColor: color.withValues(alpha: 0.14),
           child: Ink(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(14),

@@ -78,6 +78,7 @@ Full detail: `.cursor/rules/workflow-triggers.mdc`.
 ## Brand package
 - Desktop handoff: `C:\Users\bitte\Desktop\Apps\TimeIt` (Interlocking Lanes, corrected weave).
 - Wired into `branding/`, `docs/assets/timeit/`, Android `mipmap` / adaptive icons, iOS `AppIcon.appiconset`, and `app/assets/brand/`.
+- **OS launcher / store icons:** always the mark on light `#F7F6F3` — never a dark background. Dark masters stay marketing-only.
 
 ## Naming (2026-11-14)
 - Product name: **TimeIt** (formerly Timed).

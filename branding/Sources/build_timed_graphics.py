@@ -102,9 +102,9 @@ def masthead(c,p,label,width=1600):
 
 
 def hero(mode):
-    p=theme(mode);c=Canvas(1600,1158,f"Timed README banner ({mode})",p["bg"])
+    p=theme(mode);c=Canvas(1600,1158,f"TimeIt README banner ({mode})",p["bg"])
     masthead(c,p,"INTERVAL TRAINING, ON YOUR TERMS.")
-    title=t(c,72,226,"Timed",154,p["ink"],"Hepta",top=164)
+    title=t(c,72,226,"TimeIt",154,p["ink"],"Hepta",top=164)
     c.rect(77,326,98,6,ORANGE)
     tag=t(c,72,436.5,"Make every interval yours.",47,p["ink"],"Hepta",bottom=460)
     logo_width=296/MARK_RATIO
@@ -127,11 +127,11 @@ def hero(mode):
     c.line(72,1048,1528,1048,p["line"])
     t(c,72,1100,"CREATE YOUR OWN ROUTINE",15,p["muted"],"JakartaBold")
     t(c,1528,1100,"ILLUSTRATIVE TIMINGS · NOT AN APP SCREENSHOT",14,p["muted"],align="right")
-    save(c,"Graphics",f"readme-banner-{mode}","Timed workout interval timer for iOS and Android. Standby, work and rest; illustrative durations, not an app screenshot.")
+    save(c,"Graphics",f"readme-banner-{mode}","TimeIt workout interval timer for iOS and Android. Standby, work and rest; illustrative durations, not an app screenshot.")
 
 
 def features(mode):
-    p=theme(mode);c=Canvas(1600,720,f"Timed features ({mode})",p["bg"])
+    p=theme(mode);c=Canvas(1600,720,f"TimeIt features ({mode})",p["bg"])
     masthead(c,p,"MADE FOR YOUR WORKOUT")
     t(c,72,182,"Your workout. Your structure.",58,p["ink"],"Hepta")
     items=[
@@ -149,7 +149,7 @@ def features(mode):
 
 
 def workflow(mode):
-    p=theme(mode);c=Canvas(1600,740,f"Timed workflow ({mode})",p["bg"])
+    p=theme(mode);c=Canvas(1600,740,f"TimeIt workflow ({mode})",p["bg"])
     masthead(c,p,"FROM AN IDEA TO AN INTERVAL")
     t(c,72,180,"Set it. Stack it. Start.",62,p["ink"],"Hepta")
     for i,(head,detail,col) in enumerate([
@@ -167,7 +167,7 @@ def workflow(mode):
 
 
 def phases(mode):
-    p=theme(mode);c=Canvas(1600,660,f"Timed phases ({mode})",p["bg"])
+    p=theme(mode);c=Canvas(1600,660,f"TimeIt phases ({mode})",p["bg"])
     masthead(c,p,"THREE PHASES. A RHYTHM YOU CONTROL.")
     t(c,72,180,"Ready. Work. Recover.",62,p["ink"],"Hepta")
     for i,(head,detail,col) in enumerate([
@@ -183,7 +183,7 @@ def phases(mode):
 
 
 def timer_types(mode):
-    p=theme(mode);c=Canvas(1600,760,f"Timed timer types ({mode})",p["bg"])
+    p=theme(mode);c=Canvas(1600,760,f"TimeIt timer types ({mode})",p["bg"])
     masthead(c,p,"TWO WAYS TO BUILD YOUR ROUTINE")
     t(c,72,182,"Simple rounds. Flexible stacks.",56,p["ink"],"Hepta")
     c.line(800,264,800,650,p["line"])
@@ -208,9 +208,9 @@ def timer_types(mode):
 
 def social(mode,feature=False):
     p=theme(mode);w,h=(1024,500) if feature else (1200,630)
-    c=Canvas(w,h,f"Timed {'Google Play feature graphic' if feature else 'social preview'}",p["bg"])
+    c=Canvas(w,h,f"TimeIt {'Google Play feature graphic' if feature else 'social preview'}",p["bg"])
     t(c,48,42,"INTERVAL TRAINING, ON YOUR TERMS.",15,p["ink"],"JakartaBold")
-    t(c,48,142,"Timed",94,p["ink"],"Hepta")
+    t(c,48,142,"TimeIt",94,p["ink"],"Hepta")
     t(c,48,229,"Make every interval yours.",30,p["ink"],"Hepta")
     mark(c,w-270,78,220)
     for i,(label,timer,col) in enumerate([("STANDBY","00:10",GREEN),("WORK","00:45",ORANGE),("REST","00:15",BLUE)]):
@@ -223,44 +223,44 @@ def social(mode,feature=False):
     t(c,w-48,h-32,"iOS / ANDROID",14,p["muted"],"JakartaBold","right")
     folder="Store" if feature else "Graphics"
     name="google-play-feature" if feature else "social-card"
-    save(c,folder,f"{name}-{mode}","Timed interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.")
+    save(c,folder,f"{name}-{mode}","TimeIt interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.")
 
 
 def brand():
     for mode in ("light","dark"):
         ink=theme(mode)["ink"]
-        _,bounds,_=shaped("Timed","Hepta",84,400)
+        _,bounds,_=shaped("TimeIt","Hepta",84,400)
         tw,th=bounds[2]-bounds[0],bounds[3]-bounds[1]
         mw=96/MARK_RATIO
-        c=Canvas(round(64+mw+28+tw),160,"Timed horizontal logo")
+        c=Canvas(round(64+mw+28+tw),160,"TimeIt horizontal logo")
         mark(c,32,32,mw)
-        t(c,32+mw+28,80,"Timed",84,ink,"Hepta")
-        save(c,"Brand",f"timed-horizontal-{mode}",f"Transparent Timed horizontal logo for {mode} backgrounds.")
-        c=Canvas(round(tw+64),round(th+64),"Timed wordmark")
-        t(c,32,0,"Timed",84,ink,"Hepta",top=32)
-        save(c,"Brand",f"timed-wordmark-{mode}","Transparent Timed wordmark.")
-        c=Canvas(round(tw+64),round(64+96+28+th),"Timed stacked logo")
+        t(c,32+mw+28,80,"TimeIt",84,ink,"Hepta")
+        save(c,"Brand",f"timeit-horizontal-{mode}",f"Transparent TimeIt horizontal logo for {mode} backgrounds.")
+        c=Canvas(round(tw+64),round(th+64),"TimeIt wordmark")
+        t(c,32,0,"TimeIt",84,ink,"Hepta",top=32)
+        save(c,"Brand",f"timeit-wordmark-{mode}","Transparent TimeIt wordmark.")
+        c=Canvas(round(tw+64),round(64+96+28+th),"TimeIt stacked logo")
         mark(c,(c.width-mw)/2,32,mw)
-        t(c,c.width/2,0,"Timed",84,ink,"Hepta","center",top=156)
-        save(c,"Brand",f"timed-stacked-{mode}","Transparent Timed stacked logo.")
+        t(c,c.width/2,0,"TimeIt",84,ink,"Hepta","center",top=156)
+        save(c,"Brand",f"timeit-stacked-{mode}","Transparent TimeIt stacked logo.")
     for variant,col in [("color",None),("black","#000000"),("white","#FFFFFF"),("grayscale","#777777")]:
-        c=Canvas(448,418,f"Timed {variant} mark")
+        c=Canvas(448,418,f"TimeIt {variant} mark")
         mark(c,32,32,384,col)
-        save(c,"Brand",f"timed-mark-{variant}",f"Transparent Timed Interlocking Lanes mark, {variant}.")
+        save(c,"Brand",f"timeit-mark-{variant}",f"Transparent TimeIt Interlocking Lanes mark, {variant}.")
     # Tagline is supporting type, never embedded inside the app symbol.
     for mode in ("light","dark"):
-        p=theme(mode);c=Canvas(760,240,"Timed logo with optional tagline")
+        p=theme(mode);c=Canvas(760,240,"TimeIt logo with optional tagline")
         mark(c,32,32,176/MARK_RATIO)
-        t(c,260,90,"Timed",92,p["ink"],"Hepta")
+        t(c,260,90,"TimeIt",92,p["ink"],"Hepta")
         t(c,260,174,"Make every interval yours.",30,p["ink"],"JakartaBold")
-        save(c,"Brand",f"timed-tagline-{mode}",f"Timed Interlocking Lanes logo with a separate tagline for {mode} backgrounds.")
+        save(c,"Brand",f"timeit-tagline-{mode}",f"TimeIt Interlocking Lanes logo with a separate tagline for {mode} backgrounds.")
 
 
 def brand_board(mode):
-    p=theme(mode);c=Canvas(1600,920,f"Timed brand overview ({mode})",p["bg"])
-    masthead(c,p,"THE TIMED IDENTITY")
+    p=theme(mode);c=Canvas(1600,920,f"TimeIt brand overview ({mode})",p["bg"])
+    masthead(c,p,"THE TIMEIT IDENTITY")
     mark(c,72,180,260)
-    t(c,388,180+260*MARK_RATIO/2,"Timed",112,p["ink"],"Hepta")
+    t(c,388,180+260*MARK_RATIO/2,"TimeIt",112,p["ink"],"Hepta")
     t(c,72,462,"Hepta Slab",48,p["ink"],"Hepta")
     t(c,72,520,"Display lettering and timer digits",22,p["muted"])
     t(c,72,610,"Plus Jakarta Sans",38,p["ink"])
@@ -273,13 +273,13 @@ def brand_board(mode):
     t(c,920,554,"One rhythm. Three phases.",27,p["ink"],"Hepta")
     t(c,920,606,"Linked phases. Clear labels. Open spacing.",21,p["muted"])
     t(c,72,830,"Mobile only: iOS and Android. No desktop or Watch branding.",22,p["muted"])
-    save(c,"Previews",f"brand-overview-{mode}","Timed brand: track symbol, Hepta Slab and Plus Jakarta Sans, and green/orange/blue phase colors.")
+    save(c,"Previews",f"brand-overview-{mode}","TimeIt brand: track symbol, Hepta Slab and Plus Jakarta Sans, and green/orange/blue phase colors.")
 
 
 def contacts(mode):
     p=theme(mode);sheet=Image.new("RGB",(1600,1580),p["bg"])
     d=ImageDraw.Draw(sheet);f=ImageFont.truetype(str(STATIC_FONTS["JakartaBold"]),27)
-    d.text((48,24),f"Timed / {mode.title()} graphics",font=f,fill=p["ink"])
+    d.text((48,24),f"TimeIt / {mode.title()} graphics",font=f,fill=p["ink"])
     for i,name in enumerate(("readme-banner","features","workflow","phases","timer-types","social-card")):
         x=48+(i%2)*784;y=96+(i//2)*488
         d.text((x,y),name.replace("-"," ").title(),font=f,fill=p["muted"])
@@ -289,7 +289,7 @@ def contacts(mode):
     sheet.save(OUT/"Previews"/f"contact-sheet-{mode}.png")
     sheet=Image.new("RGB",(1600,2310),p["bg"])
     d=ImageDraw.Draw(sheet)
-    d.text((48,24),f"Timed / Complete README graphics / {mode.title()}",font=f,fill=p["ink"])
+    d.text((48,24),f"TimeIt / Complete README graphics / {mode.title()}",font=f,fill=p["ink"])
     names=("readme-banner","session-overview","features","workflow","timer-types",
            "phases","run-controls","mobile-platforms")
     for i,name in enumerate(names):
@@ -311,6 +311,11 @@ def main():
             node=ET.parse(source/f"symbol-{variant}.svg").getroot()
             # The standalone-symbol export is the canonical approved 180°
             # orientation; copy that source as-is to avoid double rotation.
+            for element in node.iter():
+                for key,value in list(element.attrib.items()):
+                    element.set(key,value.replace("Timed","TimeIt"))
+                if element.text:
+                    element.text=element.text.replace("Timed","TimeIt")
             node.set("data-brand-orientation","180-clockwise")
             path=dest/f"symbol-{variant}.svg"
             ET.ElementTree(node).write(path,encoding="utf-8",xml_declaration=True)
@@ -318,7 +323,7 @@ def main():
                             "-colorspace","sRGB",str(path.with_suffix(".png"))],check=True)
     for mode in ("light","dark"):
         for ext in ("svg","png"):
-            (OUT/"Brand"/f"timed-track-lockup-{mode}.{ext}").unlink(missing_ok=True)
+            (OUT/"Brand"/f"timeit-track-lockup-{mode}.{ext}").unlink(missing_ok=True)
     for path in STATIC_FONTS.values():
         pass  # Font is already bundled here.
         f=TTFont(path);f.flavor="woff";f.save(OUT/"Fonts"/path.with_suffix(".woff").name)
@@ -331,7 +336,7 @@ def main():
     build_readme(sys.modules[__name__])
     for mode in ("dark","light"):contacts(mode)
     (OUT/"Graphics"/"text-and-alt-inventory.json").write_text(json.dumps(INVENTORY,indent=2)+"\n")
-    print(f"Timed: {len(INVENTORY)} SVG/PNG pairs rendered.",flush=True)
+    print(f"TimeIt: {len(INVENTORY)} SVG/PNG pairs rendered.",flush=True)
 
 
 if __name__=="__main__":
