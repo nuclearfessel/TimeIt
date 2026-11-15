@@ -20,13 +20,13 @@ TimeIt is free. **iOS and Android only** — no web, desktop, Apple Watch, or We
   &nbsp;
   <img src="docs/assets/timeit/Screenshots/02-run-portrait.svg" alt="Run screen in portrait: phase color, large digits, up next and controls." width="210">
   &nbsp;
-  <img src="docs/assets/timeit/Screenshots/05-editor-simple.svg" alt="Simple timer editor with standby, work, rest, and rounds." width="210">
+  <img src="docs/assets/timeit/Screenshots/05-editor-simple.svg" alt="Simple timer editor with phase stack, duration wheels, and rounds stepper." width="210">
 </p>
 
 <p align="center">
   <img src="docs/assets/timeit/Screenshots/06-editor-advanced.svg" alt="Advanced editor with rounds, each with their own phase stack." width="210">
   &nbsp;
-  <img src="docs/assets/timeit/Screenshots/04-settings.svg" alt="Settings with Light and Dark theme and sound toggles." width="210">
+  <img src="docs/assets/timeit/Screenshots/04-settings.svg" alt="Settings with Light and Dark theme and Alert sounds controls." width="210">
 </p>
 
 <p align="center">
@@ -48,10 +48,11 @@ Clear phase labels and countdown digits help you follow the session. The illustr
 
 Create your own timers and sets. Choose simple rounds or build a custom sequence, then edit or delete routines as needed.
 
-- Simple timers: standby, work, rest, rounds
+- Simple timers: standby, work, rest, rounds (−/+, scroll wheel, or typed value)
 - Advanced timers: rounds, each with its own standby / work / rest stack
+- Phase durations: minutes + seconds wheels (or type total seconds)
 - Full-screen phase colors and alert sounds
-- Settings: Light / Dark appearance (not system), alert/countdown toggles, start and end beep counts (0–5)
+- Settings: Light / Dark appearance (not system), Alert sounds master with start/end beep counts (0–5)
 - Portrait and landscape for the whole app
 
 <p>

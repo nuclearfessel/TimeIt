@@ -63,7 +63,7 @@
       <h2>Get started</h2>
       <ol>
         <li>Open TimeIt. Your saved timers appear on the home screen.</li>
-        <li>If the list is empty, create a <strong>simple</strong> or <strong>advanced</strong> timer.</li>
+        <li>If the list is empty, create a <strong>simple</strong> or <strong>advanced</strong> timer — the empty home shows both actions with equal weight.</li>
         <li>Tap a timer to run it, or use edit / delete on the row.</li>
       </ol>
       <p>TimeIt does not ship pre-built exercises. You create and delete your own timers and sets.</p>
@@ -83,10 +83,10 @@
         <li><span class="swatch rest" aria-hidden="true"></span><strong>Rest</strong> — recovery between rounds</li>
         <li><strong>Rounds</strong> — how many work bouts to run</li>
       </ul>
-      <p>Rest is skipped after the last round. Save the timer with a name you will recognize later.</p>
+      <p>Build the phase stack (standby / work / rest), then set <strong>Rounds</strong> with − / + or by tapping the value for a short scroll wheel (1–99). You can also type a number with the normal keyboard in that sheet. Tap a phase duration for a <strong>minutes + seconds</strong> wheel (up to 99 min and 60 sec), with an optional “type total seconds” field. Rest is skipped after the last round. Save with a name you will recognize later.</p>
       <figure class="shot-figure shot-portrait">
-        <img src="assets/timeit/Screenshots/05-editor-simple.svg" alt="Simple timer editor with standby, work, rest, and rounds." width="1272" height="2772" />
-        <figcaption>Simple editor — standby, work, rest, and rounds.</figcaption>
+        <img src="assets/timeit/Screenshots/05-editor-simple.svg" alt="Simple timer editor with phase stack, duration controls, and rounds stepper." width="1272" height="2772" />
+        <figcaption>Simple editor — phases, duration wheels, and rounds −/+.</figcaption>
       </figure>
     </section>
 
@@ -97,7 +97,8 @@
       <ul>
         <li>Add rounds; each round can differ from the others</li>
         <li>Inside a round, add standby, work, or rest phases in any order</li>
-        <li>Set each phase duration and drag to reorder phases within the round</li>
+        <li>Set each phase duration with the same min/sec wheels (or typed total seconds)</li>
+        <li>Drag to reorder phases within a round</li>
         <li>Drag rounds up or down to reorder them — Round 1, 2, 3… renumber automatically</li>
         <li>Duplicate or delete a round; rounds run in order from first to last</li>
       </ul>
@@ -141,11 +142,11 @@
       <h2>Sounds</h2>
       <p>By default TimeIt plays:</p>
       <ul>
-        <li>Beeps when a phase begins (count is adjustable in Settings, up to 5)</li>
+        <li>Beeps when a phase begins (count is adjustable in Settings, up to 5 — one beep per second)</li>
         <li>Countdown beeps leading into the end of each phase (count is adjustable, up to 5)</li>
         <li>A completion sound when the workout ends</li>
       </ul>
-      <p>Turn alert sounds on or off in Settings (that master switch covers start beeps, end beeps, and complete). Set how many start and end beeps you want when alerts are on. Lowering music during a workout and vibrate-on-alert are saved preferences for upcoming builds.</p>
+      <p>Turn <strong>Alert sounds</strong> on or off in Settings — that master switch covers start beeps, end beeps, and complete. When alerts are off, the start/end beep sliders are disabled. Lowering music during a workout and vibrate-on-alert are saved preferences for upcoming builds.</p>
     </section>
 
     <section class="rest" id="settings">
@@ -155,7 +156,7 @@
       <h3>Appearance</h3>
       <p>Choose <strong>Light</strong> or <strong>Dark</strong>. TimeIt does <em>not</em> follow the system theme — the choice is yours and stays until you change it.</p>
       <figure class="shot-figure shot-portrait">
-        <img src="assets/timeit/Screenshots/04-settings.svg" alt="Settings screen with Light and Dark theme choice and sound toggles." width="1272" height="2772" />
+        <img src="assets/timeit/Screenshots/04-settings.svg" alt="Settings screen with Light and Dark theme and sound preferences." width="1272" height="2772" />
         <figcaption>Settings — appearance and sound preferences.</figcaption>
       </figure>
       <h3>Sound</h3>
@@ -171,8 +172,8 @@
     <section class="work" id="install">
       <p class="section-phase">Work</p>
       <h2>Install</h2>
-      <p>Android release builds are on <a href="https://github.com/nuclearfessel/TimeIt/releases">GitHub Releases</a> (<code>.apk</code> for direct install, <code>.aab</code> for Play upload).</p>
-      <p>iOS release packages need a Mac with Xcode signing. When an IPA is published, it will appear on the same Releases page.</p>
+      <p>Android release builds are on <a href="https://github.com/nuclearfessel/TimeIt/releases">GitHub Releases</a> (<code>.apk</code> for direct install, <code>.aab</code> for Play upload), named <code>TimeIt-IntervalTimer-&lt;version&gt;.apk</code> / <code>.aab</code>.</p>
+      <p>iOS builds go to <strong>TestFlight</strong> via GitHub Actions when a release is published (App Store Connect). Apple still processes each build after upload.</p>
       <p><strong>Install or update:</strong> on both Android and iOS, installing TimeIt checks whether the app is already on the device. If it is, the package <em>updates</em> in place (same app id, data kept). If it is not, it installs fresh. From this repo, run <code>scripts/install-device.ps1</code> (Windows) or <code>scripts/install-device.sh</code> (macOS/Linux) with a connected device — the script detects the existing install and chooses update vs install automatically.</p>
       <p>Source and issue tracking live in the <a href="https://github.com/nuclearfessel/TimeIt">TimeIt repository</a>.</p>
       <figure class="brand-figure">
