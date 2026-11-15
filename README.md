@@ -51,7 +51,7 @@ Create your own timers and sets. Choose simple rounds or build a custom sequence
 - Simple timers: standby, work, rest, rounds
 - Advanced timers: rounds, each with its own standby / work / rest stack
 - Full-screen phase colors and alert sounds
-- Settings: Light / Dark appearance (not system), sound preferences
+- Settings: Light / Dark appearance (not system), alert/countdown toggles, start and end beep counts (0–5)
 - Portrait and landscape for the whole app
 
 <p>
