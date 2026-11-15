@@ -57,6 +57,22 @@ class _RunScreenState extends State<RunScreen> {
       builder: (context, _) {
         final bg = _bg(context);
         const onBg = Colors.white;
+        final isLandscape =
+            MediaQuery.orientationOf(context) == Orientation.landscape;
+        final timerPane = _TimerPane(
+          title: widget.timer.name,
+          phaseLabel: _phaseLabel,
+          digits: formatDuration(engine.remaining),
+          progress: engine.status == EngineStatus.finished
+              ? 1
+              : engine.phaseProgress,
+          stepSummary: engine.status == EngineStatus.finished
+              ? 'Workout complete'
+              : 'Step ${engine.index + 1} of ${engine.totalSteps} · ${formatDuration(engine.totalRemaining)} left',
+          showProgress: engine.status != EngineStatus.finished,
+          onClose: () => Navigator.pop(context),
+          onBg: onBg,
+        );
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light,
           child: Scaffold(
@@ -64,37 +80,31 @@ class _RunScreenState extends State<RunScreen> {
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Expanded(
-                      flex: 2,
-                      child: _TimerPane(
-                        title: widget.timer.name,
-                        phaseLabel: _phaseLabel,
-                        digits: formatDuration(engine.remaining),
-                        progress: engine.status == EngineStatus.finished
-                            ? 1
-                            : engine.phaseProgress,
-                        stepSummary: engine.status == EngineStatus.finished
-                            ? 'Workout complete'
-                            : 'Step ${engine.index + 1} of ${engine.totalSteps} · ${formatDuration(engine.totalRemaining)} left',
-                        showProgress:
-                            engine.status != EngineStatus.finished,
-                        onClose: () => Navigator.pop(context),
-                        onBg: onBg,
+                child: isLandscape
+                    ? Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(flex: 2, child: timerPane),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            flex: 1,
+                            child: _SidePane(
+                              engine: engine,
+                              onBg: onBg,
+                              showStack: true,
+                            ),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Expanded(child: timerPane),
+                          const SizedBox(height: 12),
+                          // Portrait: never show the stack list — only up next + controls.
+                          _PortraitControls(engine: engine, onBg: onBg),
+                        ],
                       ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      flex: 1,
-                      child: _SidePane(
-                        engine: engine,
-                        onBg: onBg,
-                      ),
-                    ),
-                  ],
-                ),
               ),
             ),
           ),
@@ -144,7 +154,7 @@ class _TimerPane extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontFamily: 'PlusJakartaSans',
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   color: onBg.withValues(alpha: 0.9),
                 ),
               ),
@@ -204,8 +214,10 @@ class _TimerPane extends StatelessWidget {
                       stepSummary,
                       textAlign: TextAlign.center,
                       style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
                         color: onBg.withValues(alpha: 0.85),
                         fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -219,8 +231,8 @@ class _TimerPane extends StatelessWidget {
   }
 }
 
-class _SidePane extends StatelessWidget {
-  const _SidePane({
+class _PortraitControls extends StatelessWidget {
+  const _PortraitControls({
     required this.engine,
     required this.onBg,
   });
@@ -230,26 +242,59 @@ class _SidePane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final showUpNext = engine.index + 1 < engine.totalSteps &&
+        engine.status != EngineStatus.finished;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (showUpNext) ...[
+          _UpNext(engine: engine, onBg: onBg, singleLine: true),
+          const SizedBox(height: 12),
+        ],
+        _Controls(engine: engine, onBg: onBg, horizontal: true),
+      ],
+    );
+  }
+}
+
+class _SidePane extends StatelessWidget {
+  const _SidePane({
+    required this.engine,
+    required this.onBg,
+    required this.showStack,
+  });
+
+  final TimerEngine engine;
+  final Color onBg;
+  final bool showStack;
+
+  @override
+  Widget build(BuildContext context) {
+    final showUpNext = engine.index + 1 < engine.totalSteps &&
+        engine.status != EngineStatus.finished;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(
-          'Stack',
-          style: TextStyle(
-            fontFamily: 'PlusJakartaSans',
-            fontWeight: FontWeight.w700,
-            letterSpacing: 1.2,
-            fontSize: 12,
-            color: onBg.withValues(alpha: 0.75),
+        if (showStack) ...[
+          Text(
+            'Stack',
+            style: TextStyle(
+              fontFamily: 'PlusJakartaSans',
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.2,
+              fontSize: 12,
+              color: onBg.withValues(alpha: 0.75),
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Expanded(
-          child: _StackList(engine: engine, onBg: onBg),
-        ),
-        if (engine.index + 1 < engine.totalSteps &&
-            engine.status != EngineStatus.finished) ...[
           const SizedBox(height: 8),
+          Expanded(
+            child: _StackList(engine: engine, onBg: onBg),
+          ),
+        ],
+        if (showUpNext) ...[
+          if (showStack) const SizedBox(height: 8),
           _UpNext(engine: engine, onBg: onBg),
         ],
         const SizedBox(height: 10),
@@ -347,6 +392,7 @@ class _StackRow extends StatelessWidget {
             style: TextStyle(
               color: onBg.withValues(alpha: alpha),
               fontSize: 12,
+              fontWeight: FontWeight.w500,
               fontFeatures: const [FontFeature.tabularFigures()],
             ),
           ),
@@ -357,28 +403,37 @@ class _StackRow extends StatelessWidget {
 }
 
 class _UpNext extends StatelessWidget {
-  const _UpNext({required this.engine, required this.onBg});
+  const _UpNext({
+    required this.engine,
+    required this.onBg,
+    this.singleLine = false,
+  });
 
   final TimerEngine engine;
   final Color onBg;
+  final bool singleLine;
 
   @override
   Widget build(BuildContext context) {
     final next = engine.schedule[engine.index + 1];
+    final label = singleLine
+        ? 'Up next  ${next.type.label} · ${formatSeconds(next.seconds)}'
+        : 'Up next\n${next.type.label} · ${formatSeconds(next.seconds)}';
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       decoration: BoxDecoration(
         color: Colors.black.withValues(alpha: 0.18),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Text(
-        'Up next\n${next.type.label} · ${formatSeconds(next.seconds)}',
+        label,
         textAlign: TextAlign.center,
         style: TextStyle(
+          fontFamily: 'PlusJakartaSans',
           color: onBg.withValues(alpha: 0.9),
           fontWeight: FontWeight.w500,
-          fontSize: 13,
+          fontSize: 14,
           height: 1.3,
         ),
       ),
@@ -387,10 +442,15 @@ class _UpNext extends StatelessWidget {
 }
 
 class _Controls extends StatelessWidget {
-  const _Controls({required this.engine, required this.onBg});
+  const _Controls({
+    required this.engine,
+    required this.onBg,
+    this.horizontal = false,
+  });
 
   final TimerEngine engine;
   final Color onBg;
+  final bool horizontal;
 
   @override
   Widget build(BuildContext context) {
@@ -404,37 +464,65 @@ class _Controls extends StatelessWidget {
                 ? 'Resume'
                 : 'Start';
 
+    final primary = SizedBox(
+      height: horizontal ? 64 : 56,
+      child: FilledButton(
+        style: FilledButton.styleFrom(
+          backgroundColor: onBg,
+          foregroundColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        onPressed: () {
+          if (finished) {
+            engine.stop();
+            engine.start();
+          } else {
+            engine.toggle();
+          }
+        },
+        child: Text(
+          primaryLabel,
+          style: TextStyle(
+            fontFamily: 'HeptaSlab',
+            fontSize: horizontal ? 20 : 18,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+    );
+
+    if (horizontal) {
+      return Row(
+        children: [
+          Expanded(
+            child: _RoundButton(
+              label: 'Reset',
+              onBg: onBg,
+              onPressed: engine.stop,
+              height: 64,
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(flex: 2, child: primary),
+          const SizedBox(width: 10),
+          Expanded(
+            child: _RoundButton(
+              label: 'Skip',
+              onBg: onBg,
+              onPressed: finished ? null : engine.skip,
+              height: 64,
+            ),
+          ),
+        ],
+      );
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SizedBox(
-          height: 56,
-          child: FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: onBg,
-              foregroundColor: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-            onPressed: () {
-              if (finished) {
-                engine.stop();
-                engine.start();
-              } else {
-                engine.toggle();
-              }
-            },
-            child: Text(
-              primaryLabel,
-              style: const TextStyle(
-                fontFamily: 'HeptaSlab',
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
+        primary,
         const SizedBox(height: 8),
         Row(
           children: [
@@ -465,29 +553,43 @@ class _RoundButton extends StatelessWidget {
     required this.label,
     required this.onBg,
     required this.onPressed,
+    this.height = 48,
   });
 
   final String label;
   final Color onBg;
   final VoidCallback? onPressed;
+  final double height;
 
   @override
   Widget build(BuildContext context) {
+    final enabled = onPressed != null;
+    final color = onBg.withValues(alpha: enabled ? 1 : 0.4);
     return SizedBox(
-      height: 48,
-      child: OutlinedButton(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: onBg,
-          side: BorderSide(color: onBg.withValues(alpha: 0.55)),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
+      height: height,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: onPressed,
+          borderRadius: BorderRadius.circular(14),
+          child: Ink(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: color.withValues(alpha: 0.55)),
+            ),
+            child: Center(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontFamily: 'PlusJakartaSans',
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                  letterSpacing: 0.2,
+                  color: color,
+                ),
+              ),
+            ),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-        ),
-        onPressed: onPressed,
-        child: Text(
-          label,
-          style: const TextStyle(fontSize: 13),
         ),
       ),
     );

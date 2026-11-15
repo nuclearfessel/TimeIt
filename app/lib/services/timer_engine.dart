@@ -11,8 +11,10 @@ enum EngineStatus { idle, running, paused, finished }
 
 class TimerEngine extends ChangeNotifier {
   TimerEngine({SettingsStore? settings, CueAudio? audio})
-      : _audio = audio ?? CueAudio(settings: settings);
+      : _settings = settings,
+        _audio = audio ?? CueAudio(settings: settings);
 
+  final SettingsStore? _settings;
   final CueAudio _audio;
   List<IntervalStep> _schedule = [];
   int _index = 0;
@@ -60,6 +62,9 @@ class TimerEngine extends ChangeNotifier {
     return (1 - (left / total)).clamp(0.0, 1.0);
   }
 
+  int get _startBeeps => _settings?.startBeepCount ?? 1;
+  int get _endBeeps => _settings?.endBeepCount ?? 3;
+
   void load(List<IntervalStep> steps) {
     _ticker?.cancel();
     _schedule = steps.map((s) => s.copy()).toList();
@@ -88,7 +93,7 @@ class TimerEngine extends ChangeNotifier {
     status = EngineStatus.running;
     _phaseEndsAt = DateTime.now().add(seed);
     _lastSecond = seed.inSeconds;
-    _audio.play(CueKind.phase);
+    unawaited(_audio.playRepeats(CueKind.phase, _startBeeps));
     _startTicker();
     notifyListeners();
   }
@@ -148,8 +153,9 @@ class TimerEngine extends ChangeNotifier {
     final secs = left.inSeconds;
     if (secs != _lastSecond) {
       _lastSecond = secs;
-      if (secs > 0 && secs <= 3) {
-        _audio.play(CueKind.countdown);
+      final endCount = _endBeeps.clamp(0, SettingsStore.maxBeepCount);
+      if (endCount > 0 && secs > 0 && secs <= endCount) {
+        unawaited(_audio.play(CueKind.countdown));
       }
     }
     notifyListeners();
@@ -164,7 +170,7 @@ class TimerEngine extends ChangeNotifier {
       _phaseEndsAt = null;
       status = EngineStatus.finished;
       _remainingWhenPaused = Duration.zero;
-      _audio.play(CueKind.complete);
+      unawaited(_audio.play(CueKind.complete));
       notifyListeners();
       return;
     }
@@ -173,7 +179,9 @@ class TimerEngine extends ChangeNotifier {
     _phaseEndsAt = DateTime.now().add(_remainingWhenPaused);
     _lastSecond = currentStep!.seconds;
     status = EngineStatus.running;
-    if (playCue) _audio.play(CueKind.phase);
+    if (playCue) {
+      unawaited(_audio.playRepeats(CueKind.phase, _startBeeps));
+    }
     if (_ticker == null || !(_ticker?.isActive ?? false)) {
       _startTicker();
     }

@@ -28,8 +28,12 @@ class SettingsStore extends ChangeNotifier {
   static const _appearanceKey = 'timed.settings.appearance.v1';
   static const _alertSoundsKey = 'timed.settings.alert_sounds.v1';
   static const _countdownBeepsKey = 'timed.settings.countdown_beeps.v1';
+  static const _startBeepsKey = 'timed.settings.start_beeps.v1';
+  static const _endBeepsKey = 'timed.settings.end_beeps.v1';
   static const _lowerMusicKey = 'timed.settings.lower_music.v1';
   static const _vibrateKey = 'timed.settings.vibrate.v1';
+
+  static const int maxBeepCount = 5;
 
   bool loaded = false;
 
@@ -38,8 +42,14 @@ class SettingsStore extends ChangeNotifier {
   /// Play phase-change and complete sounds.
   bool alertSounds = true;
 
-  /// Play last-3-seconds countdown ticks.
+  /// Play countdown ticks near the end of each phase.
   bool countdownBeeps = true;
+
+  /// How many beeps when a phase / workout starts (0–5).
+  int startBeepCount = 1;
+
+  /// How many countdown beeps leading into the end of each phase (0–5).
+  int endBeepCount = 3;
 
   /// Stub: duck other apps' audio during a workout (not wired to OS audio yet).
   bool lowerMusicDuringWorkout = true;
@@ -52,6 +62,9 @@ class SettingsStore extends ChangeNotifier {
     appearance = AppAppearance.fromName(prefs.getString(_appearanceKey));
     alertSounds = prefs.getBool(_alertSoundsKey) ?? true;
     countdownBeeps = prefs.getBool(_countdownBeepsKey) ?? true;
+    startBeepCount =
+        (prefs.getInt(_startBeepsKey) ?? 1).clamp(0, maxBeepCount);
+    endBeepCount = (prefs.getInt(_endBeepsKey) ?? 3).clamp(0, maxBeepCount);
     lowerMusicDuringWorkout = prefs.getBool(_lowerMusicKey) ?? true;
     vibrateOnAlert = prefs.getBool(_vibrateKey) ?? false;
     loaded = true;
@@ -78,6 +91,24 @@ class SettingsStore extends ChangeNotifier {
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_countdownBeepsKey, value);
+  }
+
+  Future<void> setStartBeepCount(int value) async {
+    final next = value.clamp(0, maxBeepCount);
+    if (startBeepCount == next) return;
+    startBeepCount = next;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_startBeepsKey, startBeepCount);
+  }
+
+  Future<void> setEndBeepCount(int value) async {
+    final next = value.clamp(0, maxBeepCount);
+    if (endBeepCount == next) return;
+    endBeepCount = next;
+    notifyListeners();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt(_endBeepsKey, endBeepCount);
   }
 
   Future<void> setLowerMusicDuringWorkout(bool value) async {

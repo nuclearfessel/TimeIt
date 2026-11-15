@@ -42,6 +42,15 @@ class _EditorScreenState extends State<EditorScreen> {
   void _save() {
     draft.name =
         _name.text.trim().isEmpty ? 'Untitled timer' : _name.text.trim();
+    if (draft.kind == TimerKind.simple) {
+      draft.syncSimpleScalarsFromSteps();
+      if (draft.simpleSteps.where((s) => s.seconds > 0).isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Add at least one phase.')),
+        );
+        return;
+      }
+    }
     if (draft.kind == TimerKind.advanced) {
       final hasPhase = draft.advancedRounds
           .any((round) => round.activeSteps().isNotEmpty);
@@ -55,6 +64,18 @@ class _EditorScreenState extends State<EditorScreen> {
       }
     }
     Navigator.of(context).pop(draft);
+  }
+
+  void _addSimplePhase(PhaseType type) {
+    final seconds = switch (type) {
+      PhaseType.standby => 10,
+      PhaseType.work => 40,
+      PhaseType.rest => 20,
+    };
+    setState(() {
+      draft.simpleSteps.add(IntervalStep(type: type, seconds: seconds));
+      draft.syncSimpleScalarsFromSteps();
+    });
   }
 
   Future<int?> _pickSeconds(String title, int current) async {
@@ -98,20 +119,20 @@ class _EditorScreenState extends State<EditorScreen> {
       context: context,
       backgroundColor: colors.surface,
       builder: (ctx) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: PhaseType.values
-              .map(
-                (p) => ListTile(
-                  title: Text(p.label),
-                  leading: CircleAvatar(
-                    backgroundColor: PhaseColors.of(p),
-                    radius: 8,
-                  ),
-                  onTap: () => Navigator.pop(ctx, p),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 10, 8, 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var i = 0; i < PhaseType.values.length; i++) ...[
+                if (i > 0) const SizedBox(height: 4),
+                _SheetPhaseOption(
+                  type: PhaseType.values[i],
+                  onTap: () => Navigator.pop(ctx, PhaseType.values[i]),
                 ),
-              )
-              .toList(),
+              ],
+            ],
+          ),
         ),
       ),
     );
@@ -143,7 +164,10 @@ class _EditorScreenState extends State<EditorScreen> {
           const SizedBox(height: 16),
           Text(
             draft.kind == TimerKind.simple ? 'Simple' : 'Advanced',
-            style: TextStyle(color: TimedColors.of(context).mute),
+            style: TextStyle(
+              color: TimedColors.of(context).mute,
+              fontWeight: FontWeight.w500,
+            ),
           ),
           const SizedBox(height: 12),
           if (draft.kind == TimerKind.simple) ..._simpleFields(),
@@ -151,7 +175,10 @@ class _EditorScreenState extends State<EditorScreen> {
           const SizedBox(height: 24),
           Text(
             'Total ${formatSeconds(draft.totalSeconds)}',
-            style: TextStyle(color: TimedColors.of(context).mute),
+            style: TextStyle(
+              color: TimedColors.of(context).mute,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
@@ -159,34 +186,78 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   List<Widget> _simpleFields() {
+    final colors = TimedColors.of(context);
     return [
-      _ValueTile(
-        label: 'Standby',
-        value: formatSeconds(draft.standbySeconds),
-        color: PhaseColors.standby,
-        onTap: () async {
-          final v = await _pickSeconds('Standby', draft.standbySeconds);
-          if (v != null) setState(() => draft.standbySeconds = v);
+      Text(
+        'Build the phase stack for each round. Standby before the first work runs once; rounds repeat from the first work phase.',
+        style: TextStyle(
+          color: colors.mute,
+          height: 1.35,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+      const SizedBox(height: 12),
+      ReorderableListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        proxyDecorator: _stackProxyDecorator,
+        itemCount: draft.simpleSteps.length,
+        onReorderItem: (oldIndex, newIndex) {
+          setState(() {
+            final item = draft.simpleSteps.removeAt(oldIndex);
+            draft.simpleSteps.insert(newIndex, item);
+            draft.syncSimpleScalarsFromSteps();
+          });
+        },
+        itemBuilder: (context, index) {
+          final step = draft.simpleSteps[index];
+          return _StepTile(
+            key: ValueKey('simple-step-$index-${step.type.name}-${step.seconds}'),
+            index: index,
+            step: step,
+            onType: () async {
+              final next = await _pickPhase(context);
+              if (next != null) {
+                setState(() {
+                  draft.simpleSteps[index].type = next;
+                  draft.syncSimpleScalarsFromSteps();
+                });
+              }
+            },
+            onDuration: () async {
+              final v = await _pickSeconds(step.type.label, step.seconds);
+              if (v != null) {
+                setState(() {
+                  draft.simpleSteps[index].seconds =
+                      v.clamp(step.type == PhaseType.work ? 1 : 0, 3600);
+                  draft.syncSimpleScalarsFromSteps();
+                });
+              }
+            },
+            onDelete: () {
+              setState(() {
+                draft.simpleSteps.removeAt(index);
+                draft.syncSimpleScalarsFromSteps();
+              });
+            },
+          );
         },
       ),
-      _ValueTile(
-        label: 'Work',
-        value: formatSeconds(draft.workSeconds),
-        color: PhaseColors.work,
-        onTap: () async {
-          final v = await _pickSeconds('Work', draft.workSeconds);
-          if (v != null) setState(() => draft.workSeconds = v.clamp(1, 3600));
-        },
-      ),
-      _ValueTile(
-        label: 'Rest',
-        value: formatSeconds(draft.restSeconds),
-        color: PhaseColors.rest,
-        onTap: () async {
-          final v = await _pickSeconds('Rest', draft.restSeconds);
-          if (v != null) setState(() => draft.restSeconds = v);
-        },
-      ),
+      const SizedBox(height: 8),
+      _PhaseAddRow(onAdd: _addSimplePhase),
+      if (draft.simpleSteps.isEmpty)
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(
+            'Add at least one phase.',
+            style: TextStyle(
+              color: colors.mute,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      const SizedBox(height: 16),
       _ValueTile(
         label: 'Rounds',
         value: '${draft.rounds}',
@@ -202,78 +273,118 @@ class _EditorScreenState extends State<EditorScreen> {
     final colors = TimedColors.of(context);
     return [
       Text(
-        'Each round has its own phase stack. Rounds run in order.',
-        style: TextStyle(color: colors.mute, height: 1.35),
+        'Each round has its own phase stack. Drag rounds to reorder — numbers update automatically.',
+        style: TextStyle(
+          color: colors.mute,
+          height: 1.35,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       const SizedBox(height: 12),
-      ...List.generate(draft.advancedRounds.length, (roundIndex) {
-        final round = draft.advancedRounds[roundIndex];
-        return _RoundCard(
-          key: ValueKey(round.id),
-          roundNumber: roundIndex + 1,
-          round: round,
-          canDelete: draft.advancedRounds.length > 1,
-          onDeleteRound: () {
-            setState(() => draft.advancedRounds.removeAt(roundIndex));
-          },
-          onDuplicateRound: () {
+      ReorderableListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        proxyDecorator: _roundProxyDecorator,
+        itemCount: draft.advancedRounds.length,
+        onReorderItem: (oldIndex, newIndex) {
+          setState(() {
+            final item = draft.advancedRounds.removeAt(oldIndex);
+            draft.advancedRounds.insert(newIndex, item);
+          });
+        },
+        itemBuilder: (context, roundIndex) {
+          final round = draft.advancedRounds[roundIndex];
+          return _RoundCard(
+            key: ValueKey(round.id),
+            roundIndex: roundIndex,
+            roundNumber: roundIndex + 1,
+            round: round,
+            onDeleteRound: () {
+              setState(() => draft.advancedRounds.removeAt(roundIndex));
+            },
+            onDuplicateRound: () {
+              setState(() {
+                draft.advancedRounds.insert(
+                  roundIndex + 1,
+                  TimerRound(
+                    steps: round.steps.map((s) => s.copy()).toList(),
+                  ),
+                );
+              });
+            },
+            onReorderPhases: (oldIndex, newIndex) {
+              setState(() {
+                final item = round.steps.removeAt(oldIndex);
+                round.steps.insert(newIndex, item);
+              });
+            },
+            onAddPhase: (type) {
+              setState(() {
+                final seconds = switch (type) {
+                  PhaseType.standby => 10,
+                  PhaseType.work => 40,
+                  PhaseType.rest => 20,
+                };
+                round.steps.add(IntervalStep(type: type, seconds: seconds));
+              });
+            },
+            onPhaseType: (stepIndex) async {
+              final next = await _pickPhase(context);
+              if (next != null) {
+                setState(() => round.steps[stepIndex].type = next);
+              }
+            },
+            onPhaseDuration: (stepIndex) async {
+              final step = round.steps[stepIndex];
+              final v = await _pickSeconds(step.type.label, step.seconds);
+              if (v != null) {
+                setState(() => step.seconds = v.clamp(1, 3600));
+              }
+            },
+            onDeletePhase: (stepIndex) {
+              setState(() => round.steps.removeAt(stepIndex));
+            },
+          );
+        },
+      ),
+      if (draft.advancedRounds.isEmpty) ...[
+        Text(
+          'No rounds yet. Add one to build this timer.',
+          style: TextStyle(
+            color: colors.mute,
+            fontWeight: FontWeight.w500,
+            height: 1.35,
+          ),
+        ),
+        const SizedBox(height: 12),
+      ] else
+        const SizedBox(height: 8),
+      Align(
+        alignment: Alignment.centerLeft,
+        child: FilledButton.icon(
+          onPressed: () {
             setState(() {
-              draft.advancedRounds.insert(
-                roundIndex + 1,
-                TimerRound(steps: round.steps.map((s) => s.copy()).toList()),
+              draft.advancedRounds.add(
+                TimerRound(
+                  steps: [
+                    IntervalStep(type: PhaseType.work, seconds: 40),
+                    IntervalStep(type: PhaseType.rest, seconds: 20),
+                  ],
+                ),
               );
             });
           },
-          onReorderPhases: (oldIndex, newIndex) {
-            setState(() {
-              final item = round.steps.removeAt(oldIndex);
-              round.steps.insert(newIndex, item);
-            });
-          },
-          onAddPhase: (type) {
-            setState(() {
-              final seconds = switch (type) {
-                PhaseType.standby => 10,
-                PhaseType.work => 40,
-                PhaseType.rest => 20,
-              };
-              round.steps.add(IntervalStep(type: type, seconds: seconds));
-            });
-          },
-          onPhaseType: (stepIndex) async {
-            final next = await _pickPhase(context);
-            if (next != null) {
-              setState(() => round.steps[stepIndex].type = next);
-            }
-          },
-          onPhaseDuration: (stepIndex) async {
-            final step = round.steps[stepIndex];
-            final v = await _pickSeconds(step.type.label, step.seconds);
-            if (v != null) {
-              setState(() => step.seconds = v.clamp(1, 3600));
-            }
-          },
-          onDeletePhase: (stepIndex) {
-            setState(() => round.steps.removeAt(stepIndex));
-          },
-        );
-      }),
-      const SizedBox(height: 8),
-      OutlinedButton.icon(
-        onPressed: () {
-          setState(() {
-            draft.advancedRounds.add(
-              TimerRound(
-                steps: [
-                  IntervalStep(type: PhaseType.work, seconds: 40),
-                  IntervalStep(type: PhaseType.rest, seconds: 20),
-                ],
-              ),
-            );
-          });
-        },
-        icon: const Icon(Icons.add),
-        label: const Text('Add round'),
+          style: FilledButton.styleFrom(
+            backgroundColor: colors.accent,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+          ),
+          icon: const Icon(Icons.add, weight: 700),
+          label: const Text(
+            'Add round',
+            style: TextStyle(fontWeight: FontWeight.w700),
+          ),
+        ),
       ),
     ];
   }
@@ -282,9 +393,9 @@ class _EditorScreenState extends State<EditorScreen> {
 class _RoundCard extends StatelessWidget {
   const _RoundCard({
     super.key,
+    required this.roundIndex,
     required this.roundNumber,
     required this.round,
-    required this.canDelete,
     required this.onDeleteRound,
     required this.onDuplicateRound,
     required this.onReorderPhases,
@@ -294,9 +405,9 @@ class _RoundCard extends StatelessWidget {
     required this.onDeletePhase,
   });
 
+  final int roundIndex;
   final int roundNumber;
   final TimerRound round;
-  final bool canDelete;
   final VoidCallback onDeleteRound;
   final VoidCallback onDuplicateRound;
   final void Function(int oldIndex, int newIndex) onReorderPhases;
@@ -311,12 +422,19 @@ class _RoundCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 10, 8, 12),
+        padding: const EdgeInsets.fromLTRB(8, 10, 8, 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               children: [
+                ReorderableDragStartListener(
+                  index: roundIndex,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                    child: Icon(Icons.drag_handle, color: colors.mute),
+                  ),
+                ),
                 Expanded(
                   child: Text(
                     'Round $roundNumber',
@@ -328,12 +446,11 @@ class _RoundCard extends StatelessWidget {
                   onPressed: onDuplicateRound,
                   icon: const Icon(Icons.copy_outlined),
                 ),
-                if (canDelete)
-                  IconButton(
-                    tooltip: 'Delete round',
-                    onPressed: onDeleteRound,
-                    icon: const Icon(Icons.delete_outline),
-                  ),
+                IconButton(
+                  tooltip: 'Delete round',
+                  onPressed: onDeleteRound,
+                  icon: const Icon(Icons.delete_outline),
+                ),
               ],
             ),
             const SizedBox(height: 4),
@@ -356,30 +473,17 @@ class _RoundCard extends StatelessWidget {
               },
             ),
             const SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                ActionChip(
-                  label: const Text('+ Standby'),
-                  onPressed: () => onAddPhase(PhaseType.standby),
-                ),
-                ActionChip(
-                  label: const Text('+ Work'),
-                  onPressed: () => onAddPhase(PhaseType.work),
-                ),
-                ActionChip(
-                  label: const Text('+ Rest'),
-                  onPressed: () => onAddPhase(PhaseType.rest),
-                ),
-              ],
-            ),
+            _PhaseAddRow(onAdd: onAddPhase),
             if (round.steps.isEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Text(
                   'Add at least one phase to this round.',
-                  style: TextStyle(color: colors.mute, fontSize: 13),
+                  style: TextStyle(
+                    color: colors.mute,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
           ],
@@ -394,13 +498,11 @@ class _ValueTile extends StatelessWidget {
     required this.label,
     required this.value,
     required this.onTap,
-    this.color,
   });
 
   final String label;
   final String value;
   final VoidCallback onTap;
-  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -408,10 +510,10 @@ class _ValueTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       child: ListTile(
         onTap: onTap,
-        leading: color == null
-            ? null
-            : CircleAvatar(backgroundColor: color, radius: 8),
-        title: Text(label),
+        title: Text(
+          label,
+          style: const TextStyle(fontWeight: FontWeight.w500),
+        ),
         trailing: Text(
           value,
           style: AppTheme.header.copyWith(fontSize: 18),
@@ -421,12 +523,121 @@ class _ValueTile extends StatelessWidget {
   }
 }
 
-/// Dragging proxy: fully rounded tile + soft alpha shadow (no opaque underlay).
-Widget _stackProxyDecorator(
+class _PhaseAddRow extends StatelessWidget {
+  const _PhaseAddRow({required this.onAdd});
+
+  final void Function(PhaseType type) onAdd;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
+      children: [
+        for (final type in PhaseType.values)
+          _PhaseAddChip(type: type, onPressed: () => onAdd(type)),
+      ],
+    );
+  }
+}
+
+/// Phase add control: color swatch + label with fixed gap and vertical center.
+class _PhaseAddChip extends StatelessWidget {
+  const _PhaseAddChip({required this.type, required this.onPressed});
+
+  final PhaseType type;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = TimedColors.of(context);
+    return Material(
+      color: colors.surface,
+      shape: StadiumBorder(side: BorderSide(color: colors.line)),
+      child: InkWell(
+        onTap: onPressed,
+        customBorder: const StadiumBorder(),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(12, 10, 14, 10),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  color: PhaseColors.of(type),
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: 10),
+              Text(
+                '+ ${type.label}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14,
+                  height: 1.1,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SheetPhaseOption extends StatelessWidget {
+  const _SheetPhaseOption({required this.type, required this.onTap});
+
+  final PhaseType type;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 12,
+                height: 12,
+                decoration: BoxDecoration(
+                  color: PhaseColors.of(type),
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: 14),
+              Text(
+                type.label,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  height: 1.2,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Dragging proxy: soft alpha shadow (no opaque underlay).
+Widget _dragProxyDecorator(
   Widget child,
   int index,
-  Animation<double> animation,
-) {
+  Animation<double> animation, {
+  required double radius,
+}) {
   return AnimatedBuilder(
     animation: animation,
     builder: (context, child) {
@@ -438,7 +649,7 @@ Widget _stackProxyDecorator(
         color: Colors.transparent,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(999),
+            borderRadius: BorderRadius.circular(radius),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.35 * t),
@@ -454,6 +665,22 @@ Widget _stackProxyDecorator(
     },
     child: child,
   );
+}
+
+Widget _stackProxyDecorator(
+  Widget child,
+  int index,
+  Animation<double> animation,
+) {
+  return _dragProxyDecorator(child, index, animation, radius: 999);
+}
+
+Widget _roundProxyDecorator(
+  Widget child,
+  int index,
+  Animation<double> animation,
+) {
+  return _dragProxyDecorator(child, index, animation, radius: 16);
 }
 
 class _StepTile extends StatelessWidget {
@@ -487,28 +714,48 @@ class _StepTile extends StatelessWidget {
           side: BorderSide(color: colors.line),
         ),
         clipBehavior: Clip.antiAlias,
-        child: ListTile(
-          leading: ReorderableDragStartListener(
-            index: index,
-            child: Icon(Icons.drag_handle, color: colors.mute),
-          ),
-          title: InkWell(
-            onTap: onType,
-            borderRadius: _radius,
-            child: Row(
-              children: [
-                CircleAvatar(
-                  backgroundColor: PhaseColors.of(step.type),
-                  radius: 7,
-                ),
-                const SizedBox(width: 8),
-                Text(step.type.label),
-              ],
-            ),
-          ),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(4, 4, 4, 4),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              ReorderableDragStartListener(
+                index: index,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 10),
+                  child: Icon(Icons.drag_handle, color: colors.mute),
+                ),
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: onType,
+                  borderRadius: _radius,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 10,
+                          height: 10,
+                          decoration: BoxDecoration(
+                            color: PhaseColors.of(step.type),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          step.type.label,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            height: 1.1,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               TextButton(
                 onPressed: onDuration,
                 child: Text(

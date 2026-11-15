@@ -221,17 +221,29 @@ img {
   padding: 0;
 }
 
-.shot-figure img {
+.shot-figure img,
+.shot-figure object,
+.shot-figure svg {
   width: 100%;
-  max-width: 360px;
+  max-width: min(100%, 36rem);
   height: auto;
   border-radius: 18px;
   border: 1px solid var(--line);
   background: #111;
+  display: block;
 }
 
-.shot-figure.shot-wide img {
-  max-width: 720px;
+/* Portrait phone shots: keep them large enough to read. */
+.shot-figure.shot-portrait img,
+.shot-figure.shot-portrait object,
+.shot-figure.shot-portrait svg {
+  max-width: min(100%, 34rem);
+}
+
+.shot-figure.shot-wide img,
+.shot-figure.shot-wide object,
+.shot-figure.shot-wide svg {
+  max-width: min(100%, 52rem);
 }
 
 .shot-figure figcaption {
@@ -241,16 +253,43 @@ img {
   max-width: 36rem;
 }
 
+/* Guide: center shots; portrait ~100px shorter than the 34rem default. */
+.guide-wrap .shot-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.guide-wrap .shot-figure.shot-portrait img,
+.guide-wrap .shot-figure.shot-portrait object,
+.guide-wrap .shot-figure.shot-portrait svg {
+  max-width: min(100%, 31.125rem);
+}
+
+.guide-wrap .shot-figure.shot-wide img,
+.guide-wrap .shot-figure.shot-wide object,
+.guide-wrap .shot-figure.shot-wide svg {
+  max-width: min(100%, 46rem);
+}
+
+.guide-wrap .shot-figure figcaption {
+  text-align: center;
+  max-width: 36rem;
+}
+
 .shot-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.25rem;
+  gap: 1.5rem;
   margin-top: 1.5rem;
 }
 
 .shot-row .shot-figure {
   margin: 0;
-  flex: 1 1 220px;
+  flex: 1 1 16rem;
 }
 
 .cta-row {
@@ -562,7 +601,7 @@ footer.site-foot a:hover {
 }
 
 .guide-wrap {
-  max-width: 42rem;
+  max-width: 52rem;
   margin: 0 auto;
   padding: 1.75rem clamp(1.25rem, 4vw, 2rem) 4rem;
 }
