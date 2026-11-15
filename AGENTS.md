@@ -96,6 +96,7 @@ Full detail: `.cursor/rules/workflow-triggers.mdc`.
 - Repo secrets (already set on `nuclearfessel/TimeIt`): `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_PRIVATE_KEY` (`.p8` contents — same Apple account key pattern as Shopped).
 - Fastlane `produce` creates the Developer Portal App ID + Connect app record if missing, then signs, builds IPA, uploads to TestFlight.
 - **`Go!`** publishes a GitHub Release tag → workflow runs → build appears in App Store Connect → TestFlight after Apple processing. No personal Mac required.
+- GitHub Release Android assets must be named `TimeIt-IntervalTimer-<version>.apk` / `.aab` (e.g. `TimeIt-IntervalTimer-1.0.8.apk`), not Flutter’s `app-release.*`.
 - Skip with owner scope: `docs only` / `no release builds` / `no TestFlight`.
 
 ## Suggested next steps

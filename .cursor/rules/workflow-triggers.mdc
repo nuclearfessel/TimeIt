@@ -36,8 +36,8 @@ These phrases in the owner's message are commands. Act on them immediately.
 5. **GitHub Release** — **skip** with the same docs-only / no-release scope. When releasing:
    - Choose the next semver tag from `app/pubspec.yaml` `version:` (e.g. `1.0.0+1` → tag `v1.0.0`). If that tag already exists, bump the version in `pubspec.yaml`, commit on `main`, and use the new tag.
    - Create the release with `gh release create <tag> --title <title> --notes <notes>` targeting the merged `main` commit. Publishing the tag/release **starts** `.github/workflows/ios-testflight.yml`.
-   - **Attach Android** APK/AAB when files exist. Attach iOS IPA only if present locally.
-   - Release notes must list attached artifacts and state that iOS goes to TestFlight via GitHub Actions when CI is used.
+   - **Attach Android** APK/AAB when files exist, **renamed** to `TimeIt-IntervalTimer-<version>.apk` and `TimeIt-IntervalTimer-<version>.aab` (marketing version only, e.g. `TimeIt-IntervalTimer-1.0.8.apk` — never leave Flutter’s `app-release.*` names). Attach iOS IPA only if present locally, as `TimeIt-IntervalTimer-<version>.ipa` when attaching.
+   - Release notes must list attached artifacts by those filenames and state that iOS goes to TestFlight via GitHub Actions when CI is used.
 6. **TestFlight (App Store Connect)** — **skip** only for docs-only / no-release / `no TestFlight`. Otherwise:
    - Confirm repo secrets exist: `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_PRIVATE_KEY` (same Apple API key pattern as Shopped).
    - After the release tag is on `main`/`origin`, ensure the **iOS TestFlight** workflow is running (`release: published` / `push: tags v*` / or `gh workflow run ios-testflight.yml` if it did not start).
