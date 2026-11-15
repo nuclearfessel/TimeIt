@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../models/interval_step.dart';
 import '../models/workout_timer.dart';
 import '../services/settings_store.dart';
 import '../services/timer_engine.dart';
@@ -57,8 +56,6 @@ class _RunScreenState extends State<RunScreen> {
       builder: (context, _) {
         final bg = _bg(context);
         const onBg = Colors.white;
-        final isLandscape =
-            MediaQuery.orientationOf(context) == Orientation.landscape;
         final timerPane = _TimerPane(
           title: widget.timer.name,
           phaseLabel: _phaseLabel,
@@ -80,31 +77,20 @@ class _RunScreenState extends State<RunScreen> {
             body: SafeArea(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
-                child: isLandscape
-                    ? Row(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(flex: 2, child: timerPane),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            flex: 1,
-                            child: _SidePane(
-                              engine: engine,
-                              onBg: onBg,
-                              showStack: true,
-                            ),
-                          ),
-                        ],
-                      )
-                    : Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Expanded(child: timerPane),
-                          const SizedBox(height: 12),
-                          // Portrait: never show the stack list — only up next + controls.
-                          _PortraitControls(engine: engine, onBg: onBg),
-                        ],
-                      ),
+                // Portrait and landscape: timer on top, up next + controls underneath.
+                // Never show the phase stack list.
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(child: timerPane),
+                    const SizedBox(height: 12),
+                    _RunControls(
+                      engine: engine,
+                      onBg: onBg,
+                      horizontal: true,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -231,14 +217,16 @@ class _TimerPane extends StatelessWidget {
   }
 }
 
-class _PortraitControls extends StatelessWidget {
-  const _PortraitControls({
+class _RunControls extends StatelessWidget {
+  const _RunControls({
     required this.engine,
     required this.onBg,
+    required this.horizontal,
   });
 
   final TimerEngine engine;
   final Color onBg;
+  final bool horizontal;
 
   @override
   Widget build(BuildContext context) {
@@ -249,155 +237,11 @@ class _PortraitControls extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (showUpNext) ...[
-          _UpNext(engine: engine, onBg: onBg, singleLine: true),
+          _UpNext(engine: engine, onBg: onBg),
           const SizedBox(height: 12),
         ],
-        _Controls(engine: engine, onBg: onBg, horizontal: true),
+        _Controls(engine: engine, onBg: onBg, horizontal: horizontal),
       ],
-    );
-  }
-}
-
-class _SidePane extends StatelessWidget {
-  const _SidePane({
-    required this.engine,
-    required this.onBg,
-    required this.showStack,
-  });
-
-  final TimerEngine engine;
-  final Color onBg;
-  final bool showStack;
-
-  @override
-  Widget build(BuildContext context) {
-    final showUpNext = engine.index + 1 < engine.totalSteps &&
-        engine.status != EngineStatus.finished;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (showStack) ...[
-          Text(
-            'Stack',
-            style: TextStyle(
-              fontFamily: 'PlusJakartaSans',
-              fontWeight: FontWeight.w700,
-              letterSpacing: 1.2,
-              fontSize: 12,
-              color: onBg.withValues(alpha: 0.75),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Expanded(
-            child: _StackList(engine: engine, onBg: onBg),
-          ),
-        ],
-        if (showUpNext) ...[
-          if (showStack) const SizedBox(height: 8),
-          _UpNext(engine: engine, onBg: onBg),
-        ],
-        const SizedBox(height: 10),
-        _Controls(engine: engine, onBg: onBg),
-      ],
-    );
-  }
-}
-
-class _StackList extends StatelessWidget {
-  const _StackList({required this.engine, required this.onBg});
-
-  final TimerEngine engine;
-  final Color onBg;
-
-  @override
-  Widget build(BuildContext context) {
-    final steps = engine.schedule;
-    if (steps.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black.withValues(alpha: 0.16),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: ListView.separated(
-        padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
-        itemCount: steps.length,
-        separatorBuilder: (_, _) => Divider(
-          height: 1,
-          color: onBg.withValues(alpha: 0.12),
-        ),
-        itemBuilder: (context, index) {
-          final step = steps[index];
-          final current = index == engine.index &&
-              engine.status != EngineStatus.finished;
-          final done = index < engine.index ||
-              engine.status == EngineStatus.finished;
-          return _StackRow(
-            index: index,
-            step: step,
-            current: current,
-            done: done,
-            onBg: onBg,
-          );
-        },
-      ),
-    );
-  }
-}
-
-class _StackRow extends StatelessWidget {
-  const _StackRow({
-    required this.index,
-    required this.step,
-    required this.current,
-    required this.done,
-    required this.onBg,
-  });
-
-  final int index;
-  final IntervalStep step;
-  final bool current;
-  final bool done;
-  final Color onBg;
-
-  @override
-  Widget build(BuildContext context) {
-    final alpha = current ? 1.0 : done ? 0.45 : 0.82;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 7),
-      child: Row(
-        children: [
-          CircleAvatar(
-            radius: 5,
-            backgroundColor: PhaseColors.of(step.type).withValues(alpha: alpha),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              step.type.label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: onBg.withValues(alpha: alpha),
-                fontWeight: current ? FontWeight.w700 : FontWeight.w500,
-                fontSize: 13,
-              ),
-            ),
-          ),
-          Text(
-            formatSeconds(step.seconds),
-            style: TextStyle(
-              color: onBg.withValues(alpha: alpha),
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              fontFeatures: const [FontFeature.tabularFigures()],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -406,19 +250,14 @@ class _UpNext extends StatelessWidget {
   const _UpNext({
     required this.engine,
     required this.onBg,
-    this.singleLine = false,
   });
 
   final TimerEngine engine;
   final Color onBg;
-  final bool singleLine;
 
   @override
   Widget build(BuildContext context) {
     final next = engine.schedule[engine.index + 1];
-    final label = singleLine
-        ? 'Up next  ${next.type.label} · ${formatSeconds(next.seconds)}'
-        : 'Up next\n${next.type.label} · ${formatSeconds(next.seconds)}';
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
@@ -427,7 +266,7 @@ class _UpNext extends StatelessWidget {
         borderRadius: BorderRadius.circular(14),
       ),
       child: Text(
-        label,
+        'Up next  ${next.type.label} · ${formatSeconds(next.seconds)}',
         textAlign: TextAlign.center,
         style: TextStyle(
           fontFamily: 'PlusJakartaSans',
