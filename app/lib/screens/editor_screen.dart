@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../models/interval_step.dart';
 import '../models/phase_type.dart';
+import '../models/timer_round.dart';
 import '../models/workout_timer.dart';
 import '../theme/app_theme.dart';
 import '../utils/format.dart';
@@ -39,12 +40,19 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   void _save() {
-    draft.name = _name.text.trim().isEmpty ? 'Untitled timer' : _name.text.trim();
-    if (draft.kind == TimerKind.advanced && draft.steps.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Add at least one phase.')),
-      );
-      return;
+    draft.name =
+        _name.text.trim().isEmpty ? 'Untitled timer' : _name.text.trim();
+    if (draft.kind == TimerKind.advanced) {
+      final hasPhase = draft.advancedRounds
+          .any((round) => round.activeSteps().isNotEmpty);
+      if (!hasPhase) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Add at least one phase in a round.'),
+          ),
+        );
+        return;
+      }
     }
     Navigator.of(context).pop(draft);
   }
@@ -81,6 +89,31 @@ class _EditorScreenState extends State<EditorScreen> {
           ],
         );
       },
+    );
+  }
+
+  Future<PhaseType?> _pickPhase(BuildContext context) {
+    final colors = TimedColors.of(context);
+    return showModalBottomSheet<PhaseType>(
+      context: context,
+      backgroundColor: colors.surface,
+      builder: (ctx) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: PhaseType.values
+              .map(
+                (p) => ListTile(
+                  title: Text(p.label),
+                  leading: CircleAvatar(
+                    backgroundColor: PhaseColors.of(p),
+                    radius: 8,
+                  ),
+                  onTap: () => Navigator.pop(ctx, p),
+                ),
+              )
+              .toList(),
+        ),
+      ),
     );
   }
 
@@ -168,108 +201,191 @@ class _EditorScreenState extends State<EditorScreen> {
   List<Widget> _advancedFields(BuildContext context) {
     final colors = TimedColors.of(context);
     return [
-      _ValueTile(
-        label: 'Cycles',
-        value: '${draft.cycles}',
-        onTap: () async {
-          final v = await _pickSeconds('Cycles', draft.cycles);
-          if (v != null) setState(() => draft.cycles = v.clamp(1, 99));
-        },
-      ),
-      const SizedBox(height: 8),
-      const Text('Phase stack', style: TextStyle(fontWeight: FontWeight.w600)),
-      const SizedBox(height: 8),
-      ReorderableListView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        proxyDecorator: _stackProxyDecorator,
-        itemCount: draft.steps.length,
-        onReorderItem: (oldIndex, newIndex) {
-          setState(() {
-            final item = draft.steps.removeAt(oldIndex);
-            draft.steps.insert(newIndex, item);
-          });
-        },
-        itemBuilder: (context, index) {
-          final step = draft.steps[index];
-          return _StepTile(
-            key: ValueKey('step-$index-${step.type.name}-${step.seconds}'),
-            index: index,
-            step: step,
-            onType: () async {
-              final next = await showModalBottomSheet<PhaseType>(
-                context: context,
-                backgroundColor: colors.surface,
-                builder: (ctx) => SafeArea(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: PhaseType.values
-                        .map(
-                          (p) => ListTile(
-                            title: Text(p.label),
-                            leading: CircleAvatar(
-                              backgroundColor: PhaseColors.of(p),
-                              radius: 8,
-                            ),
-                            onTap: () => Navigator.pop(ctx, p),
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-              );
-              if (next != null) setState(() => step.type = next);
-            },
-            onDuration: () async {
-              final v = await _pickSeconds(step.type.label, step.seconds);
-              if (v != null) {
-                setState(() => step.seconds = v.clamp(1, 3600));
-              }
-            },
-            onDelete: () {
-              setState(() => draft.steps.removeAt(index));
-            },
-          );
-        },
+      Text(
+        'Each round has its own phase stack. Rounds run in order.',
+        style: TextStyle(color: colors.mute, height: 1.35),
       ),
       const SizedBox(height: 12),
+      ...List.generate(draft.advancedRounds.length, (roundIndex) {
+        final round = draft.advancedRounds[roundIndex];
+        return _RoundCard(
+          key: ValueKey(round.id),
+          roundNumber: roundIndex + 1,
+          round: round,
+          canDelete: draft.advancedRounds.length > 1,
+          onDeleteRound: () {
+            setState(() => draft.advancedRounds.removeAt(roundIndex));
+          },
+          onDuplicateRound: () {
+            setState(() {
+              draft.advancedRounds.insert(
+                roundIndex + 1,
+                TimerRound(steps: round.steps.map((s) => s.copy()).toList()),
+              );
+            });
+          },
+          onReorderPhases: (oldIndex, newIndex) {
+            setState(() {
+              final item = round.steps.removeAt(oldIndex);
+              round.steps.insert(newIndex, item);
+            });
+          },
+          onAddPhase: (type) {
+            setState(() {
+              final seconds = switch (type) {
+                PhaseType.standby => 10,
+                PhaseType.work => 40,
+                PhaseType.rest => 20,
+              };
+              round.steps.add(IntervalStep(type: type, seconds: seconds));
+            });
+          },
+          onPhaseType: (stepIndex) async {
+            final next = await _pickPhase(context);
+            if (next != null) {
+              setState(() => round.steps[stepIndex].type = next);
+            }
+          },
+          onPhaseDuration: (stepIndex) async {
+            final step = round.steps[stepIndex];
+            final v = await _pickSeconds(step.type.label, step.seconds);
+            if (v != null) {
+              setState(() => step.seconds = v.clamp(1, 3600));
+            }
+          },
+          onDeletePhase: (stepIndex) {
+            setState(() => round.steps.removeAt(stepIndex));
+          },
+        );
+      }),
+      const SizedBox(height: 8),
       OutlinedButton.icon(
         onPressed: () {
           setState(() {
-            draft.steps.add(
-              IntervalStep(type: PhaseType.work, seconds: 30),
+            draft.advancedRounds.add(
+              TimerRound(
+                steps: [
+                  IntervalStep(type: PhaseType.work, seconds: 40),
+                  IntervalStep(type: PhaseType.rest, seconds: 20),
+                ],
+              ),
             );
           });
         },
         icon: const Icon(Icons.add),
-        label: const Text('Add phase'),
-      ),
-      const SizedBox(height: 8),
-      Wrap(
-        spacing: 8,
-        children: [
-          ActionChip(
-            label: const Text('+ Standby'),
-            onPressed: () => setState(() {
-              draft.steps
-                  .add(IntervalStep(type: PhaseType.standby, seconds: 10));
-            }),
-          ),
-          ActionChip(
-            label: const Text('+ Work'),
-            onPressed: () => setState(() {
-              draft.steps.add(IntervalStep(type: PhaseType.work, seconds: 40));
-            }),
-          ),
-          ActionChip(
-            label: const Text('+ Rest'),
-            onPressed: () => setState(() {
-              draft.steps.add(IntervalStep(type: PhaseType.rest, seconds: 20));
-            }),
-          ),
-        ],
+        label: const Text('Add round'),
       ),
     ];
+  }
+}
+
+class _RoundCard extends StatelessWidget {
+  const _RoundCard({
+    super.key,
+    required this.roundNumber,
+    required this.round,
+    required this.canDelete,
+    required this.onDeleteRound,
+    required this.onDuplicateRound,
+    required this.onReorderPhases,
+    required this.onAddPhase,
+    required this.onPhaseType,
+    required this.onPhaseDuration,
+    required this.onDeletePhase,
+  });
+
+  final int roundNumber;
+  final TimerRound round;
+  final bool canDelete;
+  final VoidCallback onDeleteRound;
+  final VoidCallback onDuplicateRound;
+  final void Function(int oldIndex, int newIndex) onReorderPhases;
+  final void Function(PhaseType type) onAddPhase;
+  final void Function(int stepIndex) onPhaseType;
+  final void Function(int stepIndex) onPhaseDuration;
+  final void Function(int stepIndex) onDeletePhase;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = TimedColors.of(context);
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(12, 10, 8, 12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Round $roundNumber',
+                    style: AppTheme.header.copyWith(fontSize: 18),
+                  ),
+                ),
+                IconButton(
+                  tooltip: 'Duplicate round',
+                  onPressed: onDuplicateRound,
+                  icon: const Icon(Icons.copy_outlined),
+                ),
+                if (canDelete)
+                  IconButton(
+                    tooltip: 'Delete round',
+                    onPressed: onDeleteRound,
+                    icon: const Icon(Icons.delete_outline),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            ReorderableListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              proxyDecorator: _stackProxyDecorator,
+              itemCount: round.steps.length,
+              onReorderItem: onReorderPhases,
+              itemBuilder: (context, index) {
+                final step = round.steps[index];
+                return _StepTile(
+                  key: ValueKey('${round.id}-step-$index-${step.type.name}'),
+                  index: index,
+                  step: step,
+                  onType: () => onPhaseType(index),
+                  onDuration: () => onPhaseDuration(index),
+                  onDelete: () => onDeletePhase(index),
+                );
+              },
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ActionChip(
+                  label: const Text('+ Standby'),
+                  onPressed: () => onAddPhase(PhaseType.standby),
+                ),
+                ActionChip(
+                  label: const Text('+ Work'),
+                  onPressed: () => onAddPhase(PhaseType.work),
+                ),
+                ActionChip(
+                  label: const Text('+ Rest'),
+                  onPressed: () => onAddPhase(PhaseType.rest),
+                ),
+              ],
+            ),
+            if (round.steps.isEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  'Add at least one phase to this round.',
+                  style: TextStyle(color: colors.mute, fontSize: 13),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

@@ -22,6 +22,7 @@ The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` a
 10. **Shipping targets only:** **iOS and Android only.** No web, desktop, Apple Watch, Wear OS, or other platforms — ever.
 11. **GitHub repo visibility:** **public** (`nuclearfessel/Timed`).
 12. **Product intent (owner, 2026-11-13):** workout interval timer with **simple and advanced** timers. Advanced stacks **standby, work, and rest** timers. **Alert sounds.** **One tech stack**, deployable to both iOS and Android (not separate native codebases).
+12b. **Rounds model (owner, 2026-11-14):** both modes use the word **rounds** (not cycles). Advanced: each round has its **own** phase stack; rounds run in order and may differ from one another.
 13. **Monetization (2026-11-14):** none — **completely free**.
 14. **Apple Watch / Wear OS:** **never** (covered by iOS + Android only).
 15. **Orientation (2026-11-14):** **landscape and portrait for all functions**, not only the run screen.
@@ -29,7 +30,7 @@ The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` a
 
 ## Decisions so far
 - Lead use case: working out (interval training).
-- Simple timers and advanced timers; advanced stacks standby, work, and rest. Alert sounds. User-created timers and sets only. No Pomodoro. No pre-built exercises.
+- Simple timers and advanced timers. Simple uses standby/work/rest plus **rounds**. Advanced uses **rounds**, and each round has its own phase stack (standby/work/rest/…); rounds run in order and may differ. Call them rounds in both modes (not cycles). Alert sounds. User-created timers and sets only. No Pomodoro. No pre-built exercises.
 - Fonts as above. Hepta Slab and Plus Jakarta Sans are already installed on the owner's Windows machine (user fonts).
 - Reference apps: Seconds (iOS and Android), Intervals Pro (iOS), Allez (Android).
 - Platforms: **iOS and Android only.** No web, desktop, Watch, Wear, or anything else.

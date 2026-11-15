@@ -1,6 +1,6 @@
 # Timed
 
-A workout interval timer with simple rounds or advanced stacks of standby, work and rest.
+A workout interval timer with simple rounds, or advanced rounds each with their own phase stack.
 
 <a href="https://nuclearfessel.github.io/Timed/">
   <picture>
@@ -29,7 +29,7 @@ Clear phase labels and countdown digits help you follow the session. The illustr
 Create your own timers and sets. Choose simple rounds or build a custom sequence, then edit or delete routines as needed.
 
 - Simple timers: standby, work, rest, rounds
-- Advanced timers: stack standby / work / rest, reorder, cycles
+- Advanced timers: rounds, each with its own standby / work / rest stack
 - Full-screen phase colors and alert sounds
 - Settings: Light / Dark appearance (not system), sound preferences
 - Portrait and landscape for the whole app
@@ -54,7 +54,7 @@ Choose Simple or Advanced, configure the timer and start. See the [guide](https:
 
 ## Two timer formats
 
-Simple timers run standby once, followed by work/rest rounds, with no rest after the final work interval. Advanced timers repeat a custom phase sequence in cycles.
+Simple timers run standby once, followed by work/rest rounds, with no rest after the final work interval. Advanced timers are a list of rounds; each round has its own phase stack, so later rounds can differ from earlier ones.
 
 <p>
   <picture>
