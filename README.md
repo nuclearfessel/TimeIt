@@ -13,6 +13,20 @@ A workout interval timer with simple rounds, or advanced rounds each with their 
 
 Timed is free. **iOS and Android only** — no web, desktop, Apple Watch, or Wear OS. No Pomodoro. No pre-built exercises.
 
+## Screenshots
+
+<p>
+  <img src="docs/assets/timed/Screenshots/01-home.png" alt="Timed home screen with simple and advanced timers." width="360">
+  &nbsp;
+  <img src="docs/assets/timed/Screenshots/02-run-portrait.png" alt="Run screen in portrait: phase color, large digits, stack and controls." width="360">
+  &nbsp;
+  <img src="docs/assets/timed/Screenshots/06-editor-advanced.png" alt="Advanced editor with rounds, each with its own phase stack." width="360">
+</p>
+
+<p>
+  <img src="docs/assets/timed/Screenshots/08-run-landscape.png" alt="Run screen in landscape with the same two-thirds timer and one-third stack layout." width="720">
+</p>
+
 ## Your session at a glance
 
 Clear phase labels and countdown digits help you follow the session. The illustrated durations are examples, not preset workouts.
