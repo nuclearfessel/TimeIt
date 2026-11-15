@@ -488,6 +488,19 @@ class _RoundCard extends StatelessWidget {
   }
 }
 
+/// Width of two digits at the same type size as phase seconds.
+double _roundsTwoDigitWidth(Color color) {
+  final painter = TextPainter(
+    text: TextSpan(
+      text: '00',
+      style: AppTheme.header.copyWith(fontSize: 16, color: color),
+    ),
+    textDirection: TextDirection.ltr,
+    maxLines: 1,
+  )..layout();
+  return painter.width;
+}
+
 /// Compact rounds control: − / + for nudges; tap the value for a scroll wheel.
 class _RoundsStepper extends StatelessWidget {
   const _RoundsStepper({
@@ -573,14 +586,20 @@ class _RoundsStepper extends StatelessWidget {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 10,
+                          horizontal: 10,
+                          vertical: 8,
                         ),
-                        child: Text(
-                          '$value',
-                          style: AppTheme.header.copyWith(
-                            fontSize: 22,
-                            color: colors.fg,
+                        // Match phase-seconds type size (16); fixed 2-digit
+                        // width so 9 → 10 does not resize the stepper.
+                        child: SizedBox(
+                          width: _roundsTwoDigitWidth(colors.fg),
+                          child: Text(
+                            '$value',
+                            textAlign: TextAlign.center,
+                            style: AppTheme.header.copyWith(
+                              fontSize: 16,
+                              color: colors.fg,
+                            ),
                           ),
                         ),
                       ),
