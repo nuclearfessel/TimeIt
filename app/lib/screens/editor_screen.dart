@@ -844,18 +844,50 @@ class _NumberPickerDialog extends StatefulWidget {
 class _NumberPickerDialogState extends State<_NumberPickerDialog> {
   late final TextEditingController _controller;
   late final FocusNode _focus;
+  Animation<double>? _routeAnimation;
+  bool _scheduledKeyboard = false;
 
   @override
   void initState() {
     super.initState();
     _controller = TextEditingController(text: '${widget.initial}');
     _focus = FocusNode(debugLabel: 'number-picker');
-    // Dialog routes often eat the first autofocus; show keyboard after present.
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // iOS often suppresses the keyboard if focus is requested while the dialog
+    // route is still animating. Wait until the transition completes.
+    final animation = ModalRoute.of(context)?.animation;
+    if (!identical(animation, _routeAnimation)) {
+      _routeAnimation?.removeStatusListener(_onRouteStatus);
+      _routeAnimation = animation;
+      _scheduledKeyboard = false;
+      if (animation == null || animation.status == AnimationStatus.completed) {
+        _scheduleKeyboard();
+      } else {
+        animation.addStatusListener(_onRouteStatus);
+      }
+    }
+  }
+
+  void _onRouteStatus(AnimationStatus status) {
+    if (status == AnimationStatus.completed) {
+      _routeAnimation?.removeStatusListener(_onRouteStatus);
+      _scheduleKeyboard();
+    }
+  }
+
+  void _scheduleKeyboard() {
+    if (_scheduledKeyboard) return;
+    _scheduledKeyboard = true;
     WidgetsBinding.instance.addPostFrameCallback((_) => _ensureKeyboard());
   }
 
   @override
   void dispose() {
+    _routeAnimation?.removeStatusListener(_onRouteStatus);
     _controller.dispose();
     _focus.dispose();
     super.dispose();
@@ -863,10 +895,17 @@ class _NumberPickerDialogState extends State<_NumberPickerDialog> {
 
   Future<void> _ensureKeyboard() async {
     if (!mounted) return;
-    _focus.requestFocus();
-    await Future<void>.delayed(const Duration(milliseconds: 50));
+    FocusScope.of(context).requestFocus(_focus);
+    _controller.selection = TextSelection(
+      baseOffset: 0,
+      extentOffset: _controller.text.length,
+    );
+    // Extra beat after the route settles — needed on iOS SoftKeyboard.
+    await Future<void>.delayed(const Duration(milliseconds: 120));
     if (!mounted) return;
-    _focus.requestFocus();
+    if (!_focus.hasFocus) {
+      FocusScope.of(context).requestFocus(_focus);
+    }
     await SystemChannels.textInput.invokeMethod<void>('TextInput.show');
   }
 
@@ -896,21 +935,25 @@ class _NumberPickerDialogState extends State<_NumberPickerDialog> {
     required bool enabled,
     required VoidCallback onPressed,
   }) {
-    return IconButton(
-      onPressed: enabled ? onPressed : null,
-      tooltip: tooltip,
-      visualDensity: VisualDensity.compact,
-      style: IconButton.styleFrom(
-        foregroundColor: colors.fg,
-        disabledForegroundColor: colors.mute.withValues(alpha: 0.35),
-        padding: const EdgeInsets.all(8),
-      ).copyWith(
-        overlayColor: AppTheme.pressOverlay(
-          pressed: colors.accent.withValues(alpha: 0.20),
-          hovered: colors.accent.withValues(alpha: 0.10),
+    // ExcludeFocus: IconButtons inside InputDecorator steal primary focus on
+    // iOS and the soft keyboard never attaches to the TextField.
+    return ExcludeFocus(
+      child: IconButton(
+        onPressed: enabled ? onPressed : null,
+        tooltip: tooltip,
+        visualDensity: VisualDensity.compact,
+        style: IconButton.styleFrom(
+          foregroundColor: colors.fg,
+          disabledForegroundColor: colors.mute.withValues(alpha: 0.35),
+          padding: const EdgeInsets.all(8),
+        ).copyWith(
+          overlayColor: AppTheme.pressOverlay(
+            pressed: colors.accent.withValues(alpha: 0.20),
+            hovered: colors.accent.withValues(alpha: 0.10),
+          ),
         ),
+        icon: Icon(icon, size: 22),
       ),
-      icon: Icon(icon, size: 22),
     );
   }
 
@@ -951,59 +994,66 @@ class _NumberPickerDialogState extends State<_NumberPickerDialog> {
       borderRadius: BorderRadius.circular(10),
     );
 
-    return AlertDialog(
-      title: Text(widget.title),
-      content: TextField(
-        controller: _controller,
-        focusNode: _focus,
-        autofocus: true,
-        keyboardType: const TextInputType.numberWithOptions(
-          signed: false,
-          decimal: false,
+    final field = TextField(
+      controller: _controller,
+      focusNode: _focus,
+      autofocus: true,
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.done,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+      textAlign: widget.showSteppers ? TextAlign.center : TextAlign.start,
+      enableInteractiveSelection: true,
+      // Do not rebuild this TextField on every keystroke — that drops IME
+      // focus. Only the in-field steppers listen to the controller.
+      onTap: _ensureKeyboard,
+      onSubmitted: (_) => Navigator.pop(context, _parsed),
+      decoration: InputDecoration(
+        suffixText: widget.showSteppers ? null : widget.suffixText,
+        filled: true,
+        fillColor: fieldFill,
+        border: border,
+        enabledBorder: border,
+        focusedBorder: focusedBorder,
+        // Keep horizontal inset for overlaid steppers so digits stay clear.
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: widget.showSteppers ? 48 : 14,
+          vertical: 14,
         ),
-        textInputAction: TextInputAction.done,
-        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-        textAlign: widget.showSteppers ? TextAlign.center : TextAlign.start,
-        enableInteractiveSelection: true,
-        // Do not rebuild this TextField on every keystroke — that drops IME
-        // focus on Android preview / emulator. Only the in-field steppers listen.
-        onTap: _ensureKeyboard,
-        onSubmitted: (_) => Navigator.pop(context, _parsed),
-        decoration: InputDecoration(
-          suffixText: widget.showSteppers ? null : widget.suffixText,
-          filled: true,
-          fillColor: fieldFill,
-          border: border,
-          enabledBorder: border,
-          focusedBorder: focusedBorder,
-          prefixIconConstraints: widget.showSteppers
-              ? const BoxConstraints(minWidth: 48, minHeight: 48)
-              : null,
-          suffixIconConstraints: widget.showSteppers
-              ? const BoxConstraints(minWidth: 48, minHeight: 48)
-              : null,
-          prefixIcon: widget.showSteppers
-              ? _inFieldStepper(
+      ),
+    );
+
+    final content = widget.showSteppers
+        // Overlay steppers instead of prefixIcon/suffixIcon so they stay
+        // visually inside the field without joining the focus traversal order.
+        ? Stack(
+            alignment: Alignment.center,
+            children: [
+              field,
+              Positioned(
+                left: 0,
+                child: _inFieldStepper(
                   colors: colors,
                   icon: Icons.remove,
                   tooltip: 'Decrease',
                   nextFrom: (c) => (c - 1).clamp(widget.min, widget.max),
-                )
-              : null,
-          suffixIcon: widget.showSteppers
-              ? _inFieldStepper(
+                ),
+              ),
+              Positioned(
+                right: 0,
+                child: _inFieldStepper(
                   colors: colors,
                   icon: Icons.add,
                   tooltip: 'Increase',
                   nextFrom: (c) => (c + 1).clamp(widget.min, widget.max),
-                )
-              : null,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 14,
-            vertical: 14,
-          ),
-        ),
-      ),
+                ),
+              ),
+            ],
+          )
+        : field;
+
+    return AlertDialog(
+      title: Text(widget.title),
+      content: content,
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),

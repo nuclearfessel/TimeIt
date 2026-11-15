@@ -67,34 +67,6 @@ class SettingsScreen extends StatelessWidget {
               const SizedBox(height: 4),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Alert sounds'),
-                subtitle: Text(
-                  'Phase changes and workout complete',
-                  style: TextStyle(
-                    color: colors.mute,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                value: settings.alertSounds,
-                onChanged: settings.setAlertSounds,
-              ),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('Countdown beeps'),
-                subtitle: Text(
-                  'Beeps near the end of each phase',
-                  style: TextStyle(
-                    color: colors.mute,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                value: settings.countdownBeeps,
-                onChanged: settings.setCountdownBeeps,
-              ),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
                 title: const Text('Lower music during workout'),
                 subtitle: Text(
                   'Coming soon — preference is saved',
@@ -107,11 +79,26 @@ class SettingsScreen extends StatelessWidget {
                 value: settings.lowerMusicDuringWorkout,
                 onChanged: settings.setLowerMusicDuringWorkout,
               ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Alert sounds'),
+                subtitle: Text(
+                  'Start beeps, end beeps, and workout complete',
+                  style: TextStyle(
+                    color: colors.mute,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                value: settings.alertSounds,
+                onChanged: settings.setAlertSounds,
+              ),
               const SizedBox(height: 8),
               _BeepCountSlider(
                 title: 'Start beeps',
                 subtitle: 'One beep per second at the start of each phase',
                 value: settings.startBeepCount,
+                enabled: settings.alertSounds,
                 onChanged: settings.setStartBeepCount,
               ),
               const SizedBox(height: 8),
@@ -119,6 +106,7 @@ class SettingsScreen extends StatelessWidget {
                 title: 'End beeps',
                 subtitle: 'How many beeps leading into the end of each phase',
                 value: settings.endBeepCount,
+                enabled: settings.alertSounds,
                 onChanged: settings.setEndBeepCount,
               ),
               const SizedBox(height: 8),
@@ -143,7 +131,7 @@ class SettingsScreen extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 title: const Text('TimeIt'),
                 subtitle: Text(
-                  'Workout interval timer · v1.0.6',
+                  'Workout interval timer · v1.0.12',
                   style: TextStyle(
                     color: colors.mute,
                     fontWeight: FontWeight.w500,
@@ -181,57 +169,69 @@ class _BeepCountSlider extends StatelessWidget {
     required this.subtitle,
     required this.value,
     required this.onChanged,
+    this.enabled = true,
   });
 
   final String title;
   final String subtitle;
   final int value;
   final ValueChanged<int> onChanged;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
     final colors = TimeItColors.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 2),
-                  Text(
-                    subtitle,
-                    style: TextStyle(
-                      color: colors.mute,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w500,
-                      height: 1.35,
+    final titleColor = enabled ? colors.fg : colors.mute;
+    return Opacity(
+      opacity: enabled ? 1 : 0.45,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: titleColor,
+                      ),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        color: colors.mute,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Text(
-              '$value',
-              style: AppTheme.header.copyWith(fontSize: 20),
-            ),
-          ],
-        ),
-        Slider(
-          value: value.toDouble(),
-          min: 0,
-          max: SettingsStore.maxBeepCount.toDouble(),
-          divisions: SettingsStore.maxBeepCount,
-          label: '$value',
-          onChanged: (v) => onChanged(v.round()),
-        ),
-      ],
+              Text(
+                '$value',
+                style: AppTheme.header.copyWith(
+                  fontSize: 20,
+                  color: titleColor,
+                ),
+              ),
+            ],
+          ),
+          Slider(
+            value: value.toDouble(),
+            min: 0,
+            max: SettingsStore.maxBeepCount.toDouble(),
+            divisions: SettingsStore.maxBeepCount,
+            label: '$value',
+            onChanged: enabled ? (v) => onChanged(v.round()) : null,
+          ),
+        ],
+      ),
     );
   }
 }
