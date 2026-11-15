@@ -2,6 +2,7 @@
 import json
 import shutil
 import copy
+import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -285,6 +286,18 @@ def contacts(mode):
         image.thumbnail((720,425),Image.Resampling.LANCZOS)
         sheet.paste(image,(x,y+44))
     sheet.save(OUT/"Previews"/f"contact-sheet-{mode}.png")
+    sheet=Image.new("RGB",(1600,2310),p["bg"])
+    d=ImageDraw.Draw(sheet)
+    d.text((48,24),f"Timed / Complete README graphics / {mode.title()}",font=f,fill=p["ink"])
+    names=("readme-banner","session-overview","features","workflow","timer-types",
+           "phases","run-controls","mobile-platforms")
+    for i,name in enumerate(names):
+        x=48+(i%2)*784;y=96+(i//2)*548
+        d.text((x,y),name.replace("-"," ").title(),font=f,fill=p["muted"])
+        image=Image.open(OUT/"Graphics"/f"{name}-{mode}.png").convert("RGB")
+        image.thumbnail((720,485),Image.Resampling.LANCZOS)
+        sheet.paste(image,(x,y+44))
+    sheet.save(OUT/"Previews"/f"readme-graphics-{mode}.png")
 
 
 def main():
@@ -307,6 +320,8 @@ def main():
         hero(mode);features(mode);workflow(mode);phases(mode);timer_types(mode)
         social(mode);social(mode,True);brand_board(mode)
     brand()
+    from timed_readme_graphics import build as build_readme
+    build_readme(sys.modules[__name__])
     for mode in ("dark","light"):contacts(mode)
     (OUT/"Graphics"/"text-and-alt-inventory.json").write_text(json.dumps(INVENTORY,indent=2)+"\n")
     print(f"Timed: {len(INVENTORY)} SVG/PNG pairs rendered.",flush=True)

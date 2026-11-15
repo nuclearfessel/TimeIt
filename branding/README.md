@@ -7,7 +7,8 @@ handoff, not a Shopped/EncodeIt recolor.
 - Brand/: transparent horizontal, stacked and wordmark SVG/PNG pairs; color,
   black, white and grayscale marks; separate optional tagline lockups in both themes.
 - Graphics/: light/dark README banners, features, workflow, phase explainer,
-  simple/advanced comparison and 1200×630 social cards, each SVG + PNG.
+  simple/advanced comparison, illustrated session overview, run controls,
+  mobile platforms and 1200×630 social cards, each SVG + PNG.
 - AppIcons/: iOS asset catalog, 1024px store master, Android adaptive PNG layers,
   monochrome resources, legacy densities and 512px Google Play icon.
 - Store/: light/dark 1024×500 Google Play feature graphics, SVG + PNG.

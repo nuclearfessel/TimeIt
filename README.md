@@ -1,48 +1,105 @@
 # Timed
 
+A workout interval timer with simple rounds or advanced stacks of standby, work and rest.
+
 <a href="https://nuclearfessel.github.io/Timed/">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/readme-banner-dark.svg">
-    <img src="branding/Graphics/readme-banner-light.svg" alt="Timed: create your own standby, work and rest interval routines." width="1600" height="1158">
+    <img src="branding/Graphics/readme-banner-light.svg" alt="Timed: make every interval yours. A workout interval timer for iOS and Android." width="1600">
   </picture>
 </a>
 
-A workout interval timer for **iOS and Android only**, built with Flutter.
-
 **Site:** [nuclearfessel.github.io/Timed](https://nuclearfessel.github.io/Timed/) · **Guide:** [Using Timed](https://nuclearfessel.github.io/Timed/guide.html) · **Releases:** [GitHub Releases](https://github.com/nuclearfessel/Timed/releases)
 
-## What it does
+Timed is free. **iOS and Android only** — no web, desktop, Apple Watch, or Wear OS. No Pomodoro. No pre-built exercises.
+
+## Your session at a glance
+
+Clear phase labels and countdown digits help you follow the session. The illustrated durations are examples, not preset workouts.
+
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/session-overview-dark.svg">
+    <img src="branding/Graphics/session-overview-light.svg" alt="Illustrated standby, work and rest phases with a conceptual timer screen, not a screenshot." width="1600">
+  </picture>
+</p>
+
+## Features
+
+Create your own timers and sets. Choose simple rounds or build a custom sequence, then edit or delete routines as needed.
+
 - Simple timers: standby, work, rest, rounds
 - Advanced timers: stack standby / work / rest, reorder, cycles
-- Create, edit, and delete your own timers (no pre-built exercises, no Pomodoro)
 - Full-screen phase colors and alert sounds
 - Settings: Light / Dark appearance (not system), sound preferences
 - Portrait and landscape for the whole app
 
-## Phases
-Standby (green), work (orange), and rest (blue) stay consistent in the app, icons, and docs.
-
 <p>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/phases-dark.svg">
-    <img src="branding/Graphics/phases-light.svg" alt="Standby, work, and rest phase colors with labels." width="1600" height="900">
+    <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/features-dark.svg">
+    <img src="branding/Graphics/features-light.svg" alt="Simple timers, advanced stacks and user-created routines." width="1600">
   </picture>
 </p>
 
-## Simple and advanced
-Simple timers cover classic work/rest rounds. Advanced timers let you stack phases in any order, reorder them, and set cycles.
+## Getting started
+
+Choose Simple or Advanced, configure the timer and start. See the [guide](https://nuclearfessel.github.io/Timed/guide.html) for full instructions.
+
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/workflow-dark.svg">
+    <img src="branding/Graphics/workflow-light.svg" alt="Choose a format, build your routine, then start the session." width="1600">
+  </picture>
+</p>
+
+## Two timer formats
+
+Simple timers run standby once, followed by work/rest rounds, with no rest after the final work interval. Advanced timers repeat a custom phase sequence in cycles.
 
 <p>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/timer-types-dark.svg">
-    <img src="branding/Graphics/timer-types-light.svg" alt="Simple timer versus advanced stacked phases." width="1600" height="900">
+    <img src="branding/Graphics/timer-types-light.svg" alt="Simple rounds compared with flexible advanced phase stacks." width="1600">
+  </picture>
+</p>
+
+## Phase cues
+
+Phase labels and sounds accompany the color cues; meaning does not depend on color alone. Standby is green, work is orange, rest is blue.
+
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/phases-dark.svg">
+    <img src="branding/Graphics/phases-light.svg" alt="Green standby, orange work and blue rest, each identified with text." width="1600">
+  </picture>
+</p>
+
+## Run controls
+
+Start a session, pause and resume it, skip to the next phase or reset to the first phase.
+
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/run-controls-dark.svg">
+    <img src="branding/Graphics/run-controls-light.svg" alt="Start, Pause/Resume, Skip and Reset explained through an illustrated control diagram." width="1600">
+  </picture>
+</p>
+
+## Mobile platforms
+
+Timed targets iOS and Android. Check [GitHub Releases](https://github.com/nuclearfessel/Timed/releases) and the [installation guide](https://nuclearfessel.github.io/Timed/guide.html#install) for current packages. iOS distribution requires signing on a Mac.
+
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/mobile-platforms-dark.svg">
+    <img src="branding/Graphics/mobile-platforms-light.svg" alt="Conceptual iOS and Android devices, not app screenshots or store badges." width="1600">
   </picture>
 </p>
 
 ## Stack
-- Flutter (one codebase → iOS + Android only; no web/desktop/watch targets)
+- Flutter (one codebase → iOS + Android only)
 - Fonts: **Hepta Slab** (digits / headers), **Plus Jakarta Sans** (UI)
-- Brand mark: Interlocking Lanes (standby / work / rest woven together)
+- Brand mark: Interlocking Lanes
 
 ## Run
 ```bash
@@ -53,11 +110,9 @@ flutter run
 
 ## Repo layout
 - `app/` — Flutter app
-- `docs/` — GitHub Pages site and guide (`index.html`, `guide.html`)
+- `docs/` — GitHub Pages site and guide
 - `docs/assets/timed/` — public brand assets for Pages
 - `branding/` — full brand package (icons sources, store art, guidelines)
 - `docs/research.md`, `docs/reference-apps.md` — research notes
 - `reference/index.html` — private screen reference board
 - `AGENTS.md` — instructions for AI assistants continuing the work
-
-Timed is free. No monetization. **iOS and Android only** — no web, desktop, Apple Watch, or Wear OS.

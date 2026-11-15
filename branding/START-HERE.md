@@ -5,6 +5,7 @@
 ## See the package
 - `Previews/brand-overview-light.png` and `brand-overview-dark.png`
 - `Previews/contact-sheet-light.png` and `contact-sheet-dark.png`
+- `Previews/readme-graphics-light.png` and `readme-graphics-dark.png` — complete README set
 - `Previews/app-icon-family.png`
 - `Previews/colored-header-proof.png`
 
@@ -25,6 +26,7 @@
 3. `Web/COLORED-HEADERS.md` — preserve legibility on the existing colored tops
 4. `AppIcons/iOS/README.md` and `AppIcons/Android/README.md`
 5. `Instructions/QA-CHECKLIST.md`
+6. `Instructions/README-LAYOUT.md` — placement map and copy-ready image embeds
 
 The alternative symbols are retained outside this production package.
 Native builds, device tests, GitHub changes and publishing remain for the
