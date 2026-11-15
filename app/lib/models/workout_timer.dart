@@ -180,12 +180,9 @@ class WorkoutTimer {
     final standby = (json['standbySeconds'] as num?)?.toInt() ?? 10;
     final work = (json['workSeconds'] as num?)?.toInt() ?? 40;
     final rest = (json['restSeconds'] as num?)?.toInt() ?? 20;
-    final simpleJson = json['simpleSteps'] as List<dynamic>?;
-    final simpleSteps = simpleJson == null
-        ? null
-        : simpleJson
-            .map((e) => IntervalStep.fromJson(e as Map<String, dynamic>))
-            .toList();
+    final simpleSteps = (json['simpleSteps'] as List<dynamic>?)
+        ?.map((e) => IntervalStep.fromJson(e as Map<String, dynamic>))
+        .toList();
     return WorkoutTimer(
       id: json['id'] as String?,
       name: json['name'] as String? ?? 'Timer',
