@@ -216,7 +216,12 @@ img {
   border-radius: 12px;
 }
 
+/* App page + guide: each shot stacks and centers its image + caption. */
 .shot-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   margin: 2rem 0 0;
   padding: 0;
 }
@@ -240,6 +245,11 @@ img {
   max-width: min(100%, 17rem);
 }
 
+.shot-figure.shot-wide {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .shot-figure.shot-wide img,
 .shot-figure.shot-wide object,
 .shot-figure.shot-wide svg {
@@ -253,12 +263,8 @@ img {
   max-width: 36rem;
 }
 
-/* Guide: center shots; portraits at half the previous display width. */
+/* Guide: portraits at half the previous display width. */
 .guide-wrap .shot-figure {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
   margin-left: auto;
   margin-right: auto;
 }
@@ -280,16 +286,18 @@ img {
   max-width: 36rem;
 }
 
+/* Center each screenshot band as a group (3, then 2, then landscape). */
 .shot-row {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 1.5rem;
   margin-top: 1.5rem;
 }
 
 .shot-row .shot-figure {
   margin: 0;
-  flex: 1 1 16rem;
+  flex: 0 1 17rem;
 }
 
 .cta-row {
