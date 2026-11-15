@@ -1,7 +1,7 @@
 name: timeit
 description: Workout interval timer for iOS and Android — simple and advanced stacked timers.
 publish_to: 'none'
-version: 1.0.17+18
+version: 1.0.18+19
 
 environment:
   sdk: ^3.13.3
