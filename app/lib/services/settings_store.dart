@@ -45,7 +45,7 @@ class SettingsStore extends ChangeNotifier {
   /// Play countdown ticks near the end of each phase.
   bool countdownBeeps = true;
 
-  /// How many beeps when a phase / workout starts (0–5).
+  /// How many start-of-phase beeps (0–5), one per second.
   int startBeepCount = 1;
 
   /// How many countdown beeps leading into the end of each phase (0–5).
