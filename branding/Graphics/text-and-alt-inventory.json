@@ -1,0 +1,2796 @@
+[
+  {
+    "file": "Graphics/readme-banner-dark.svg",
+    "width": 1600,
+    "height": 1158,
+    "alt": "Timed workout interval timer for iOS and Android. Standby, work and rest; illustrative durations, not an app screenshot.",
+    "text": [
+      {
+        "text": "INTERVAL TRAINING, ON YOUR TERMS.",
+        "bounds": [
+          134.0,
+          58.23950000000001,
+          453.111,
+          73.76050000000001
+        ],
+        "baseline": 71.1085,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          72.0,
+          163.99999999999997,
+          623.9499999999999,
+          287.354
+        ],
+        "baseline": 285.65999999999997,
+        "row": null
+      },
+      {
+        "text": "Make every interval yours.",
+        "bounds": [
+          72.0,
+          413.0,
+          755.0945,
+          460.0
+        ],
+        "baseline": 450.13,
+        "row": null
+      },
+      {
+        "text": "01",
+        "bounds": [
+          117.717,
+          573.541,
+          138.28300000000002,
+          590.4590000000001
+        ],
+        "baseline": 590.195,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          224.0,
+          570.0805,
+          367.90999999999997,
+          593.9195
+        ],
+        "baseline": 593.5475,
+        "row": null
+      },
+      {
+        "text": "Find your position.",
+        "bounds": [
+          635.0,
+          571.7415,
+          815.995,
+          592.2585
+        ],
+        "baseline": 587.6385,
+        "row": null
+      },
+      {
+        "text": "00:10",
+        "bounds": [
+          1320.48,
+          558.63,
+          1488.0,
+          605.37
+        ],
+        "baseline": 604.65,
+        "row": null
+      },
+      {
+        "text": "02",
+        "bounds": [
+          115.11,
+          713.541,
+          140.89,
+          730.4590000000001
+        ],
+        "baseline": 730.195,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          224.0,
+          710.0805,
+          325.36699999999996,
+          733.9195
+        ],
+        "baseline": 733.5475,
+        "row": null
+      },
+      {
+        "text": "Make this interval count.",
+        "bounds": [
+          635.0,
+          713.9254999999999,
+          870.995,
+          730.0745
+        ],
+        "baseline": 729.8225,
+        "row": null
+      },
+      {
+        "text": "00:45",
+        "bounds": [
+          1312.53,
+          698.63,
+          1488.0,
+          745.37
+        ],
+        "baseline": 744.65,
+        "row": null
+      },
+      {
+        "text": "03",
+        "bounds": [
+          114.934,
+          853.541,
+          141.066,
+          870.4590000000001
+        ],
+        "baseline": 870.195,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          224.0,
+          850.0805,
+          297.229,
+          873.9195
+        ],
+        "baseline": 873.5475,
+        "row": null
+      },
+      {
+        "text": "Breathe. Reset. Go again.",
+        "bounds": [
+          635.0,
+          851.7415,
+          885.995,
+          872.2585
+        ],
+        "baseline": 867.6385,
+        "row": null
+      },
+      {
+        "text": "00:15",
+        "bounds": [
+          1321.53,
+          838.63,
+          1488.0,
+          885.37
+        ],
+        "baseline": 884.65,
+        "row": null
+      },
+      {
+        "text": "Simple timers. Custom stacks. Alert sounds.",
+        "bounds": [
+          72.0,
+          985.516,
+          565.072,
+          1008.4839999999999
+        ],
+        "baseline": 1003.684,
+        "row": null
+      },
+      {
+        "text": "CREATE YOUR OWN ROUTINE",
+        "bounds": [
+          72.0,
+          1094.2325,
+          294.755,
+          1105.7675000000002
+        ],
+        "baseline": 1105.5875,
+        "row": null
+      },
+      {
+        "text": "ILLUSTRATIVE TIMINGS \u00b7 NOT AN APP SCREENSHOT",
+        "bounds": [
+          1195.2179999999998,
+          1094.617,
+          1528.0,
+          1105.3829999999998
+        ],
+        "baseline": 1105.215,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/features-dark.svg",
+    "width": 1600,
+    "height": 720,
+    "alt": "Simple timers, advanced stacks and user-created routines. Create, edit and delete your own timers.",
+    "text": [
+      {
+        "text": "MADE FOR YOUR WORKOUT",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          366.803,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Your workout. Your structure.",
+        "bounds": [
+          72.0,
+          158.71300000000002,
+          1020.093,
+          205.287
+        ],
+        "baseline": 204.53300000000002,
+        "row": null
+      },
+      {
+        "text": "01",
+        "bounds": [
+          104.0,
+          318.772,
+          127.072,
+          337.228
+        ],
+        "baseline": 336.94,
+        "row": null
+      },
+      {
+        "text": "Simple timers",
+        "bounds": [
+          104.0,
+          385.5,
+          358.67499999999995,
+          418.5
+        ],
+        "baseline": 411.57,
+        "row": null
+      },
+      {
+        "text": "Set standby, work and rest.",
+        "bounds": [
+          104.0,
+          470.74150000000003,
+          373.688,
+          491.2585
+        ],
+        "baseline": 486.6385,
+        "row": null
+      },
+      {
+        "text": "Choose how many rounds.",
+        "bounds": [
+          104.0,
+          510.74150000000003,
+          366.457,
+          531.2585
+        ],
+        "baseline": 526.6385,
+        "row": null
+      },
+      {
+        "text": "02",
+        "bounds": [
+          600.0,
+          318.772,
+          628.76,
+          337.228
+        ],
+        "baseline": 336.94,
+        "row": null
+      },
+      {
+        "text": "Advanced stacks",
+        "bounds": [
+          600.0,
+          388.7835,
+          919.9290000000001,
+          415.2165
+        ],
+        "baseline": 414.8535,
+        "row": null
+      },
+      {
+        "text": "Build your phase sequence.",
+        "bounds": [
+          600.0,
+          470.74150000000003,
+          870.9950000000001,
+          491.2585
+        ],
+        "baseline": 486.6385,
+        "row": null
+      },
+      {
+        "text": "Repeat it over multiple cycles.",
+        "bounds": [
+          600.0,
+          510.74150000000003,
+          896.9950000000001,
+          531.2585
+        ],
+        "baseline": 526.6385,
+        "row": null
+      },
+      {
+        "text": "03",
+        "bounds": [
+          1096.0,
+          318.772,
+          1125.144,
+          337.228
+        ],
+        "baseline": 336.94,
+        "row": null
+      },
+      {
+        "text": "Yours to change",
+        "bounds": [
+          1096.0,
+          385.2855,
+          1394.536,
+          418.7145
+        ],
+        "baseline": 411.3555,
+        "row": null
+      },
+      {
+        "text": "Create, edit and delete timers.",
+        "bounds": [
+          1096.0,
+          471.6865,
+          1398.457,
+          490.31350000000003
+        ],
+        "baseline": 487.5835,
+        "row": null
+      },
+      {
+        "text": "Keep the routines you use.",
+        "bounds": [
+          1096.0,
+          510.74150000000003,
+          1355.9950000000001,
+          531.2585
+        ],
+        "baseline": 526.6385,
+        "row": null
+      },
+      {
+        "text": "User-created timers and sets. No pre-built exercise library.",
+        "bounds": [
+          72.0,
+          646.7645,
+          716.2539999999999,
+          669.2355
+        ],
+        "baseline": 664.1755,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/workflow-dark.svg",
+    "width": 1600,
+    "height": 740,
+    "alt": "Choose simple or advanced, configure durations and repetitions, then run your timer with alert sounds.",
+    "text": [
+      {
+        "text": "FROM AN IDEA TO AN INTERVAL",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          394.735,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Set it. Stack it. Start.",
+        "bounds": [
+          72.0,
+          155.1845,
+          767.571,
+          204.81550000000001
+        ],
+        "baseline": 204.1645,
+        "row": null
+      },
+      {
+        "text": "01",
+        "bounds": [
+          117.717,
+          311.541,
+          138.28300000000002,
+          328.459
+        ],
+        "baseline": 328.195,
+        "row": null
+      },
+      {
+        "text": "Choose your format",
+        "bounds": [
+          224.0,
+          303.832,
+          577.24,
+          336.168
+        ],
+        "baseline": 329.448,
+        "row": null
+      },
+      {
+        "text": "Start with a simple or advanced timer.",
+        "bounds": [
+          880.0,
+          308.9945,
+          1288.944,
+          331.00550000000004
+        ],
+        "baseline": 326.4055,
+        "row": null
+      },
+      {
+        "text": "02",
+        "bounds": [
+          115.11,
+          439.541,
+          140.89,
+          456.459
+        ],
+        "baseline": 456.195,
+        "row": null
+      },
+      {
+        "text": "Build your routine",
+        "bounds": [
+          224.0,
+          432.0,
+          546.4639999999999,
+          464.0
+        ],
+        "baseline": 457.28,
+        "row": null
+      },
+      {
+        "text": "Set durations, rounds or custom phase cycles.",
+        "bounds": [
+          880.0,
+          436.7645,
+          1386.944,
+          459.2355
+        ],
+        "baseline": 454.1755,
+        "row": null
+      },
+      {
+        "text": "03",
+        "bounds": [
+          114.934,
+          567.541,
+          141.066,
+          584.4590000000001
+        ],
+        "baseline": 584.195,
+        "row": null
+      },
+      {
+        "text": "Start your session",
+        "bounds": [
+          224.0,
+          560.136,
+          546.232,
+          591.864
+        ],
+        "baseline": 585.144,
+        "row": null
+      },
+      {
+        "text": "Follow the countdown and phase-change cues.",
+        "bounds": [
+          880.0,
+          564.7645,
+          1400.185,
+          587.2355
+        ],
+        "baseline": 582.1755,
+        "row": null
+      },
+      {
+        "text": "Illustrative workflow. Configure your own timer; no prescribed workout is included.",
+        "bounds": [
+          72.0,
+          681.7415,
+          895.995,
+          702.2585
+        ],
+        "baseline": 697.6385,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/phases-dark.svg",
+    "width": 1600,
+    "height": 660,
+    "alt": "Green standby, orange work and blue rest. Each phase is identified by its label as well as its color.",
+    "text": [
+      {
+        "text": "THREE PHASES. A RHYTHM YOU CONTROL.",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          488.14799999999997,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Ready. Work. Recover.",
+        "bounds": [
+          72.0,
+          149.0,
+          841.9970000000001,
+          211.0
+        ],
+        "baseline": 197.98,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          108.0,
+          294.46500000000003,
+          249.3,
+          317.535
+        ],
+        "baseline": 317.175,
+        "row": null
+      },
+      {
+        "text": "Get ready before the next work phase.",
+        "bounds": [
+          638.0,
+          293.299,
+          1102.042,
+          318.701
+        ],
+        "baseline": 312.981,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          108.0,
+          402.46500000000003,
+          204.70999999999998,
+          425.535
+        ],
+        "baseline": 425.175,
+        "row": null
+      },
+      {
+        "text": "Follow the duration you choose.",
+        "bounds": [
+          638.0,
+          401.299,
+          1023.47,
+          426.701
+        ],
+        "baseline": 420.981,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          108.0,
+          510.465,
+          179.77,
+          533.535
+        ],
+        "baseline": 533.175,
+        "row": null
+      },
+      {
+        "text": "Make room for recovery.",
+        "bounds": [
+          638.0,
+          509.299,
+          929.47,
+          534.701
+        ],
+        "baseline": 528.981,
+        "row": null
+      },
+      {
+        "text": "Phase labels and sounds support the color cues. Never rely on color alone.",
+        "bounds": [
+          72.0,
+          603.7415,
+          804.995,
+          624.2585
+        ],
+        "baseline": 619.6385,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/timer-types-dark.svg",
+    "width": 1600,
+    "height": 760,
+    "alt": "Simple timers use one standby and repeated work/rest rounds, without rest after the last work round. Advanced timers repeat a custom sequence in cycles.",
+    "text": [
+      {
+        "text": "TWO WAYS TO BUILD YOUR ROUTINE",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          444.452,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Simple rounds. Flexible stacks.",
+        "bounds": [
+          72.0,
+          154.0,
+          1037.548,
+          210.0
+        ],
+        "baseline": 198.24,
+        "row": null
+      },
+      {
+        "text": "01",
+        "bounds": [
+          72.0,
+          283.1565,
+          93.819,
+          300.8435
+        ],
+        "baseline": 300.5675,
+        "row": null
+      },
+      {
+        "text": "Simple",
+        "bounds": [
+          72.0,
+          338.0,
+          238.37599999999998,
+          382.0
+        ],
+        "baseline": 372.76,
+        "row": null
+      },
+      {
+        "text": "02",
+        "bounds": [
+          856.0,
+          283.1565,
+          883.27,
+          300.8435
+        ],
+        "baseline": 300.5675,
+        "row": null
+      },
+      {
+        "text": "Advanced",
+        "bounds": [
+          856.0,
+          342.378,
+          1102.184,
+          377.62199999999996
+        ],
+        "baseline": 377.138,
+        "row": null
+      },
+      {
+        "text": "Set standby, work, rest and rounds.",
+        "bounds": [
+          72.0,
+          430.7645,
+          455.944,
+          453.2355
+        ],
+        "baseline": 448.1755,
+        "row": null
+      },
+      {
+        "text": "Standby runs once at the beginning.",
+        "bounds": [
+          72.0,
+          472.7645,
+          466.944,
+          495.2355
+        ],
+        "baseline": 490.1755,
+        "row": null
+      },
+      {
+        "text": "Work/rest repeats between rounds.",
+        "bounds": [
+          72.0,
+          514.9945,
+          464.956,
+          537.0055
+        ],
+        "baseline": 532.4055,
+        "row": null
+      },
+      {
+        "text": "The final round ends after work.",
+        "bounds": [
+          72.0,
+          559.1565,
+          415.956,
+          576.8435
+        ],
+        "baseline": 576.5675,
+        "row": null
+      },
+      {
+        "text": "Stack your own standby, work and rest phases.",
+        "bounds": [
+          856.0,
+          430.7645,
+          1366.944,
+          453.2355
+        ],
+        "baseline": 448.1755,
+        "row": null
+      },
+      {
+        "text": "Set a duration for each phase.",
+        "bounds": [
+          856.0,
+          472.9945,
+          1180.944,
+          495.00550000000004
+        ],
+        "baseline": 490.4055,
+        "row": null
+      },
+      {
+        "text": "Repeat the whole sequence in cycles.",
+        "bounds": [
+          856.0,
+          514.7645,
+          1266.185,
+          537.2355
+        ],
+        "baseline": 532.1755,
+        "row": null
+      },
+      {
+        "text": "Edit the sequence to fit your workout.",
+        "bounds": [
+          856.0,
+          556.7645,
+          1266.185,
+          579.2355
+        ],
+        "baseline": 574.1755,
+        "row": null
+      },
+      {
+        "text": "Diagram summary, not an app screenshot. Your durations and repetitions are configurable.",
+        "bounds": [
+          72.0,
+          699.7415,
+          973.995,
+          720.2585
+        ],
+        "baseline": 715.6385,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/social-card-dark.svg",
+    "width": 1200,
+    "height": 630,
+    "alt": "Timed interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
+    "text": [
+      {
+        "text": "INTERVAL TRAINING, ON YOUR TERMS.",
+        "bounds": [
+          48.0,
+          35.1525,
+          338.745,
+          48.8475
+        ],
+        "baseline": 46.5075,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          48.0,
+          104.353,
+          384.45,
+          179.647
+        ],
+        "baseline": 178.613,
+        "row": null
+      },
+      {
+        "text": "Make every interval yours.",
+        "bounds": [
+          48.0,
+          214.0,
+          490.805,
+          244.0
+        ],
+        "baseline": 237.7,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          72.0,
+          349.079,
+          155.98000000000002,
+          362.921
+        ],
+        "baseline": 362.705,
+        "row": null
+      },
+      {
+        "text": "00:10",
+        "bounds": [
+          1058.2,
+          346.2625,
+          1128.0,
+          365.7375
+        ],
+        "baseline": 365.4375,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          72.0,
+          413.079,
+          128.82600000000002,
+          426.921
+        ],
+        "baseline": 426.705,
+        "row": null
+      },
+      {
+        "text": "00:45",
+        "bounds": [
+          1054.6375,
+          410.2625,
+          1128.0,
+          429.7375
+        ],
+        "baseline": 429.4375,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          72.0,
+          477.079,
+          113.262,
+          490.921
+        ],
+        "baseline": 490.705,
+        "row": null
+      },
+      {
+        "text": "00:15",
+        "bounds": [
+          1058.6375,
+          474.2625,
+          1128.0,
+          493.7375
+        ],
+        "baseline": 493.4375,
+        "row": null
+      },
+      {
+        "text": "Simple timers. Custom stacks. Alert sounds.",
+        "bounds": [
+          48.0,
+          590.344,
+          368.048,
+          605.6560000000001
+        ],
+        "baseline": 602.456,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1048.998,
+          591.861,
+          1152.0,
+          604.1389999999999
+        ],
+        "baseline": 602.459,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Store/google-play-feature-dark.svg",
+    "width": 1024,
+    "height": 500,
+    "alt": "Timed interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
+    "text": [
+      {
+        "text": "INTERVAL TRAINING, ON YOUR TERMS.",
+        "bounds": [
+          48.0,
+          35.1525,
+          338.745,
+          48.8475
+        ],
+        "baseline": 46.5075,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          48.0,
+          104.353,
+          384.45,
+          179.647
+        ],
+        "baseline": 178.613,
+        "row": null
+      },
+      {
+        "text": "Make every interval yours.",
+        "bounds": [
+          48.0,
+          214.0,
+          490.805,
+          244.0
+        ],
+        "baseline": 237.7,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          72.0,
+          305.079,
+          155.98000000000002,
+          318.921
+        ],
+        "baseline": 318.705,
+        "row": null
+      },
+      {
+        "text": "00:10",
+        "bounds": [
+          882.2,
+          302.2625,
+          952.0,
+          321.7375
+        ],
+        "baseline": 321.4375,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          72.0,
+          353.079,
+          128.82600000000002,
+          366.921
+        ],
+        "baseline": 366.705,
+        "row": null
+      },
+      {
+        "text": "00:45",
+        "bounds": [
+          878.6375,
+          350.2625,
+          952.0,
+          369.7375
+        ],
+        "baseline": 369.4375,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          72.0,
+          401.079,
+          113.262,
+          414.921
+        ],
+        "baseline": 414.705,
+        "row": null
+      },
+      {
+        "text": "00:15",
+        "bounds": [
+          882.6375,
+          398.2625,
+          952.0,
+          417.7375
+        ],
+        "baseline": 417.4375,
+        "row": null
+      },
+      {
+        "text": "Simple timers. Custom stacks. Alert sounds.",
+        "bounds": [
+          48.0,
+          460.344,
+          368.048,
+          475.656
+        ],
+        "baseline": 472.456,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          872.998,
+          461.861,
+          976.0,
+          474.139
+        ],
+        "baseline": 472.459,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Previews/brand-overview-dark.svg",
+    "width": 1600,
+    "height": 920,
+    "alt": "Timed brand: track symbol, Hepta Slab and Plus Jakarta Sans, and green/orange/blue phase colors.",
+    "text": [
+      {
+        "text": "THE TIMED IDENTITY",
+        "bounds": [
+          134.0,
+          59.6675,
+          304.846,
+          72.3325
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          388.0,
+          254.64920833333338,
+          787.5999999999999,
+          344.3612083333334
+        ],
+        "baseline": 343.1292083333334,
+        "row": null
+      },
+      {
+        "text": "Hepta Slab",
+        "bounds": [
+          72.0,
+          438.0,
+          355.832,
+          486.0
+        ],
+        "baseline": 475.92,
+        "row": null
+      },
+      {
+        "text": "Display lettering and timer digits",
+        "bounds": [
+          72.0,
+          509.25300000000004,
+          401.052,
+          530.7470000000001
+        ],
+        "baseline": 525.907,
+        "row": null
+      },
+      {
+        "text": "Plus Jakarta Sans",
+        "bounds": [
+          72.0,
+          595.389,
+          370.908,
+          624.611
+        ],
+        "baseline": 624.155,
+        "row": null
+      },
+      {
+        "text": "Labels, instructions and everyday interface text",
+        "bounds": [
+          72.0,
+          657.253,
+          557.39,
+          678.7470000000001
+        ],
+        "baseline": 673.907,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          920.0,
+          396.6945,
+          1010.59,
+          411.3055
+        ],
+        "baseline": 411.0775,
+        "row": null
+      },
+      {
+        "text": "#009E73",
+        "bounds": [
+          920.0,
+          440.31,
+          1009.14,
+          455.69
+        ],
+        "baseline": 455.45,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          1126.0,
+          396.6945,
+          1186.483,
+          411.3055
+        ],
+        "baseline": 411.0775,
+        "row": null
+      },
+      {
+        "text": "#D55E00",
+        "bounds": [
+          1126.0,
+          440.31,
+          1219.42,
+          455.69
+        ],
+        "baseline": 455.45,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          1332.0,
+          396.6945,
+          1375.721,
+          411.3055
+        ],
+        "baseline": 411.0775,
+        "row": null
+      },
+      {
+        "text": "#0072B2",
+        "bounds": [
+          1332.0,
+          440.31,
+          1423.06,
+          455.69
+        ],
+        "baseline": 455.45,
+        "row": null
+      },
+      {
+        "text": "One rhythm. Three phases.",
+        "bounds": [
+          920.0,
+          540.5,
+          1323.8600000000001,
+          567.5
+        ],
+        "baseline": 561.83,
+        "row": null
+      },
+      {
+        "text": "Linked phases. Clear labels. Open spacing.",
+        "bounds": [
+          920.0,
+          595.7415,
+          1340.9950000000001,
+          616.2585
+        ],
+        "baseline": 611.6385,
+        "row": null
+      },
+      {
+        "text": "Mobile only: iOS and Android. No desktop or Watch branding.",
+        "bounds": [
+          72.0,
+          819.253,
+          699.0899999999999,
+          840.7470000000001
+        ],
+        "baseline": 835.907,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/readme-banner-light.svg",
+    "width": 1600,
+    "height": 1158,
+    "alt": "Timed workout interval timer for iOS and Android. Standby, work and rest; illustrative durations, not an app screenshot.",
+    "text": [
+      {
+        "text": "INTERVAL TRAINING, ON YOUR TERMS.",
+        "bounds": [
+          134.0,
+          58.23950000000001,
+          453.111,
+          73.76050000000001
+        ],
+        "baseline": 71.1085,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          72.0,
+          163.99999999999997,
+          623.9499999999999,
+          287.354
+        ],
+        "baseline": 285.65999999999997,
+        "row": null
+      },
+      {
+        "text": "Make every interval yours.",
+        "bounds": [
+          72.0,
+          413.0,
+          755.0945,
+          460.0
+        ],
+        "baseline": 450.13,
+        "row": null
+      },
+      {
+        "text": "01",
+        "bounds": [
+          117.717,
+          573.541,
+          138.28300000000002,
+          590.4590000000001
+        ],
+        "baseline": 590.195,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          224.0,
+          570.0805,
+          367.90999999999997,
+          593.9195
+        ],
+        "baseline": 593.5475,
+        "row": null
+      },
+      {
+        "text": "Find your position.",
+        "bounds": [
+          635.0,
+          571.7415,
+          815.995,
+          592.2585
+        ],
+        "baseline": 587.6385,
+        "row": null
+      },
+      {
+        "text": "00:10",
+        "bounds": [
+          1320.48,
+          558.63,
+          1488.0,
+          605.37
+        ],
+        "baseline": 604.65,
+        "row": null
+      },
+      {
+        "text": "02",
+        "bounds": [
+          115.11,
+          713.541,
+          140.89,
+          730.4590000000001
+        ],
+        "baseline": 730.195,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          224.0,
+          710.0805,
+          325.36699999999996,
+          733.9195
+        ],
+        "baseline": 733.5475,
+        "row": null
+      },
+      {
+        "text": "Make this interval count.",
+        "bounds": [
+          635.0,
+          713.9254999999999,
+          870.995,
+          730.0745
+        ],
+        "baseline": 729.8225,
+        "row": null
+      },
+      {
+        "text": "00:45",
+        "bounds": [
+          1312.53,
+          698.63,
+          1488.0,
+          745.37
+        ],
+        "baseline": 744.65,
+        "row": null
+      },
+      {
+        "text": "03",
+        "bounds": [
+          114.934,
+          853.541,
+          141.066,
+          870.4590000000001
+        ],
+        "baseline": 870.195,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          224.0,
+          850.0805,
+          297.229,
+          873.9195
+        ],
+        "baseline": 873.5475,
+        "row": null
+      },
+      {
+        "text": "Breathe. Reset. Go again.",
+        "bounds": [
+          635.0,
+          851.7415,
+          885.995,
+          872.2585
+        ],
+        "baseline": 867.6385,
+        "row": null
+      },
+      {
+        "text": "00:15",
+        "bounds": [
+          1321.53,
+          838.63,
+          1488.0,
+          885.37
+        ],
+        "baseline": 884.65,
+        "row": null
+      },
+      {
+        "text": "Simple timers. Custom stacks. Alert sounds.",
+        "bounds": [
+          72.0,
+          985.516,
+          565.072,
+          1008.4839999999999
+        ],
+        "baseline": 1003.684,
+        "row": null
+      },
+      {
+        "text": "CREATE YOUR OWN ROUTINE",
+        "bounds": [
+          72.0,
+          1094.2325,
+          294.755,
+          1105.7675000000002
+        ],
+        "baseline": 1105.5875,
+        "row": null
+      },
+      {
+        "text": "ILLUSTRATIVE TIMINGS \u00b7 NOT AN APP SCREENSHOT",
+        "bounds": [
+          1195.2179999999998,
+          1094.617,
+          1528.0,
+          1105.3829999999998
+        ],
+        "baseline": 1105.215,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/features-light.svg",
+    "width": 1600,
+    "height": 720,
+    "alt": "Simple timers, advanced stacks and user-created routines. Create, edit and delete your own timers.",
+    "text": [
+      {
+        "text": "MADE FOR YOUR WORKOUT",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          366.803,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Your workout. Your structure.",
+        "bounds": [
+          72.0,
+          158.71300000000002,
+          1020.093,
+          205.287
+        ],
+        "baseline": 204.53300000000002,
+        "row": null
+      },
+      {
+        "text": "01",
+        "bounds": [
+          104.0,
+          318.772,
+          127.072,
+          337.228
+        ],
+        "baseline": 336.94,
+        "row": null
+      },
+      {
+        "text": "Simple timers",
+        "bounds": [
+          104.0,
+          385.5,
+          358.67499999999995,
+          418.5
+        ],
+        "baseline": 411.57,
+        "row": null
+      },
+      {
+        "text": "Set standby, work and rest.",
+        "bounds": [
+          104.0,
+          470.74150000000003,
+          373.688,
+          491.2585
+        ],
+        "baseline": 486.6385,
+        "row": null
+      },
+      {
+        "text": "Choose how many rounds.",
+        "bounds": [
+          104.0,
+          510.74150000000003,
+          366.457,
+          531.2585
+        ],
+        "baseline": 526.6385,
+        "row": null
+      },
+      {
+        "text": "02",
+        "bounds": [
+          600.0,
+          318.772,
+          628.76,
+          337.228
+        ],
+        "baseline": 336.94,
+        "row": null
+      },
+      {
+        "text": "Advanced stacks",
+        "bounds": [
+          600.0,
+          388.7835,
+          919.9290000000001,
+          415.2165
+        ],
+        "baseline": 414.8535,
+        "row": null
+      },
+      {
+        "text": "Build your phase sequence.",
+        "bounds": [
+          600.0,
+          470.74150000000003,
+          870.9950000000001,
+          491.2585
+        ],
+        "baseline": 486.6385,
+        "row": null
+      },
+      {
+        "text": "Repeat it over multiple cycles.",
+        "bounds": [
+          600.0,
+          510.74150000000003,
+          896.9950000000001,
+          531.2585
+        ],
+        "baseline": 526.6385,
+        "row": null
+      },
+      {
+        "text": "03",
+        "bounds": [
+          1096.0,
+          318.772,
+          1125.144,
+          337.228
+        ],
+        "baseline": 336.94,
+        "row": null
+      },
+      {
+        "text": "Yours to change",
+        "bounds": [
+          1096.0,
+          385.2855,
+          1394.536,
+          418.7145
+        ],
+        "baseline": 411.3555,
+        "row": null
+      },
+      {
+        "text": "Create, edit and delete timers.",
+        "bounds": [
+          1096.0,
+          471.6865,
+          1398.457,
+          490.31350000000003
+        ],
+        "baseline": 487.5835,
+        "row": null
+      },
+      {
+        "text": "Keep the routines you use.",
+        "bounds": [
+          1096.0,
+          510.74150000000003,
+          1355.9950000000001,
+          531.2585
+        ],
+        "baseline": 526.6385,
+        "row": null
+      },
+      {
+        "text": "User-created timers and sets. No pre-built exercise library.",
+        "bounds": [
+          72.0,
+          646.7645,
+          716.2539999999999,
+          669.2355
+        ],
+        "baseline": 664.1755,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/workflow-light.svg",
+    "width": 1600,
+    "height": 740,
+    "alt": "Choose simple or advanced, configure durations and repetitions, then run your timer with alert sounds.",
+    "text": [
+      {
+        "text": "FROM AN IDEA TO AN INTERVAL",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          394.735,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Set it. Stack it. Start.",
+        "bounds": [
+          72.0,
+          155.1845,
+          767.571,
+          204.81550000000001
+        ],
+        "baseline": 204.1645,
+        "row": null
+      },
+      {
+        "text": "01",
+        "bounds": [
+          117.717,
+          311.541,
+          138.28300000000002,
+          328.459
+        ],
+        "baseline": 328.195,
+        "row": null
+      },
+      {
+        "text": "Choose your format",
+        "bounds": [
+          224.0,
+          303.832,
+          577.24,
+          336.168
+        ],
+        "baseline": 329.448,
+        "row": null
+      },
+      {
+        "text": "Start with a simple or advanced timer.",
+        "bounds": [
+          880.0,
+          308.9945,
+          1288.944,
+          331.00550000000004
+        ],
+        "baseline": 326.4055,
+        "row": null
+      },
+      {
+        "text": "02",
+        "bounds": [
+          115.11,
+          439.541,
+          140.89,
+          456.459
+        ],
+        "baseline": 456.195,
+        "row": null
+      },
+      {
+        "text": "Build your routine",
+        "bounds": [
+          224.0,
+          432.0,
+          546.4639999999999,
+          464.0
+        ],
+        "baseline": 457.28,
+        "row": null
+      },
+      {
+        "text": "Set durations, rounds or custom phase cycles.",
+        "bounds": [
+          880.0,
+          436.7645,
+          1386.944,
+          459.2355
+        ],
+        "baseline": 454.1755,
+        "row": null
+      },
+      {
+        "text": "03",
+        "bounds": [
+          114.934,
+          567.541,
+          141.066,
+          584.4590000000001
+        ],
+        "baseline": 584.195,
+        "row": null
+      },
+      {
+        "text": "Start your session",
+        "bounds": [
+          224.0,
+          560.136,
+          546.232,
+          591.864
+        ],
+        "baseline": 585.144,
+        "row": null
+      },
+      {
+        "text": "Follow the countdown and phase-change cues.",
+        "bounds": [
+          880.0,
+          564.7645,
+          1400.185,
+          587.2355
+        ],
+        "baseline": 582.1755,
+        "row": null
+      },
+      {
+        "text": "Illustrative workflow. Configure your own timer; no prescribed workout is included.",
+        "bounds": [
+          72.0,
+          681.7415,
+          895.995,
+          702.2585
+        ],
+        "baseline": 697.6385,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/phases-light.svg",
+    "width": 1600,
+    "height": 660,
+    "alt": "Green standby, orange work and blue rest. Each phase is identified by its label as well as its color.",
+    "text": [
+      {
+        "text": "THREE PHASES. A RHYTHM YOU CONTROL.",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          488.14799999999997,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Ready. Work. Recover.",
+        "bounds": [
+          72.0,
+          149.0,
+          841.9970000000001,
+          211.0
+        ],
+        "baseline": 197.98,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          108.0,
+          294.46500000000003,
+          249.3,
+          317.535
+        ],
+        "baseline": 317.175,
+        "row": null
+      },
+      {
+        "text": "Get ready before the next work phase.",
+        "bounds": [
+          638.0,
+          293.299,
+          1102.042,
+          318.701
+        ],
+        "baseline": 312.981,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          108.0,
+          402.46500000000003,
+          204.70999999999998,
+          425.535
+        ],
+        "baseline": 425.175,
+        "row": null
+      },
+      {
+        "text": "Follow the duration you choose.",
+        "bounds": [
+          638.0,
+          401.299,
+          1023.47,
+          426.701
+        ],
+        "baseline": 420.981,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          108.0,
+          510.465,
+          179.77,
+          533.535
+        ],
+        "baseline": 533.175,
+        "row": null
+      },
+      {
+        "text": "Make room for recovery.",
+        "bounds": [
+          638.0,
+          509.299,
+          929.47,
+          534.701
+        ],
+        "baseline": 528.981,
+        "row": null
+      },
+      {
+        "text": "Phase labels and sounds support the color cues. Never rely on color alone.",
+        "bounds": [
+          72.0,
+          603.7415,
+          804.995,
+          624.2585
+        ],
+        "baseline": 619.6385,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/timer-types-light.svg",
+    "width": 1600,
+    "height": 760,
+    "alt": "Simple timers use one standby and repeated work/rest rounds, without rest after the last work round. Advanced timers repeat a custom sequence in cycles.",
+    "text": [
+      {
+        "text": "TWO WAYS TO BUILD YOUR ROUTINE",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          444.452,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Simple rounds. Flexible stacks.",
+        "bounds": [
+          72.0,
+          154.0,
+          1037.548,
+          210.0
+        ],
+        "baseline": 198.24,
+        "row": null
+      },
+      {
+        "text": "01",
+        "bounds": [
+          72.0,
+          283.1565,
+          93.819,
+          300.8435
+        ],
+        "baseline": 300.5675,
+        "row": null
+      },
+      {
+        "text": "Simple",
+        "bounds": [
+          72.0,
+          338.0,
+          238.37599999999998,
+          382.0
+        ],
+        "baseline": 372.76,
+        "row": null
+      },
+      {
+        "text": "02",
+        "bounds": [
+          856.0,
+          283.1565,
+          883.27,
+          300.8435
+        ],
+        "baseline": 300.5675,
+        "row": null
+      },
+      {
+        "text": "Advanced",
+        "bounds": [
+          856.0,
+          342.378,
+          1102.184,
+          377.62199999999996
+        ],
+        "baseline": 377.138,
+        "row": null
+      },
+      {
+        "text": "Set standby, work, rest and rounds.",
+        "bounds": [
+          72.0,
+          430.7645,
+          455.944,
+          453.2355
+        ],
+        "baseline": 448.1755,
+        "row": null
+      },
+      {
+        "text": "Standby runs once at the beginning.",
+        "bounds": [
+          72.0,
+          472.7645,
+          466.944,
+          495.2355
+        ],
+        "baseline": 490.1755,
+        "row": null
+      },
+      {
+        "text": "Work/rest repeats between rounds.",
+        "bounds": [
+          72.0,
+          514.9945,
+          464.956,
+          537.0055
+        ],
+        "baseline": 532.4055,
+        "row": null
+      },
+      {
+        "text": "The final round ends after work.",
+        "bounds": [
+          72.0,
+          559.1565,
+          415.956,
+          576.8435
+        ],
+        "baseline": 576.5675,
+        "row": null
+      },
+      {
+        "text": "Stack your own standby, work and rest phases.",
+        "bounds": [
+          856.0,
+          430.7645,
+          1366.944,
+          453.2355
+        ],
+        "baseline": 448.1755,
+        "row": null
+      },
+      {
+        "text": "Set a duration for each phase.",
+        "bounds": [
+          856.0,
+          472.9945,
+          1180.944,
+          495.00550000000004
+        ],
+        "baseline": 490.4055,
+        "row": null
+      },
+      {
+        "text": "Repeat the whole sequence in cycles.",
+        "bounds": [
+          856.0,
+          514.7645,
+          1266.185,
+          537.2355
+        ],
+        "baseline": 532.1755,
+        "row": null
+      },
+      {
+        "text": "Edit the sequence to fit your workout.",
+        "bounds": [
+          856.0,
+          556.7645,
+          1266.185,
+          579.2355
+        ],
+        "baseline": 574.1755,
+        "row": null
+      },
+      {
+        "text": "Diagram summary, not an app screenshot. Your durations and repetitions are configurable.",
+        "bounds": [
+          72.0,
+          699.7415,
+          973.995,
+          720.2585
+        ],
+        "baseline": 715.6385,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/social-card-light.svg",
+    "width": 1200,
+    "height": 630,
+    "alt": "Timed interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
+    "text": [
+      {
+        "text": "INTERVAL TRAINING, ON YOUR TERMS.",
+        "bounds": [
+          48.0,
+          35.1525,
+          338.745,
+          48.8475
+        ],
+        "baseline": 46.5075,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          48.0,
+          104.353,
+          384.45,
+          179.647
+        ],
+        "baseline": 178.613,
+        "row": null
+      },
+      {
+        "text": "Make every interval yours.",
+        "bounds": [
+          48.0,
+          214.0,
+          490.805,
+          244.0
+        ],
+        "baseline": 237.7,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          72.0,
+          349.079,
+          155.98000000000002,
+          362.921
+        ],
+        "baseline": 362.705,
+        "row": null
+      },
+      {
+        "text": "00:10",
+        "bounds": [
+          1058.2,
+          346.2625,
+          1128.0,
+          365.7375
+        ],
+        "baseline": 365.4375,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          72.0,
+          413.079,
+          128.82600000000002,
+          426.921
+        ],
+        "baseline": 426.705,
+        "row": null
+      },
+      {
+        "text": "00:45",
+        "bounds": [
+          1054.6375,
+          410.2625,
+          1128.0,
+          429.7375
+        ],
+        "baseline": 429.4375,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          72.0,
+          477.079,
+          113.262,
+          490.921
+        ],
+        "baseline": 490.705,
+        "row": null
+      },
+      {
+        "text": "00:15",
+        "bounds": [
+          1058.6375,
+          474.2625,
+          1128.0,
+          493.7375
+        ],
+        "baseline": 493.4375,
+        "row": null
+      },
+      {
+        "text": "Simple timers. Custom stacks. Alert sounds.",
+        "bounds": [
+          48.0,
+          590.344,
+          368.048,
+          605.6560000000001
+        ],
+        "baseline": 602.456,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1048.998,
+          591.861,
+          1152.0,
+          604.1389999999999
+        ],
+        "baseline": 602.459,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Store/google-play-feature-light.svg",
+    "width": 1024,
+    "height": 500,
+    "alt": "Timed interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
+    "text": [
+      {
+        "text": "INTERVAL TRAINING, ON YOUR TERMS.",
+        "bounds": [
+          48.0,
+          35.1525,
+          338.745,
+          48.8475
+        ],
+        "baseline": 46.5075,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          48.0,
+          104.353,
+          384.45,
+          179.647
+        ],
+        "baseline": 178.613,
+        "row": null
+      },
+      {
+        "text": "Make every interval yours.",
+        "bounds": [
+          48.0,
+          214.0,
+          490.805,
+          244.0
+        ],
+        "baseline": 237.7,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          72.0,
+          305.079,
+          155.98000000000002,
+          318.921
+        ],
+        "baseline": 318.705,
+        "row": null
+      },
+      {
+        "text": "00:10",
+        "bounds": [
+          882.2,
+          302.2625,
+          952.0,
+          321.7375
+        ],
+        "baseline": 321.4375,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          72.0,
+          353.079,
+          128.82600000000002,
+          366.921
+        ],
+        "baseline": 366.705,
+        "row": null
+      },
+      {
+        "text": "00:45",
+        "bounds": [
+          878.6375,
+          350.2625,
+          952.0,
+          369.7375
+        ],
+        "baseline": 369.4375,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          72.0,
+          401.079,
+          113.262,
+          414.921
+        ],
+        "baseline": 414.705,
+        "row": null
+      },
+      {
+        "text": "00:15",
+        "bounds": [
+          882.6375,
+          398.2625,
+          952.0,
+          417.7375
+        ],
+        "baseline": 417.4375,
+        "row": null
+      },
+      {
+        "text": "Simple timers. Custom stacks. Alert sounds.",
+        "bounds": [
+          48.0,
+          460.344,
+          368.048,
+          475.656
+        ],
+        "baseline": 472.456,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          872.998,
+          461.861,
+          976.0,
+          474.139
+        ],
+        "baseline": 472.459,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Previews/brand-overview-light.svg",
+    "width": 1600,
+    "height": 920,
+    "alt": "Timed brand: track symbol, Hepta Slab and Plus Jakarta Sans, and green/orange/blue phase colors.",
+    "text": [
+      {
+        "text": "THE TIMED IDENTITY",
+        "bounds": [
+          134.0,
+          59.6675,
+          304.846,
+          72.3325
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          388.0,
+          254.64920833333338,
+          787.5999999999999,
+          344.3612083333334
+        ],
+        "baseline": 343.1292083333334,
+        "row": null
+      },
+      {
+        "text": "Hepta Slab",
+        "bounds": [
+          72.0,
+          438.0,
+          355.832,
+          486.0
+        ],
+        "baseline": 475.92,
+        "row": null
+      },
+      {
+        "text": "Display lettering and timer digits",
+        "bounds": [
+          72.0,
+          509.25300000000004,
+          401.052,
+          530.7470000000001
+        ],
+        "baseline": 525.907,
+        "row": null
+      },
+      {
+        "text": "Plus Jakarta Sans",
+        "bounds": [
+          72.0,
+          595.389,
+          370.908,
+          624.611
+        ],
+        "baseline": 624.155,
+        "row": null
+      },
+      {
+        "text": "Labels, instructions and everyday interface text",
+        "bounds": [
+          72.0,
+          657.253,
+          557.39,
+          678.7470000000001
+        ],
+        "baseline": 673.907,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          920.0,
+          396.6945,
+          1010.59,
+          411.3055
+        ],
+        "baseline": 411.0775,
+        "row": null
+      },
+      {
+        "text": "#009E73",
+        "bounds": [
+          920.0,
+          440.31,
+          1009.14,
+          455.69
+        ],
+        "baseline": 455.45,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          1126.0,
+          396.6945,
+          1186.483,
+          411.3055
+        ],
+        "baseline": 411.0775,
+        "row": null
+      },
+      {
+        "text": "#D55E00",
+        "bounds": [
+          1126.0,
+          440.31,
+          1219.42,
+          455.69
+        ],
+        "baseline": 455.45,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          1332.0,
+          396.6945,
+          1375.721,
+          411.3055
+        ],
+        "baseline": 411.0775,
+        "row": null
+      },
+      {
+        "text": "#0072B2",
+        "bounds": [
+          1332.0,
+          440.31,
+          1423.06,
+          455.69
+        ],
+        "baseline": 455.45,
+        "row": null
+      },
+      {
+        "text": "One rhythm. Three phases.",
+        "bounds": [
+          920.0,
+          540.5,
+          1323.8600000000001,
+          567.5
+        ],
+        "baseline": 561.83,
+        "row": null
+      },
+      {
+        "text": "Linked phases. Clear labels. Open spacing.",
+        "bounds": [
+          920.0,
+          595.7415,
+          1340.9950000000001,
+          616.2585
+        ],
+        "baseline": 611.6385,
+        "row": null
+      },
+      {
+        "text": "Mobile only: iOS and Android. No desktop or Watch branding.",
+        "bounds": [
+          72.0,
+          819.253,
+          699.0899999999999,
+          840.7470000000001
+        ],
+        "baseline": 835.907,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Brand/timed-horizontal-light.svg",
+    "width": 498,
+    "height": 160,
+    "alt": "Transparent Timed horizontal logo for light backgrounds.",
+    "text": [
+      {
+        "text": "Timed",
+        "bounds": [
+          164.43059490084985,
+          46.35799999999999,
+          465.13059490084987,
+          113.642
+        ],
+        "baseline": 112.71799999999999,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Brand/timed-wordmark-light.svg",
+    "width": 365,
+    "height": 132,
+    "alt": "Transparent Timed wordmark.",
+    "text": [
+      {
+        "text": "Timed",
+        "bounds": [
+          32.0,
+          32.0,
+          332.7,
+          99.284
+        ],
+        "baseline": 98.36,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Brand/timed-stacked-light.svg",
+    "width": 365,
+    "height": 256,
+    "alt": "Transparent Timed stacked logo.",
+    "text": [
+      {
+        "text": "Timed",
+        "bounds": [
+          32.14999999999999,
+          156.0,
+          332.85,
+          223.28400000000002
+        ],
+        "baseline": 222.36,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Brand/timed-horizontal-dark.svg",
+    "width": 498,
+    "height": 160,
+    "alt": "Transparent Timed horizontal logo for dark backgrounds.",
+    "text": [
+      {
+        "text": "Timed",
+        "bounds": [
+          164.43059490084985,
+          46.35799999999999,
+          465.13059490084987,
+          113.642
+        ],
+        "baseline": 112.71799999999999,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Brand/timed-wordmark-dark.svg",
+    "width": 365,
+    "height": 132,
+    "alt": "Transparent Timed wordmark.",
+    "text": [
+      {
+        "text": "Timed",
+        "bounds": [
+          32.0,
+          32.0,
+          332.7,
+          99.284
+        ],
+        "baseline": 98.36,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Brand/timed-stacked-dark.svg",
+    "width": 365,
+    "height": 256,
+    "alt": "Transparent Timed stacked logo.",
+    "text": [
+      {
+        "text": "Timed",
+        "bounds": [
+          32.14999999999999,
+          156.0,
+          332.85,
+          223.28400000000002
+        ],
+        "baseline": 222.36,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Brand/timed-mark-color.svg",
+    "width": 446,
+    "height": 415,
+    "alt": "Transparent Timed Interlocking Lanes mark, color.",
+    "text": []
+  },
+  {
+    "file": "Brand/timed-mark-black.svg",
+    "width": 446,
+    "height": 415,
+    "alt": "Transparent Timed Interlocking Lanes mark, black.",
+    "text": []
+  },
+  {
+    "file": "Brand/timed-mark-white.svg",
+    "width": 446,
+    "height": 415,
+    "alt": "Transparent Timed Interlocking Lanes mark, white.",
+    "text": []
+  },
+  {
+    "file": "Brand/timed-mark-grayscale.svg",
+    "width": 446,
+    "height": 415,
+    "alt": "Transparent Timed Interlocking Lanes mark, grayscale.",
+    "text": []
+  },
+  {
+    "file": "Brand/timed-tagline-light.svg",
+    "width": 667,
+    "height": 240,
+    "alt": "Timed Interlocking Lanes logo with a separate tagline for light backgrounds.",
+    "text": [
+      {
+        "text": "Timed",
+        "bounds": [
+          260.0,
+          53.15400000000001,
+          588.1,
+          126.846
+        ],
+        "baseline": 125.834,
+        "row": null
+      },
+      {
+        "text": "Make every interval yours.",
+        "bounds": [
+          260.0,
+          159.345,
+          634.49,
+          188.655
+        ],
+        "baseline": 182.055,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Brand/timed-tagline-dark.svg",
+    "width": 667,
+    "height": 240,
+    "alt": "Timed Interlocking Lanes logo with a separate tagline for dark backgrounds.",
+    "text": [
+      {
+        "text": "Timed",
+        "bounds": [
+          260.0,
+          53.15400000000001,
+          588.1,
+          126.846
+        ],
+        "baseline": 125.834,
+        "row": null
+      },
+      {
+        "text": "Make every interval yours.",
+        "bounds": [
+          260.0,
+          159.345,
+          634.49,
+          188.655
+        ],
+        "baseline": 182.055,
+        "row": null
+      }
+    ]
+  }
+]

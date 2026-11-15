@@ -1,0 +1,58 @@
+[
+  {
+    "role": "standby",
+    "foreground": "#060909",
+    "background": "#009E73",
+    "ratio": 5.84,
+    "normal_text_AA": true
+  },
+  {
+    "role": "work",
+    "foreground": "#060909",
+    "background": "#D55E00",
+    "ratio": 5.17,
+    "normal_text_AA": true
+  },
+  {
+    "role": "rest",
+    "foreground": "#FFFFFF",
+    "background": "#0072B2",
+    "ratio": 5.19,
+    "normal_text_AA": true
+  },
+  {
+    "role": "colored-header wordmark",
+    "foreground": "#161618",
+    "background": "#F7F6F3",
+    "ratio": 16.72,
+    "normal_text_AA": true
+  },
+  {
+    "role": "light text",
+    "foreground": "#161618",
+    "background": "#F7F6F3",
+    "ratio": 16.72,
+    "normal_text_AA": true
+  },
+  {
+    "role": "light muted",
+    "foreground": "#61616B",
+    "background": "#F7F6F3",
+    "ratio": 5.66,
+    "normal_text_AA": true
+  },
+  {
+    "role": "dark text",
+    "foreground": "#F4F4EF",
+    "background": "#0B0B0C",
+    "ratio": 17.83,
+    "normal_text_AA": true
+  },
+  {
+    "role": "dark muted",
+    "foreground": "#A8A8AE",
+    "background": "#0B0B0C",
+    "ratio": 8.32,
+    "normal_text_AA": true
+  }
+]

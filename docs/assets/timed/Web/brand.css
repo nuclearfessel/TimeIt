@@ -1,0 +1,19 @@
+/* Scoped starter, not a replacement application theme. */
+@font-face{font-family:"Hepta Slab";src:url("../Fonts/HeptaSlab-SemiBold.woff") format("woff");font-weight:600;font-display:swap}
+@font-face{font-family:"Plus Jakarta Sans";src:url("../Fonts/PlusJakartaSans-Regular.woff") format("woff");font-weight:400;font-display:swap}
+@font-face{font-family:"Plus Jakarta Sans";src:url("../Fonts/PlusJakartaSans-Bold.woff") format("woff");font-weight:700;font-display:swap}
+.timed-brand[data-theme="light"]{color-scheme:light;--timed-bg:#F7F6F3;--timed-surface:#FFFFFF;--timed-ink:#161618;--timed-muted:#61616B;--timed-line:#C6C3BC;}
+.timed-brand[data-theme="dark"]{color-scheme:dark;--timed-bg:#0B0B0C;--timed-surface:#161618;--timed-ink:#F4F4EF;--timed-muted:#A8A8AE;--timed-line:#343438;}
+
+.timed-brand{--timed-bg:#0B0B0C;--timed-ink:#F4F4EF;--timed-muted:#A8A8AE;--timed-line:#343438;--phase-standby:#009E73;--phase-work:#D55E00;--phase-rest:#0072B2;background:var(--timed-bg);color:var(--timed-ink);font:400 18px/1.6 "Plus Jakarta Sans",sans-serif}
+.timed-brand :is(h1,h2,h3,.timer-digits){font-family:"Hepta Slab",serif;font-weight:600;line-height:1.15}
+.timed-brand .timer-digits{font-variant-numeric:tabular-nums}
+.timed-brand img{max-width:100%;height:auto}
+.timed-brand .phase-band{display:flex;align-items:center;gap:24px;padding:24px 32px}
+.timed-brand .standby{background:var(--phase-standby);color:#060909}
+.timed-brand .work{background:var(--phase-work);color:#060909}
+.timed-brand .rest{background:var(--phase-rest);color:#FFFFFF}
+.timed-brand a{color:inherit;text-underline-offset:.2em}
+.timed-brand :focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media(max-width:600px){.timed-brand .phase-band{flex-wrap:wrap;gap:16px;padding:20px}}
+@media(prefers-reduced-motion:reduce){.timed-brand *{scroll-behavior:auto!important;transition:none!important}}

@@ -8,10 +8,8 @@ import 'theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+  // Portrait and landscape for all screens (owner decision 2026-11-14).
+  await SystemChrome.setPreferredOrientations(DeviceOrientation.values);
 
   final timers = TimerStore();
   final settings = SettingsStore();

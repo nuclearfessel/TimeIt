@@ -1,31 +1,63 @@
 # Timed
 
-A workout interval timer for iOS and Android. Research and references live at the repo root; the Flutter app is in `app/`.
+<a href="https://nuclearfessel.github.io/Timed/">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/readme-banner-dark.svg">
+    <img src="branding/Graphics/readme-banner-light.svg" alt="Timed: create your own standby, work and rest interval routines." width="1600" height="1158">
+  </picture>
+</a>
 
-## Decisions so far
-- **Scope:** workout interval timer with simple and advanced timers. Advanced stacks **standby, work, and rest**. Alert sounds. No Pomodoro. No pre-built exercises; users create and delete their own timers and sets.
-- **Platforms:** iOS app and Android app only, from **one tech stack**.
-- **Framework:** **Flutter** (one codebase → iOS + Android).
-- **Typefaces (Google Fonts):**
-  - **Hepta Slab** for large numbers (timer digits) and headers.
-  - **Plus Jakarta Sans** for everything else (body, labels, controls).
-- **Shortlisted reference apps:** Seconds (iOS + Android), Intervals Pro (iOS), Allez (Android).
-- **Repo:** public (`nuclearfessel/Timed`).
-- **Site / guide:** `docs/` → GitHub Pages at `https://nuclearfessel.github.io/Timed/` (after the docs site is merged to `main`).
+A workout interval timer for **iOS and Android only**, built with Flutter.
 
-If you are an AI assistant, read `AGENTS.md` first.
+**Site:** [nuclearfessel.github.io/Timed](https://nuclearfessel.github.io/Timed/) · **Guide:** [Using Timed](https://nuclearfessel.github.io/Timed/guide.html) · **Releases:** [GitHub Releases](https://github.com/nuclearfessel/Timed/releases)
 
-## Contents
-- `AGENTS.md`: all of the owner's instructions, decisions and working preferences, for continuing in any AI app.
-- `app/`: Flutter app — see `app/README.md`.
-- `docs/index.html` + `docs/guide.html`: public site and user guide (Pages).
-- `docs/research.md`: market, design, accessibility and technical research.
-- `docs/reference-apps.md`: the shortlist, what each does, and orientation support.
-- `reference/index.html`: screen reference board (open in a browser). Views: By app, By pattern. Store images are linked from Apple and Google Play, so it needs internet.
+## What it does
+- Simple timers: standby, work, rest, rounds
+- Advanced timers: stack standby / work / rest, reorder, cycles
+- Create, edit, and delete your own timers (no pre-built exercises, no Pomodoro)
+- Full-screen phase colors and alert sounds
+- Settings: Light / Dark appearance (not system), sound preferences
+- Portrait and landscape for the whole app
 
-## Open questions
-1. Monetization (one-time Pro, lifetime, optional subscription)?
-2. Is an Apple Watch app in v1? (Phone apps only so far; confirm Watch is out or later.)
-3. Landscape support for the run screen (confirmed only for Seconds; see reference apps).
-4. Restyle `reference/index.html` in Hepta Slab and Plus Jakarta Sans?
-5. Richer cues later (voice / custom sounds), or keep current beeps?
+## Phases
+Standby (green), work (orange), and rest (blue) stay consistent in the app, icons, and docs.
+
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/phases-dark.svg">
+    <img src="branding/Graphics/phases-light.svg" alt="Standby, work, and rest phase colors with labels." width="1600" height="900">
+  </picture>
+</p>
+
+## Simple and advanced
+Simple timers cover classic work/rest rounds. Advanced timers let you stack phases in any order, reorder them, and set cycles.
+
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/timer-types-dark.svg">
+    <img src="branding/Graphics/timer-types-light.svg" alt="Simple timer versus advanced stacked phases." width="1600" height="900">
+  </picture>
+</p>
+
+## Stack
+- Flutter (one codebase → iOS + Android only; no web/desktop/watch targets)
+- Fonts: **Hepta Slab** (digits / headers), **Plus Jakarta Sans** (UI)
+- Brand mark: Interlocking Lanes (standby / work / rest woven together)
+
+## Run
+```bash
+cd app
+flutter pub get
+flutter run
+```
+
+## Repo layout
+- `app/` — Flutter app
+- `docs/` — GitHub Pages site and guide (`index.html`, `guide.html`)
+- `docs/assets/timed/` — public brand assets for Pages
+- `branding/` — full brand package (icons sources, store art, guidelines)
+- `docs/research.md`, `docs/reference-apps.md` — research notes
+- `reference/index.html` — private screen reference board
+- `AGENTS.md` — instructions for AI assistants continuing the work
+
+Timed is free. No monetization. **iOS and Android only** — no web, desktop, Apple Watch, or Wear OS.
