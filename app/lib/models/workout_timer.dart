@@ -57,7 +57,7 @@ class WorkoutTimer {
   int workSeconds;
   int restSeconds;
 
-  /// Simple: how many times to run the phase stack (rest skipped after last).
+  /// Simple: how many times to run the phase stack.
   int rounds;
 
   /// Simple: editable phase stack (standby / work / rest in any mix).
@@ -100,53 +100,53 @@ class WorkoutTimer {
   }
 
   /// Expand into the flat run sequence used by the engine.
-  List<IntervalStep> expand() {
+  ///
+  /// When [skipLastRest] is true, trailing rest phases at the end of the
+  /// workout are omitted (simple last round and advanced final round alike).
+  List<IntervalStep> expand({bool skipLastRest = true}) {
+    late final List<IntervalStep> out;
     if (kind == TimerKind.simple) {
       final template = simpleSteps.where((s) => s.seconds > 0).toList();
       if (template.isEmpty) {
         return [IntervalStep(type: PhaseType.work, seconds: 30)];
       }
       // Phases before the first work run once (e.g. standby). From the first
-      // work onward, the stack repeats for [rounds], skipping trailing rest
-      // after the last work bout.
+      // work onward, the stack repeats for [rounds].
       final firstWork = template.indexWhere((s) => s.type == PhaseType.work);
       final preface = firstWork > 0
           ? template.sublist(0, firstWork)
           : <IntervalStep>[];
       final cycle =
           firstWork >= 0 ? template.sublist(firstWork) : template;
-      final out = <IntervalStep>[
+      out = <IntervalStep>[
         ...preface.map((s) => s.copy()),
       ];
       final count = rounds < 1 ? 1 : rounds;
       for (var r = 0; r < count; r++) {
-        final isLastRound = r == count - 1;
-        for (var i = 0; i < cycle.length; i++) {
-          final step = cycle[i];
-          final trailingRest = isLastRound &&
-              step.type == PhaseType.rest &&
-              cycle.skip(i).every((s) => s.type == PhaseType.rest);
-          if (trailingRest) continue;
+        for (final step in cycle) {
           out.add(step.copy());
         }
       }
-      return out.isEmpty
-          ? [IntervalStep(type: PhaseType.work, seconds: 30)]
-          : out;
+    } else {
+      out = <IntervalStep>[];
+      for (final round in advancedRounds) {
+        out.addAll(round.activeSteps().map((s) => s.copy()));
+      }
     }
 
-    final out = <IntervalStep>[];
-    for (final round in advancedRounds) {
-      out.addAll(round.activeSteps().map((s) => s.copy()));
+    if (skipLastRest) {
+      while (out.isNotEmpty && out.last.type == PhaseType.rest) {
+        out.removeLast();
+      }
     }
-    if (out.isEmpty) {
-      return [IntervalStep(type: PhaseType.work, seconds: 30)];
-    }
-    return out;
+
+    return out.isEmpty
+        ? [IntervalStep(type: PhaseType.work, seconds: 30)]
+        : out;
   }
 
-  int get totalSeconds =>
-      expand().fold<int>(0, (sum, step) => sum + step.seconds);
+  int totalSeconds({bool skipLastRest = true}) => expand(skipLastRest: skipLastRest)
+      .fold<int>(0, (sum, step) => sum + step.seconds);
 
   WorkoutTimer copy() {
     return WorkoutTimer(

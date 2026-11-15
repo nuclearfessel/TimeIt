@@ -78,13 +78,17 @@ void main() {
 
   testWidgets('04-settings', (tester) async {
     final (settings, _) = await _seed();
-    await _capture(
-      binding,
-      tester,
-      '04-settings',
-      SettingsScreen(settings: settings),
-      settings,
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    await tester.pumpWidget(
+      _app(settings: settings, home: SettingsScreen(settings: settings)),
     );
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    // Scroll so start/end/finish tone dropdowns are in frame.
+    await tester.drag(find.byType(ListView).first, const Offset(0, -320));
+    await tester.pumpAndSettle();
+    await binding.convertFlutterSurfaceToImage();
+    await tester.pumpAndSettle();
+    await binding.takeScreenshot('04-settings');
   });
 
   testWidgets('05-editor-simple', (tester) async {

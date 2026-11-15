@@ -26,7 +26,17 @@ void main() {
       PhaseType.rest,
       PhaseType.work,
     ]);
-    expect(timer.totalSeconds, 5 + 10 + 5 + 10);
+    expect(timer.totalSeconds(), 5 + 10 + 5 + 10);
+    expect(
+      timer.expand(skipLastRest: false).map((s) => s.type).toList(),
+      [
+        PhaseType.standby,
+        PhaseType.work,
+        PhaseType.rest,
+        PhaseType.work,
+        PhaseType.rest,
+      ],
+    );
   });
 
   test('simple timer can add extra phases in the stack', () {
@@ -77,9 +87,18 @@ void main() {
       PhaseType.standby,
       PhaseType.work,
       PhaseType.work,
-      PhaseType.rest,
     ]);
-    expect(timer.totalSeconds, 5 + 10 + 20 + 8);
+    expect(timer.totalSeconds(), 5 + 10 + 20);
+    expect(
+      timer.expand(skipLastRest: false).map((s) => s.type).toList(),
+      [
+        PhaseType.standby,
+        PhaseType.work,
+        PhaseType.work,
+        PhaseType.rest,
+      ],
+    );
+    expect(timer.totalSeconds(skipLastRest: false), 5 + 10 + 20 + 8);
     expect(timer.advancedRoundCount, 2);
   });
 
@@ -105,12 +124,12 @@ void main() {
       ],
     });
     expect(timer.advancedRounds.length, 2);
-    expect(timer.expand().length, 4);
+    expect(timer.expand().length, 3);
     expect(timer.expand().map((s) => s.type).toList(), [
       PhaseType.work,
       PhaseType.rest,
       PhaseType.work,
-      PhaseType.rest,
     ]);
+    expect(timer.expand(skipLastRest: false).length, 4);
   });
 }

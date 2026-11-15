@@ -1,5 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
+import '../models/alert_tone.dart';
+import '../services/cue_audio.dart';
 import '../services/settings_store.dart';
 import '../theme/app_theme.dart';
 
@@ -101,7 +105,15 @@ class SettingsScreen extends StatelessWidget {
                 enabled: settings.alertSounds,
                 onChanged: settings.setStartBeepCount,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 4),
+              _ToneDropdown(
+                title: 'Start sound',
+                subtitle: 'Lead-in beep at the start of each phase',
+                value: settings.startTone,
+                enabled: settings.alertSounds,
+                onChanged: settings.setStartTone,
+              ),
+              const SizedBox(height: 12),
               _BeepCountSlider(
                 title: 'End beeps',
                 subtitle: 'How many beeps leading into the end of each phase',
@@ -109,12 +121,28 @@ class SettingsScreen extends StatelessWidget {
                 enabled: settings.alertSounds,
                 onChanged: settings.setEndBeepCount,
               ),
+              const SizedBox(height: 4),
+              _ToneDropdown(
+                title: 'End sound',
+                subtitle: 'Lead-out beep into the end of each phase',
+                value: settings.endTone,
+                enabled: settings.alertSounds,
+                onChanged: settings.setEndTone,
+              ),
+              const SizedBox(height: 12),
+              _ToneDropdown(
+                title: 'Finish sound',
+                subtitle: 'Played when the workout completes',
+                value: settings.finishTone,
+                enabled: settings.alertSounds,
+                onChanged: settings.setFinishTone,
+              ),
               const SizedBox(height: 8),
               SwitchListTile(
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Vibrate on alert'),
                 subtitle: Text(
-                  'Coming soon — preference is saved',
+                  'Haptic pulse with start beeps, end beeps, and complete',
                   style: TextStyle(
                     color: colors.mute,
                     fontSize: 13,
@@ -123,6 +151,37 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 value: settings.vibrateOnAlert,
                 onChanged: settings.setVibrateOnAlert,
+              ),
+              const SizedBox(height: 28),
+              _SectionLabel('Timers'),
+              const SizedBox(height: 4),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Skip last rest'),
+                subtitle: Text(
+                  'End the workout after the last work — omit a trailing rest',
+                  style: TextStyle(
+                    color: colors.mute,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                value: settings.skipLastRest,
+                onChanged: settings.setSkipLastRest,
+              ),
+              SwitchListTile(
+                contentPadding: EdgeInsets.zero,
+                title: const Text('Delete without confirmation'),
+                subtitle: Text(
+                  'Remove a timer immediately — skip the Delete timer? dialog',
+                  style: TextStyle(
+                    color: colors.mute,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                value: settings.deleteWithoutConfirmation,
+                onChanged: settings.setDeleteWithoutConfirmation,
               ),
               const SizedBox(height: 28),
               _SectionLabel('About'),
@@ -229,6 +288,88 @@ class _BeepCountSlider extends StatelessWidget {
             divisions: SettingsStore.maxBeepCount,
             label: '$value',
             onChanged: enabled ? (v) => onChanged(v.round()) : null,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ToneDropdown extends StatefulWidget {
+  const _ToneDropdown({
+    required this.title,
+    required this.subtitle,
+    required this.value,
+    required this.onChanged,
+    this.enabled = true,
+  });
+
+  final String title;
+  final String subtitle;
+  final AlertTone value;
+  final ValueChanged<AlertTone> onChanged;
+  final bool enabled;
+
+  @override
+  State<_ToneDropdown> createState() => _ToneDropdownState();
+}
+
+class _ToneDropdownState extends State<_ToneDropdown> {
+  late final CueAudio _preview = CueAudio();
+
+  @override
+  void dispose() {
+    unawaited(_preview.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = TimeItColors.of(context);
+    final titleColor = widget.enabled ? colors.fg : colors.mute;
+    return Opacity(
+      opacity: widget.enabled ? 1 : 0.45,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            widget.title,
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              color: titleColor,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            widget.subtitle,
+            style: TextStyle(
+              color: colors.mute,
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              height: 1.35,
+            ),
+          ),
+          const SizedBox(height: 8),
+          DropdownMenu<AlertTone>(
+            key: ValueKey('${widget.title}-${widget.value.name}'),
+            initialSelection: widget.value,
+            enabled: widget.enabled,
+            expandedInsets: EdgeInsets.zero,
+            inputDecorationTheme: const InputDecorationTheme(
+              border: OutlineInputBorder(),
+              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            ),
+            dropdownMenuEntries: [
+              for (final tone in AlertTone.values)
+                DropdownMenuEntry(value: tone, label: tone.label),
+            ],
+            onSelected: widget.enabled
+                ? (next) {
+                    if (next == null) return;
+                    widget.onChanged(next);
+                    unawaited(_preview.playTone(next));
+                  }
+                : null,
           ),
         ],
       ),

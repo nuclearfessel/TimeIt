@@ -26,7 +26,7 @@ TimeIt is free. **iOS and Android only** — no web, desktop, Apple Watch, or We
 <p align="center">
   <img src="docs/assets/timeit/Screenshots/06-editor-advanced.svg" alt="Advanced editor with rounds, each with their own phase stack." width="210">
   &nbsp;
-  <img src="docs/assets/timeit/Screenshots/04-settings.svg" alt="Settings with Light and Dark theme and Alert sounds controls." width="210">
+  <img src="docs/assets/timeit/Screenshots/04-settings.svg" alt="Settings with theme, alert tone dropdowns, vibrate, and timer preferences." width="210">
 </p>
 
 <p align="center">
@@ -51,9 +51,9 @@ Create your own timers and sets. Choose simple rounds or build a custom sequence
 - Simple timers: standby, work, rest, rounds (−/+, scroll wheel, or typed value)
 - Advanced timers: rounds, each with its own standby / work / rest stack
 - Phase durations: minutes + seconds wheels (or type total seconds)
-- Full-screen phase colors and alert sounds
-- Settings: Light / Dark appearance (not system), Alert sounds master with start/end beep counts (0–5)
-- Portrait and landscape for the whole app
+- Full-screen phase colors and alert sounds (six tones for start, end, and finish)
+- Settings: Light / Dark (not system), beep counts, sound dropdowns, vibrate on alert, skip last rest, delete without confirmation
+- Portrait and landscape for the whole app; drag-to-reorder scrolls at the editor edges
 
 <p>
   <picture>

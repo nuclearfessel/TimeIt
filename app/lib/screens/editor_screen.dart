@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,10 +16,14 @@ class EditorScreen extends StatefulWidget {
     super.key,
     required this.timer,
     this.isNew = false,
+    this.skipLastRest = true,
   });
 
   final WorkoutTimer timer;
   final bool isNew;
+
+  /// Matches Settings → Skip last rest for the Total line.
+  final bool skipLastRest;
 
   @override
   State<EditorScreen> createState() => _EditorScreenState();
@@ -25,6 +32,15 @@ class EditorScreen extends StatefulWidget {
 class _EditorScreenState extends State<EditorScreen> {
   late WorkoutTimer draft;
   late TextEditingController _name;
+  final ScrollController _pageScroll = ScrollController();
+
+  /// While reordering, scroll the editor page when the pointer nears an edge.
+  bool _dragAutoScrollActive = false;
+  Offset? _dragPointer;
+  Timer? _dragAutoScrollTimer;
+
+  static const double _dragEdgePx = 72;
+  static const double _dragMaxStepPx = 18;
 
   @override
   void initState() {
@@ -35,8 +51,68 @@ class _EditorScreenState extends State<EditorScreen> {
 
   @override
   void dispose() {
+    _endDragAutoScroll();
     _name.dispose();
+    _pageScroll.dispose();
     super.dispose();
+  }
+
+  void _beginDragAutoScroll() {
+    if (_dragAutoScrollActive) return;
+    _dragAutoScrollActive = true;
+    GestureBinding.instance.pointerRouter.addGlobalRoute(_onDragPointer);
+    _dragAutoScrollTimer = Timer.periodic(
+      const Duration(milliseconds: 16),
+      (_) => _tickDragAutoScroll(),
+    );
+  }
+
+  void _endDragAutoScroll() {
+    if (!_dragAutoScrollActive && _dragAutoScrollTimer == null) return;
+    _dragAutoScrollActive = false;
+    _dragPointer = null;
+    _dragAutoScrollTimer?.cancel();
+    _dragAutoScrollTimer = null;
+    GestureBinding.instance.pointerRouter.removeGlobalRoute(_onDragPointer);
+  }
+
+  void _onDragPointer(PointerEvent event) {
+    if (event is PointerMoveEvent || event is PointerHoverEvent) {
+      _dragPointer = event.position;
+    } else if (event is PointerUpEvent || event is PointerCancelEvent) {
+      _endDragAutoScroll();
+    }
+  }
+
+  void _tickDragAutoScroll() {
+    if (!_dragAutoScrollActive ||
+        _dragPointer == null ||
+        !_pageScroll.hasClients) {
+      return;
+    }
+    final media = MediaQuery.of(context);
+    final y = _dragPointer!.dy;
+    final topBound = media.padding.top + kToolbarHeight + _dragEdgePx;
+    final bottomBound =
+        media.size.height - media.padding.bottom - _dragEdgePx;
+
+    double delta = 0;
+    if (y < topBound) {
+      final t = ((topBound - y) / _dragEdgePx).clamp(0.0, 1.0);
+      delta = -_dragMaxStepPx * t;
+    } else if (y > bottomBound) {
+      final t = ((y - bottomBound) / _dragEdgePx).clamp(0.0, 1.0);
+      delta = _dragMaxStepPx * t;
+    }
+    if (delta == 0) return;
+
+    final next = (_pageScroll.offset + delta).clamp(
+      0.0,
+      _pageScroll.position.maxScrollExtent,
+    );
+    if (next != _pageScroll.offset) {
+      _pageScroll.jumpTo(next);
+    }
   }
 
   void _save() {
@@ -145,6 +221,7 @@ class _EditorScreenState extends State<EditorScreen> {
         ],
       ),
       body: ListView(
+        controller: _pageScroll,
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 40),
         children: [
           TextField(
@@ -173,7 +250,7 @@ class _EditorScreenState extends State<EditorScreen> {
           if (draft.kind == TimerKind.advanced) ..._advancedFields(context),
           const SizedBox(height: 24),
           Text(
-            'Total ${formatSeconds(draft.totalSeconds)}',
+            'Total ${formatSeconds(draft.totalSeconds(skipLastRest: widget.skipLastRest))}',
             style: TextStyle(
               color: TimeItColors.of(context).mute,
               fontWeight: FontWeight.w500,
@@ -201,6 +278,8 @@ class _EditorScreenState extends State<EditorScreen> {
         physics: const NeverScrollableScrollPhysics(),
         proxyDecorator: _stackProxyDecorator,
         itemCount: draft.simpleSteps.length,
+        onReorderStart: (_) => _beginDragAutoScroll(),
+        onReorderEnd: (_) => _endDragAutoScroll(),
         onReorderItem: (oldIndex, newIndex) {
           setState(() {
             final item = draft.simpleSteps.removeAt(oldIndex);
@@ -285,6 +364,8 @@ class _EditorScreenState extends State<EditorScreen> {
         physics: const NeverScrollableScrollPhysics(),
         proxyDecorator: _roundProxyDecorator,
         itemCount: draft.advancedRounds.length,
+        onReorderStart: (_) => _beginDragAutoScroll(),
+        onReorderEnd: (_) => _endDragAutoScroll(),
         onReorderItem: (oldIndex, newIndex) {
           setState(() {
             final item = draft.advancedRounds.removeAt(oldIndex);
@@ -298,6 +379,8 @@ class _EditorScreenState extends State<EditorScreen> {
             roundIndex: roundIndex,
             roundNumber: roundIndex + 1,
             round: round,
+            onReorderDragStart: _beginDragAutoScroll,
+            onReorderDragEnd: _endDragAutoScroll,
             onDeleteRound: () {
               setState(() => draft.advancedRounds.removeAt(roundIndex));
             },
@@ -402,6 +485,8 @@ class _RoundCard extends StatelessWidget {
     required this.roundIndex,
     required this.roundNumber,
     required this.round,
+    required this.onReorderDragStart,
+    required this.onReorderDragEnd,
     required this.onDeleteRound,
     required this.onDuplicateRound,
     required this.onReorderPhases,
@@ -414,6 +499,8 @@ class _RoundCard extends StatelessWidget {
   final int roundIndex;
   final int roundNumber;
   final TimerRound round;
+  final VoidCallback onReorderDragStart;
+  final VoidCallback onReorderDragEnd;
   final VoidCallback onDeleteRound;
   final VoidCallback onDuplicateRound;
   final void Function(int oldIndex, int newIndex) onReorderPhases;
@@ -465,6 +552,8 @@ class _RoundCard extends StatelessWidget {
               physics: const NeverScrollableScrollPhysics(),
               proxyDecorator: _stackProxyDecorator,
               itemCount: round.steps.length,
+              onReorderStart: (_) => onReorderDragStart(),
+              onReorderEnd: (_) => onReorderDragEnd(),
               onReorderItem: onReorderPhases,
               itemBuilder: (context, index) {
                 final step = round.steps[index];

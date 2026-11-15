@@ -28,7 +28,9 @@ class _RunScreenState extends State<RunScreen> {
   void initState() {
     super.initState();
     engine = TimerEngine(settings: widget.settings);
-    engine.load(widget.timer.expand());
+    engine.load(
+      widget.timer.expand(skipLastRest: widget.settings.skipLastRest),
+    );
   }
 
   @override

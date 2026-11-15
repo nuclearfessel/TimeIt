@@ -83,7 +83,7 @@
         <li><span class="swatch rest" aria-hidden="true"></span><strong>Rest</strong> — recovery between rounds</li>
         <li><strong>Rounds</strong> — how many work bouts to run</li>
       </ul>
-      <p>Build the phase stack (standby / work / rest), then set <strong>Rounds</strong> with − / + or by tapping the value for a short scroll wheel (1–99). You can also type a number with the normal keyboard in that sheet. Tap a phase duration for a <strong>minutes + seconds</strong> wheel (up to 99 min and 60 sec), with an optional “type total seconds” field. Rest is skipped after the last round. Save with a name you will recognize later.</p>
+      <p>Build the phase stack (standby / work / rest), then set <strong>Rounds</strong> with − / + or by tapping the value for a short scroll wheel (1–99). You can also type a number with the normal keyboard in that sheet. Tap a phase duration for a <strong>minutes + seconds</strong> wheel (up to 99 min and 60 sec), with an optional “type total seconds” field. By default a trailing rest after the last work is omitted (<strong>Skip last rest</strong> in Settings). Save with a name you will recognize later.</p>
       <figure class="shot-figure shot-portrait">
         <img src="assets/timeit/Screenshots/05-editor-simple.svg" alt="Simple timer editor with phase stack, duration controls, and rounds stepper." width="1272" height="2772" />
         <figcaption>Simple editor — phases, duration wheels, and rounds −/+.</figcaption>
@@ -127,6 +127,7 @@
         <li>When the sequence finishes, the screen shows <strong>Done</strong> and you can restart.</li>
       </ol>
       <p>In both portrait and landscape, the run screen puts large digits on top, then what’s up next and Start / Pause / Skip / Reset underneath. There is no phase stack list on the run screen.</p>
+      <p>In the editors, if phases or rounds run past the viewport, drag toward the top or bottom edge to scroll while reordering.</p>
       <figure class="shot-figure shot-portrait">
         <img src="assets/timeit/Screenshots/02-run-portrait.svg" alt="Portrait run screen with work phase, up next, and Start control." width="1272" height="2772" />
         <figcaption>Portrait run screen.</figcaption>
@@ -142,11 +143,11 @@
       <h2>Sounds</h2>
       <p>By default TimeIt plays:</p>
       <ul>
-        <li>Beeps when a phase begins (count is adjustable in Settings, up to 5 — one beep per second)</li>
-        <li>Countdown beeps leading into the end of each phase (count is adjustable, up to 5)</li>
-        <li>A completion sound when the workout ends</li>
+        <li>Start (lead-in) beeps when a phase begins — count 0–5, one per second, with a chosen start sound</li>
+        <li>End (lead-out) beeps leading into the end of each phase — count 0–5, with a chosen end sound</li>
+        <li>A finish sound when the workout completes — chosen separately</li>
       </ul>
-      <p>Turn <strong>Alert sounds</strong> on or off in Settings — that master switch covers start beeps, end beeps, and complete. When alerts are off, the start/end beep sliders are disabled. Lowering music during a workout and vibrate-on-alert are saved preferences for upcoming builds.</p>
+      <p>Each cue uses one of six tones: <strong>Blip</strong>, <strong>Pip</strong>, <strong>Chime</strong>, <strong>Buzz</strong>, <strong>Chirp</strong>, or <strong>Pulse</strong>. Pick them in Settings; changing a dropdown plays a preview. Turn <strong>Alert sounds</strong> off to silence all three. <strong>Vibrate on alert</strong> adds a haptic pulse on the same cues and still works if alert sounds are off. Lowering music during a workout is a saved preference for an upcoming build.</p>
     </section>
 
     <section class="rest" id="settings">
@@ -156,16 +157,22 @@
       <h3>Appearance</h3>
       <p>Choose <strong>Light</strong> or <strong>Dark</strong>. TimeIt does <em>not</em> follow the system theme — the choice is yours and stays until you change it.</p>
       <figure class="shot-figure shot-portrait">
-        <img src="assets/timeit/Screenshots/04-settings.svg" alt="Settings screen with Light and Dark theme and sound preferences." width="1272" height="2772" />
-        <figcaption>Settings — appearance and sound preferences.</figcaption>
+        <img src="assets/timeit/Screenshots/04-settings.svg" alt="Settings with theme, alert sound tone dropdowns, vibrate, and timer preferences." width="1272" height="2772" />
+        <figcaption>Settings — appearance, sound tones, and timer preferences.</figcaption>
       </figure>
       <h3>Sound</h3>
       <ul>
         <li>Lower music during workout — preference saved; audio ducking wiring comes next</li>
-        <li>Alert sounds — master on/off for start beeps, end beeps, and complete</li>
-        <li>Start beeps — slider, 0–5 (disabled when alert sounds are off)</li>
-        <li>End beeps — slider, 0–5, leading into the end of each phase (disabled when alert sounds are off)</li>
-        <li>Vibrate on alert — preference saved; haptics wiring comes next</li>
+        <li>Alert sounds — master on/off for start, end, and finish cues</li>
+        <li>Start beeps — count 0–5, plus Start sound dropdown (six tones)</li>
+        <li>End beeps — count 0–5, plus End sound dropdown</li>
+        <li>Finish sound — dropdown for workout complete</li>
+        <li>Vibrate on alert — haptic pulse with start / end / finish cues</li>
+      </ul>
+      <h3>Timers</h3>
+      <ul>
+        <li>Skip last rest — end after the last work; omit a trailing rest (on by default)</li>
+        <li>Delete without confirmation — trash removes a timer immediately</li>
       </ul>
     </section>
 

@@ -1,5 +1,7 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/services.dart';
 
+import '../models/alert_tone.dart';
 import 'settings_store.dart';
 
 enum CueKind { phase, countdown, complete }
@@ -15,19 +17,54 @@ class CueAudio {
   late final AudioPlayer _player;
   int _playGeneration = 0;
 
+  AlertTone toneFor(CueKind kind) {
+    final settings = _settings;
+    if (settings == null) {
+      return switch (kind) {
+        CueKind.phase => AlertTone.pip,
+        CueKind.countdown => AlertTone.blip,
+        CueKind.complete => AlertTone.chime,
+      };
+    }
+    return switch (kind) {
+      CueKind.phase => settings.startTone,
+      CueKind.countdown => settings.endTone,
+      CueKind.complete => settings.finishTone,
+    };
+  }
+
   Future<void> play(CueKind kind) async {
     final settings = _settings;
+    // Haptics are independent of alert sounds (vibrate-only workouts).
+    if (settings?.vibrateOnAlert ?? false) {
+      _vibrate(kind);
+    }
     if (settings != null && !settings.alertSounds) return;
-    final asset = switch (kind) {
-      CueKind.phase => 'sounds/phase.wav',
-      CueKind.countdown => 'sounds/countdown.wav',
-      CueKind.complete => 'sounds/complete.wav',
-    };
+    await playTone(toneFor(kind));
+  }
+
+  /// Preview a tone from Settings (ignores the alert-sounds master switch).
+  Future<void> playTone(AlertTone tone) async {
     try {
       await _player.stop();
-      await _player.play(AssetSource(asset));
+      await _player.play(AssetSource(tone.assetPath));
     } catch (_) {
       // Audio failure should never stop the timer UI.
+    }
+  }
+
+  void _vibrate(CueKind kind) {
+    try {
+      switch (kind) {
+        case CueKind.countdown:
+          HapticFeedback.lightImpact();
+        case CueKind.phase:
+          HapticFeedback.mediumImpact();
+        case CueKind.complete:
+          HapticFeedback.heavyImpact();
+      }
+    } catch (_) {
+      // Haptics failure should never stop the timer UI.
     }
   }
 

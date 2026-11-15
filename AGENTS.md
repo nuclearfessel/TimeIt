@@ -102,6 +102,6 @@ Full detail: `.cursor/rules/workflow-triggers.mdc`.
 
 ## Suggested next steps
 1. Hands-on test the three shortlisted apps when useful (checklist in `docs/reference-apps.md`).
-2. Wire music ducking and vibrate stubs from Settings; decide richer cues later.
+2. Wire music ducking from Settings; decide richer cues later. (Vibrate on alert is wired.)
 3. Accessibility: announcement model for screen readers; audio policy.
 4. Say **`Go!`** when ready to ship (includes TestFlight CI).
