@@ -197,50 +197,123 @@ class _EmptyState extends StatelessWidget {
   final VoidCallback onSimple;
   final VoidCallback onAdvanced;
 
+  static const _ctaLabelStyle = TextStyle(
+    fontFamily: 'PlusJakartaSans',
+    fontWeight: FontWeight.w700,
+    fontSize: 15,
+    height: 1.2,
+  );
+
+  static const _ctaPadding = EdgeInsets.symmetric(horizontal: 22, vertical: 14);
+
   @override
   Widget build(BuildContext context) {
     final colors = TimeItColors.of(context);
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(28),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/brand/timeit-mark-color.png',
-              height: 56,
-              width: 56,
-              filterQuality: FilterQuality.high,
-            ),
-            const SizedBox(height: 18),
-            Text(
-              'Your next routine starts here.',
-              style: AppTheme.header.copyWith(fontSize: 26),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Create a timer. Simple work/rest rounds, or advanced rounds each with their own phase stack.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: colors.mute,
-                height: 1.4,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 28),
-            FilledButton(
-              onPressed: onSimple,
-              child: const Text('Create timer'),
-            ),
-            const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: onAdvanced,
-              child: const Text('Create advanced timer'),
-            ),
-          ],
+    final landscape =
+        MediaQuery.orientationOf(context) == Orientation.landscape;
+    final logoSize = landscape ? 72.0 : 112.0;
+    final headlineSize = landscape ? 22.0 : 26.0;
+
+    final primary = FilledButton(
+      onPressed: onSimple,
+      style: FilledButton.styleFrom(
+        padding: _ctaPadding,
+        minimumSize: const Size(0, 48),
+        textStyle: _ctaLabelStyle,
+      ).copyWith(
+        overlayColor: AppTheme.pressOverlay(
+          pressed: Colors.white.withValues(alpha: 0.28),
+          hovered: Colors.white.withValues(alpha: 0.14),
         ),
       ),
+      child: const Text('Create timer'),
+    );
+    final secondary = OutlinedButton(
+      onPressed: onAdvanced,
+      style: OutlinedButton.styleFrom(
+        foregroundColor: colors.fg,
+        side: BorderSide(color: colors.line),
+        padding: _ctaPadding,
+        minimumSize: const Size(0, 48),
+        textStyle: _ctaLabelStyle,
+      ).copyWith(
+        overlayColor: AppTheme.pressOverlay(
+          pressed: colors.accent.withValues(alpha: 0.20),
+          hovered: colors.accent.withValues(alpha: 0.10),
+        ),
+      ),
+      child: const Text('Create advanced timer'),
+    );
+
+    final ctas = landscape
+        ? Row(
+            children: [
+              Expanded(child: primary),
+              const SizedBox(width: 12),
+              Expanded(child: secondary),
+            ],
+          )
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              primary,
+              const SizedBox(height: 12),
+              secondary,
+            ],
+          );
+
+    final hPad = landscape ? 36.0 : 28.0;
+    final vPad = landscape ? 12.0 : 28.0;
+
+    final content = ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 520),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            'assets/brand/timeit-mark-color.png',
+            height: logoSize,
+            width: logoSize,
+            filterQuality: FilterQuality.high,
+          ),
+          SizedBox(height: landscape ? 12 : 18),
+          Text(
+            'Your next routine starts here.',
+            style: AppTheme.header.copyWith(fontSize: headlineSize),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: landscape ? 6 : 10),
+          Text(
+            'Create a timer. Simple work/rest rounds, or advanced rounds each with their own phase stack.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: colors.mute,
+              height: 1.4,
+              fontWeight: FontWeight.w500,
+              fontSize: landscape ? 13.5 : 14,
+            ),
+          ),
+          SizedBox(height: landscape ? 18 : 28),
+          ctas,
+        ],
+      ),
+    );
+
+    // SliverFillRemaining fills the body viewport and centers; if the block
+    // is taller than the screen it still scrolls instead of clipping.
+    return CustomScrollView(
+      physics: const AlwaysScrollableScrollPhysics(
+        parent: ClampingScrollPhysics(),
+      ),
+      slivers: [
+        SliverFillRemaining(
+          hasScrollBody: false,
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: hPad, vertical: vPad),
+            child: Center(child: content),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -11,7 +11,7 @@ android:roundIcon="@mipmap/ic_launcher_round"
 
 - Legacy launchers: mdpi through xxxhdpi PNGs; round variants are explicitly
   masked only for legacy launchers, never for store uploads/adaptive sources.
-- API 26+: adaptive XML with separate background and transparent PNG foreground.
+- API 26+: adaptive XML with separate light `#F7F6F3` background and transparent PNG foreground. Never use the dark marketing plate for the OS launcher.
 - API 33+: adaptive XML also references the white monochrome PNG layer.
 - The layers use a 108dp canvas at each Android density. The 52dp-wide mark is centered and wholly
   inside the central 66dp safe circle, including its corners.

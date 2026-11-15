@@ -8,7 +8,8 @@ from build_timeit_graphics import OUT, Canvas, mark, STATIC_FONTS, MARK_RATIO
 ICC=ImageCms.ImageCmsProfile(ImageCms.createProfile("sRGB")).tobytes()
 A="http://schemas.android.com/apk/res/android"
 ET.register_namespace("android",A)
-BACKGROUND="#0B0B0C"
+# OS launcher / store icons always use the light field — never the dark marketing plate.
+BACKGROUND="#F7F6F3"
 
 
 def write(path,content):
@@ -27,7 +28,7 @@ def png(im,path,size,mode="RGB"):
 
 
 def masters():
-    for mode,bg in (("dark",BACKGROUND),("light","#F7F6F3")):
+    for mode,bg in (("dark","#0B0B0C"),("light",BACKGROUND)):
         c=Canvas(1024,1024,f"TimeIt {mode} app icon",bg)
         w=700;h=w*MARK_RATIO
         mark(c,(1024-w)/2,(1024-h)/2,w,small=True)
@@ -39,7 +40,8 @@ def masters():
     c=Canvas(1024,1024,"TimeIt icon foreground")
     mark(c,162,(1024-700*MARK_RATIO)/2,700,small=True)
     c.save(OUT/"AppIcons/Sources/timeit-icon-foreground.svg","Transparent foreground authoring layer, not a compiled Icon Composer file.")
-    return Image.open(OUT/"AppIcons/Sources/timeit-app-icon-dark-1024.png").convert("RGB")
+    # Home-screen / store installs always ship the light plate.
+    return Image.open(OUT/"AppIcons/Sources/timeit-app-icon-light-1024.png").convert("RGB")
 
 
 def ios(master):
@@ -59,8 +61,9 @@ def ios(master):
     write(OUT/"AppIcons/iOS/README.md","""
 # iOS integration
 
-The default icon is the dark full-bleed 1024px square master. It is opaque RGB
-with an sRGB profile; do not pre-round it. iOS applies its own mask.
+The default icon is the light full-bleed 1024px square master (#F7F6F3). It is
+opaque RGB with an sRGB profile; do not pre-round it. iOS applies its own mask.
+Do not ship a dark-background OS icon — keep the dark master for marketing only.
 
 Replace only `app/ios/Runner/Assets.xcassets/AppIcon.appiconset/` with this
 AppIcon.appiconset, including Contents.json. Do not replace the whole catalog.
@@ -68,10 +71,9 @@ Set/retain ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon in the Runner target.
 The explicit phone, iPad compatibility and marketing slots support the existing
 Flutter catalog layout; iPad slots do not announce a new supported product.
 
-`timeit-app-store-1024.png` is the marketing master. The optional light master
-and transparent foreground are in ../Sources/. They are not automatically
-registered appearance variants; make deliberate Xcode changes if adopting them.
-This package does not contain a compiled Icon Composer `.icon` file.
+`timeit-app-store-1024.png` is the light marketing master. The dark master and
+transparent foreground are in ../Sources/ for non-OS use. This package does not
+contain a compiled Icon Composer `.icon` file.
 
 On macOS run the project's normal Flutter/Xcode build, inspect Home Screen,
 Settings and App Store archive icons, and validate the archive in Xcode.

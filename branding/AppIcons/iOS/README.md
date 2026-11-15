@@ -1,7 +1,8 @@
 # iOS integration
 
-The default icon is the dark full-bleed 1024px square master. It is opaque RGB
-with an sRGB profile; do not pre-round it. iOS applies its own mask.
+The default icon is the light full-bleed 1024px square master (#F7F6F3). It is
+opaque RGB with an sRGB profile; do not pre-round it. iOS applies its own mask.
+Never ship a dark-background OS icon.
 
 Replace only `app/ios/Runner/Assets.xcassets/AppIcon.appiconset/` with this
 AppIcon.appiconset, including Contents.json. Do not replace the whole catalog.

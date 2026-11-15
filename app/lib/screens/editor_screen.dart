@@ -78,38 +78,29 @@ class _EditorScreenState extends State<EditorScreen> {
     });
   }
 
-  Future<int?> _pickSeconds(String title, int current) async {
-    final controller = TextEditingController(text: '$current');
+  Future<int?> _pickSeconds(String title, int current) {
     return showDialog<int>(
       context: context,
-      builder: (ctx) {
-        return AlertDialog(
-          title: Text(title),
-          content: TextField(
-            controller: controller,
-            autofocus: true,
-            keyboardType: TextInputType.number,
-            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-            decoration: const InputDecoration(
-              suffixText: 'seconds',
-              border: OutlineInputBorder(),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                final v = int.tryParse(controller.text) ?? current;
-                Navigator.pop(ctx, v.clamp(0, 60 * 60));
-              },
-              child: const Text('Set'),
-            ),
-          ],
-        );
-      },
+      builder: (_) => _NumberPickerDialog(
+        title: title,
+        initial: current,
+        min: 0,
+        max: 60 * 60,
+        suffixText: 'seconds',
+      ),
+    );
+  }
+
+  Future<int?> _pickRounds(int current) {
+    return showDialog<int>(
+      context: context,
+      builder: (_) => _NumberPickerDialog(
+        title: 'Rounds',
+        initial: current,
+        min: 1,
+        max: 99,
+        showSteppers: true,
+      ),
     );
   }
 
@@ -262,8 +253,8 @@ class _EditorScreenState extends State<EditorScreen> {
         label: 'Rounds',
         value: '${draft.rounds}',
         onTap: () async {
-          final v = await _pickSeconds('Rounds', draft.rounds);
-          if (v != null) setState(() => draft.rounds = v.clamp(1, 99));
+          final v = await _pickRounds(draft.rounds);
+          if (v != null) setState(() => draft.rounds = v);
         },
       ),
     ];
@@ -378,6 +369,11 @@ class _EditorScreenState extends State<EditorScreen> {
             backgroundColor: colors.accent,
             foregroundColor: Colors.white,
             padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+          ).copyWith(
+            overlayColor: AppTheme.pressOverlay(
+              pressed: Colors.white.withValues(alpha: 0.28),
+              hovered: Colors.white.withValues(alpha: 0.14),
+            ),
           ),
           icon: const Icon(Icons.add, weight: 700),
           label: const Text(
@@ -818,6 +814,206 @@ class _StepTile extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Number dialog with reliable keyboard focus (post-frame + TextInput.show).
+/// Optional in-field +/- steppers for count fields like rounds.
+class _NumberPickerDialog extends StatefulWidget {
+  const _NumberPickerDialog({
+    required this.title,
+    required this.initial,
+    required this.min,
+    required this.max,
+    this.suffixText,
+    this.showSteppers = false,
+  });
+
+  final String title;
+  final int initial;
+  final int min;
+  final int max;
+  final String? suffixText;
+  final bool showSteppers;
+
+  @override
+  State<_NumberPickerDialog> createState() => _NumberPickerDialogState();
+}
+
+class _NumberPickerDialogState extends State<_NumberPickerDialog> {
+  late final TextEditingController _controller;
+  late final FocusNode _focus;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController(text: '${widget.initial}');
+    _focus = FocusNode(debugLabel: 'number-picker');
+    // Dialog routes often eat the first autofocus; show keyboard after present.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _ensureKeyboard());
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focus.dispose();
+    super.dispose();
+  }
+
+  Future<void> _ensureKeyboard() async {
+    if (!mounted) return;
+    _focus.requestFocus();
+    await Future<void>.delayed(const Duration(milliseconds: 50));
+    if (!mounted) return;
+    _focus.requestFocus();
+    await SystemChannels.textInput.invokeMethod<void>('TextInput.show');
+  }
+
+  int get _parsed {
+    final raw = int.tryParse(_controller.text);
+    if (raw == null) return widget.initial.clamp(widget.min, widget.max);
+    return raw.clamp(widget.min, widget.max);
+  }
+
+  void _setValue(int next) {
+    final clamped = next.clamp(widget.min, widget.max);
+    _controller.value = TextEditingValue(
+      text: '$clamped',
+      selection: TextSelection.collapsed(offset: '$clamped'.length),
+    );
+  }
+
+  void _nudge(int delta) {
+    _setValue(_parsed + delta);
+    _ensureKeyboard();
+  }
+
+  Widget _stepperButton({
+    required TimeItColors colors,
+    required IconData icon,
+    required String tooltip,
+    required bool enabled,
+    required VoidCallback onPressed,
+  }) {
+    return IconButton(
+      onPressed: enabled ? onPressed : null,
+      tooltip: tooltip,
+      visualDensity: VisualDensity.compact,
+      style: IconButton.styleFrom(
+        foregroundColor: colors.fg,
+        disabledForegroundColor: colors.mute.withValues(alpha: 0.35),
+        padding: const EdgeInsets.all(8),
+      ).copyWith(
+        overlayColor: AppTheme.pressOverlay(
+          pressed: colors.accent.withValues(alpha: 0.20),
+          hovered: colors.accent.withValues(alpha: 0.10),
+        ),
+      ),
+      icon: Icon(icon, size: 22),
+    );
+  }
+
+  Widget _inFieldStepper({
+    required TimeItColors colors,
+    required IconData icon,
+    required String tooltip,
+    required int Function(int current) nextFrom,
+  }) {
+    return ValueListenableBuilder<TextEditingValue>(
+      valueListenable: _controller,
+      builder: (context, value, _) {
+        final current = _parsed;
+        final next = nextFrom(current);
+        final enabled = next != current;
+        return _stepperButton(
+          colors: colors,
+          icon: icon,
+          tooltip: tooltip,
+          enabled: enabled,
+          onPressed: () => _nudge(next - current),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = TimeItColors.of(context);
+    // Darker inset so − / + and digits read clearly inside the field.
+    final fieldFill = Color.lerp(colors.bg, colors.surface, 0.22)!;
+    final border = OutlineInputBorder(
+      borderSide: BorderSide(color: colors.line),
+      borderRadius: BorderRadius.circular(10),
+    );
+    final focusedBorder = OutlineInputBorder(
+      borderSide: BorderSide(color: colors.accent, width: 1.5),
+      borderRadius: BorderRadius.circular(10),
+    );
+
+    return AlertDialog(
+      title: Text(widget.title),
+      content: TextField(
+        controller: _controller,
+        focusNode: _focus,
+        autofocus: true,
+        keyboardType: const TextInputType.numberWithOptions(
+          signed: false,
+          decimal: false,
+        ),
+        textInputAction: TextInputAction.done,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        textAlign: widget.showSteppers ? TextAlign.center : TextAlign.start,
+        enableInteractiveSelection: true,
+        // Do not rebuild this TextField on every keystroke — that drops IME
+        // focus on Android preview / emulator. Only the in-field steppers listen.
+        onTap: _ensureKeyboard,
+        onSubmitted: (_) => Navigator.pop(context, _parsed),
+        decoration: InputDecoration(
+          suffixText: widget.showSteppers ? null : widget.suffixText,
+          filled: true,
+          fillColor: fieldFill,
+          border: border,
+          enabledBorder: border,
+          focusedBorder: focusedBorder,
+          prefixIconConstraints: widget.showSteppers
+              ? const BoxConstraints(minWidth: 48, minHeight: 48)
+              : null,
+          suffixIconConstraints: widget.showSteppers
+              ? const BoxConstraints(minWidth: 48, minHeight: 48)
+              : null,
+          prefixIcon: widget.showSteppers
+              ? _inFieldStepper(
+                  colors: colors,
+                  icon: Icons.remove,
+                  tooltip: 'Decrease',
+                  nextFrom: (c) => (c - 1).clamp(widget.min, widget.max),
+                )
+              : null,
+          suffixIcon: widget.showSteppers
+              ? _inFieldStepper(
+                  colors: colors,
+                  icon: Icons.add,
+                  tooltip: 'Increase',
+                  nextFrom: (c) => (c + 1).clamp(widget.min, widget.max),
+                )
+              : null,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 14,
+            vertical: 14,
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, _parsed),
+          child: const Text('Set'),
+        ),
+      ],
     );
   }
 }

@@ -1,4 +1,4 @@
-"""Mobile-only Timed native icons, with inspectable vector sources."""
+"""Mobile-only TimeIt native icons, with inspectable vector sources."""
 import json
 import math
 import xml.etree.ElementTree as ET
@@ -28,18 +28,18 @@ def png(im,path,size,mode="RGB"):
 
 def masters():
     for mode,bg in (("dark",BACKGROUND),("light","#F7F6F3")):
-        c=Canvas(1024,1024,f"Timed {mode} app icon",bg)
+        c=Canvas(1024,1024,f"TimeIt {mode} app icon",bg)
         w=700;h=w*MARK_RATIO
         mark(c,(1024-w)/2,(1024-h)/2,w,small=True)
-        path=OUT/"AppIcons/Sources"/f"timed-app-icon-{mode}-1024.svg"
-        c.save(path,"Opaque unmasked Timed app icon, derived from the approved Interlocking Lanes mark. System applies the mask.")
+        path=OUT/"AppIcons/Sources"/f"timeit-app-icon-{mode}-1024.svg"
+        c.save(path,"Opaque unmasked TimeIt app icon, derived from the approved Interlocking Lanes mark. System applies the mask.")
         im=Image.open(path.with_suffix(".png")).convert("RGB")
         png(im,path.with_suffix(".png"),1024)
     # Transparent authoring mark; not an App Store upload.
-    c=Canvas(1024,1024,"Timed icon foreground")
+    c=Canvas(1024,1024,"TimeIt icon foreground")
     mark(c,162,(1024-700*MARK_RATIO)/2,700,small=True)
-    c.save(OUT/"AppIcons/Sources/timed-icon-foreground.svg","Transparent foreground authoring layer, not a compiled Icon Composer file.")
-    return Image.open(OUT/"AppIcons/Sources/timed-app-icon-dark-1024.png").convert("RGB")
+    c.save(OUT/"AppIcons/Sources/timeit-icon-foreground.svg","Transparent foreground authoring layer, not a compiled Icon Composer file.")
+    return Image.open(OUT/"AppIcons/Sources/timeit-app-icon-dark-1024.png").convert("RGB")
 
 
 def ios(master):
@@ -55,7 +55,7 @@ def ios(master):
         png(master,iconset/name,round(size*scale))
         slots.append({"idiom":idiom,"size":f"{size:g}x{size:g}","scale":f"{scale}x","filename":name})
     write(iconset/"Contents.json",json.dumps({"images":slots,"info":{"author":"xcode","version":1}},indent=2))
-    png(master,OUT/"AppIcons/iOS/timed-app-store-1024.png",1024)
+    png(master,OUT/"AppIcons/iOS/timeit-app-store-1024.png",1024)
     write(OUT/"AppIcons/iOS/README.md","""
 # iOS integration
 
@@ -68,7 +68,7 @@ Set/retain ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon in the Runner target.
 The explicit phone, iPad compatibility and marketing slots support the existing
 Flutter catalog layout; iPad slots do not announce a new supported product.
 
-`timed-app-store-1024.png` is the marketing master. The optional light master
+`timeit-app-store-1024.png` is the marketing master. The optional light master
 and transparent foreground are in ../Sources/. They are not automatically
 registered appearance variants; make deliberate Xcode changes if adopting them.
 This package does not contain a compiled Icon Composer `.icon` file.
@@ -84,8 +84,8 @@ Reference: https://developer.apple.com/design/human-interface-guidelines/app-ico
 def android(master):
     root=OUT/"AppIcons/Android"
     # True 32-bit RGBA PNG, with an entirely opaque alpha channel.
-    png(master,root/"GooglePlay/timed-play-store-512.png",512,"RGBA")
-    assert (root/"GooglePlay/timed-play-store-512.png").stat().st_size<1024*1024
+    png(master,root/"GooglePlay/timeit-play-store-512.png",512,"RGBA")
+    assert (root/"GooglePlay/timeit-play-store-512.png").stat().st_size<1024*1024
     for density,size in (("mdpi",48),("hdpi",72),("xhdpi",96),("xxhdpi",144),("xxxhdpi",192)):
         png(master,root/"res"/f"mipmap-{density}"/"ic_launcher.png",size)
         round_im=master.convert("RGBA")
@@ -95,20 +95,20 @@ def android(master):
         png(round_im,root/"res"/f"mipmap-{density}"/"ic_launcher_round.png",size,"RGBA")
     # Preserve the exact woven knockouts. Adaptive icons support transparent
     # raster layers; SVG masks cannot be copied into VectorDrawable pathData.
-    for name in ("timed_launcher_foreground","timed_launcher_monochrome"):
+    for name in ("timeit_launcher_foreground","timeit_launcher_monochrome"):
         (root/"res/drawable"/f"{name}.xml").unlink(missing_ok=True)
     resources=ET.Element("resources")
-    ET.SubElement(resources,"color",{"name":"timed_launcher_background"}).text=BACKGROUND
-    xml(resources,root/"res/values/timed_launcher_colors.xml")
+    ET.SubElement(resources,"color",{"name":"timeit_launcher_background"}).text=BACKGROUND
+    xml(resources,root/"res/values/timeit_launcher_colors.xml")
     for version,mono in ((26,False),(33,True)):
         adaptive=ET.Element("adaptive-icon")
-        ET.SubElement(adaptive,"background",{f"{{{A}}}drawable":"@color/timed_launcher_background"})
-        ET.SubElement(adaptive,"foreground",{f"{{{A}}}drawable":"@mipmap/timed_launcher_foreground"})
-        if mono:ET.SubElement(adaptive,"monochrome",{f"{{{A}}}drawable":"@mipmap/timed_launcher_monochrome"})
+        ET.SubElement(adaptive,"background",{f"{{{A}}}drawable":"@color/timeit_launcher_background"})
+        ET.SubElement(adaptive,"foreground",{f"{{{A}}}drawable":"@mipmap/timeit_launcher_foreground"})
+        if mono:ET.SubElement(adaptive,"monochrome",{f"{{{A}}}drawable":"@mipmap/timeit_launcher_monochrome"})
         for name in ("ic_launcher","ic_launcher_round"):
             xml(adaptive,root/"res"/f"mipmap-anydpi-v{version}"/f"{name}.xml")
     for mono in (False,True):
-        c=Canvas(432,432,"Timed adaptive authoring layer")
+        c=Canvas(432,432,"TimeIt adaptive authoring layer")
         w=208;h=w*MARK_RATIO
         mark(c,(432-w)/2,(432-h)/2,w,"#FFFFFF" if mono else None,small=True)
         c.save(root/"AdaptiveLayers"/f"{'monochrome' if mono else 'foreground'}-432.svg",
@@ -119,7 +119,7 @@ def android(master):
             white.putalpha(layer.getchannel("A"))
             layer=white
             layer.save(root/"AdaptiveLayers/monochrome-432.png")
-        resource="timed_launcher_monochrome" if mono else "timed_launcher_foreground"
+        resource="timeit_launcher_monochrome" if mono else "timeit_launcher_foreground"
         for density,size in (("mdpi",108),("hdpi",162),("xhdpi",216),("xxhdpi",324),("xxxhdpi",432)):
             png(layer,root/"res"/f"mipmap-{density}"/f"{resource}.png",size,"RGBA")
     write(root/"README.md","""
@@ -143,7 +143,7 @@ android:roundIcon="@mipmap/ic_launcher_round"
 - AdaptiveLayers/ supplies transparent SVG/PNG authoring copies; Android uses
   the density-specific PNGs via mipmap references. This preserves the actual
   transparent over-under crossings; do not convert SVG masks to plain vector paths.
-- GooglePlay/timed-play-store-512.png is the full-square 32-bit sRGB listing
+- GooglePlay/timeit-play-store-512.png is the full-square 32-bit sRGB listing
   icon, below 1MB. Let Play apply rounding and shadow.
 
 Use a compile SDK supporting API 33 resources; inspect the existing Flutter
@@ -160,7 +160,7 @@ References:
 def preview(master):
     im=Image.new("RGB",(1400,720),"#F7F6F3");d=ImageDraw.Draw(im)
     f=ImageFont.truetype(str(STATIC_FONTS["JakartaBold"]),26)
-    d.text((48,30),"Timed / app icon family",font=f,fill="#161618")
+    d.text((48,30),"TimeIt / app icon family",font=f,fill="#161618")
     for x,label,kind in [(60,"Unmasked store master","square"),(500,"System mask preview","round"),(940,"Android themed preview","mono")]:
         tile=master.resize((320,320),Image.Resampling.LANCZOS).convert("RGBA")
         if kind=="round":
@@ -184,4 +184,4 @@ def preview(master):
 
 if __name__=="__main__":
     master=masters();ios(master);android(master);preview(master)
-    print("Timed iOS catalog, Android resources and store masters generated.",flush=True)
+    print("TimeIt iOS catalog, Android resources and store masters generated.",flush=True)
