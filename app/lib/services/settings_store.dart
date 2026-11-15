@@ -27,7 +27,6 @@ enum AppAppearance {
 class SettingsStore extends ChangeNotifier {
   static const _appearanceKey = 'timeit.settings.appearance.v1';
   static const _alertSoundsKey = 'timeit.settings.alert_sounds.v1';
-  static const _countdownBeepsKey = 'timeit.settings.countdown_beeps.v1';
   static const _startBeepsKey = 'timeit.settings.start_beeps.v1';
   static const _endBeepsKey = 'timeit.settings.end_beeps.v1';
   static const _lowerMusicKey = 'timeit.settings.lower_music.v1';
@@ -39,11 +38,8 @@ class SettingsStore extends ChangeNotifier {
 
   AppAppearance appearance = AppAppearance.dark;
 
-  /// Play phase-change and complete sounds.
+  /// Master switch for all workout beeps (start, end/countdown, complete).
   bool alertSounds = true;
-
-  /// Play countdown ticks near the end of each phase.
-  bool countdownBeeps = true;
 
   /// How many start-of-phase beeps (0–5), one per second.
   int startBeepCount = 1;
@@ -61,7 +57,6 @@ class SettingsStore extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     appearance = AppAppearance.fromName(prefs.getString(_appearanceKey));
     alertSounds = prefs.getBool(_alertSoundsKey) ?? true;
-    countdownBeeps = prefs.getBool(_countdownBeepsKey) ?? true;
     startBeepCount =
         (prefs.getInt(_startBeepsKey) ?? 1).clamp(0, maxBeepCount);
     endBeepCount = (prefs.getInt(_endBeepsKey) ?? 3).clamp(0, maxBeepCount);
@@ -84,13 +79,6 @@ class SettingsStore extends ChangeNotifier {
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_alertSoundsKey, value);
-  }
-
-  Future<void> setCountdownBeeps(bool value) async {
-    countdownBeeps = value;
-    notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_countdownBeepsKey, value);
   }
 
   Future<void> setStartBeepCount(int value) async {
