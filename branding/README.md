@@ -1,6 +1,6 @@
-# Timed — complete branding and graphics
+# TimeIt — complete branding and graphics
 
-Start with **Instructions/GITHUB-IMPLEMENTATION.md**. This is a separate Timed
+Start with **Instructions/GITHUB-IMPLEMENTATION.md**. This is a separate TimeIt
 handoff, not a Shopped/EncodeIt recolor.
 
 ## Contents

@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:timed/models/interval_step.dart';
-import 'package:timed/models/phase_type.dart';
-import 'package:timed/models/timer_round.dart';
-import 'package:timed/models/workout_timer.dart';
+import 'package:timeit/models/interval_step.dart';
+import 'package:timeit/models/phase_type.dart';
+import 'package:timeit/models/timer_round.dart';
+import 'package:timeit/models/workout_timer.dart';
 
 void main() {
   test('simple timer expands standby, work, rest rounds', () {

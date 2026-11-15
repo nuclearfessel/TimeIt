@@ -22,8 +22,8 @@ class PhaseColors {
 }
 
 /// App chrome colors that switch with Appearance (Light / Dark).
-class TimedColors extends ThemeExtension<TimedColors> {
-  const TimedColors({
+class TimeItColors extends ThemeExtension<TimeItColors> {
+  const TimeItColors({
     required this.bg,
     required this.surface,
     required this.line,
@@ -39,7 +39,7 @@ class TimedColors extends ThemeExtension<TimedColors> {
   final Color mute;
   final Color accent;
 
-  static const dark = TimedColors(
+  static const dark = TimeItColors(
     bg: Color(0xFF0B0B0C),
     surface: Color(0xFF161618),
     line: Color(0xFF2A2A2E),
@@ -48,7 +48,7 @@ class TimedColors extends ThemeExtension<TimedColors> {
     accent: Color(0xFFD55E00),
   );
 
-  static const light = TimedColors(
+  static const light = TimeItColors(
     bg: Color(0xFFF7F6F3),
     surface: Color(0xFFFFFFFF),
     line: Color(0xFFD9D6CF),
@@ -57,12 +57,12 @@ class TimedColors extends ThemeExtension<TimedColors> {
     accent: Color(0xFFD55E00),
   );
 
-  static TimedColors of(BuildContext context) {
-    return Theme.of(context).extension<TimedColors>() ?? TimedColors.dark;
+  static TimeItColors of(BuildContext context) {
+    return Theme.of(context).extension<TimeItColors>() ?? TimeItColors.dark;
   }
 
   @override
-  TimedColors copyWith({
+  TimeItColors copyWith({
     Color? bg,
     Color? surface,
     Color? line,
@@ -70,7 +70,7 @@ class TimedColors extends ThemeExtension<TimedColors> {
     Color? mute,
     Color? accent,
   }) {
-    return TimedColors(
+    return TimeItColors(
       bg: bg ?? this.bg,
       surface: surface ?? this.surface,
       line: line ?? this.line,
@@ -81,9 +81,9 @@ class TimedColors extends ThemeExtension<TimedColors> {
   }
 
   @override
-  TimedColors lerp(ThemeExtension<TimedColors>? other, double t) {
-    if (other is! TimedColors) return this;
-    return TimedColors(
+  TimeItColors lerp(ThemeExtension<TimeItColors>? other, double t) {
+    if (other is! TimeItColors) return this;
+    return TimeItColors(
       bg: Color.lerp(bg, other.bg, t)!,
       surface: Color.lerp(surface, other.surface, t)!,
       line: Color.lerp(line, other.line, t)!,
@@ -95,11 +95,11 @@ class TimedColors extends ThemeExtension<TimedColors> {
 }
 
 class AppTheme {
-  static ThemeData dark() => _build(Brightness.dark, TimedColors.dark);
+  static ThemeData dark() => _build(Brightness.dark, TimeItColors.dark);
 
-  static ThemeData light() => _build(Brightness.light, TimedColors.light);
+  static ThemeData light() => _build(Brightness.light, TimeItColors.light);
 
-  static ThemeData _build(Brightness brightness, TimedColors colors) {
+  static ThemeData _build(Brightness brightness, TimeItColors colors) {
     final base = ThemeData(
       useMaterial3: true,
       brightness: brightness,

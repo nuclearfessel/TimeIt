@@ -114,7 +114,7 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   Future<PhaseType?> _pickPhase(BuildContext context) {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
     return showModalBottomSheet<PhaseType>(
       context: context,
       backgroundColor: colors.surface,
@@ -165,7 +165,7 @@ class _EditorScreenState extends State<EditorScreen> {
           Text(
             draft.kind == TimerKind.simple ? 'Simple' : 'Advanced',
             style: TextStyle(
-              color: TimedColors.of(context).mute,
+              color: TimeItColors.of(context).mute,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -176,7 +176,7 @@ class _EditorScreenState extends State<EditorScreen> {
           Text(
             'Total ${formatSeconds(draft.totalSeconds)}',
             style: TextStyle(
-              color: TimedColors.of(context).mute,
+              color: TimeItColors.of(context).mute,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -186,7 +186,7 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   List<Widget> _simpleFields() {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
     return [
       Text(
         'Build the phase stack for each round. Standby before the first work runs once; rounds repeat from the first work phase.',
@@ -270,7 +270,7 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   List<Widget> _advancedFields(BuildContext context) {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
     return [
       Text(
         'Each round has its own phase stack. Drag rounds to reorder — numbers update automatically.',
@@ -418,7 +418,7 @@ class _RoundCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       child: Padding(
@@ -550,7 +550,7 @@ class _PhaseAddChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
     final labelStyle = TextStyle(
       fontFamily: 'PlusJakartaSans',
       fontWeight: FontWeight.w500,
@@ -750,7 +750,7 @@ class _StepTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Material(

@@ -24,24 +24,28 @@ These phrases in the owner's message are commands. Act on them immediately.
 
 **Trigger:** the exact word `Go!` (**case-sensitive**, including the exclamation mark).
 
-**`Go!` is explicit approval** for commit, push, merge, and branch cleanup. Release builds / GitHub Release run **unless** the owner scopes the ship (e.g. `docs only`, `no release builds`).
+**`Go!` is explicit approval** for commit, push, merge, branch cleanup, GitHub Release, and **TestFlight upload via GitHub Actions** (App Store Connect API). Release builds / GitHub Release / TestFlight run **unless** the owner scopes the ship (e.g. `docs only`, `no release builds`, `no TestFlight`).
 
 **Action (in order):**
 1. **Commit** all intended project changes on the current feature branch (follow the repo commit protocol: status, diff, log, stage, commit). Skip secrets. If there is nothing to commit, say so and continue.
 2. **Push** the feature branch to `origin`.
 3. **Merge** into `main` (prefer PR merge via `gh pr create` + merge if that is the repo norm; otherwise merge locally into `main` and push `main`). Resolve conflicts only with owner input if non-trivial.
 4. **Release builds** from `main` (in `app/`) — **skip** when the owner said docs-only / no release builds / site-only:
-   - **Android (required when releasing):** `flutter build appbundle --release` and `flutter build apk --release`.
-   - **iOS (required when releasing):** `flutter build ipa --release` (or the project’s signed IPA pipeline). Needs macOS + Xcode. If this machine cannot build iOS, say so clearly and do **not** pretend an iOS artifact exists; still create the GitHub Release with Android and mark iOS as blocked / follow up on a Mac or CI.
+   - **Android (required when releasing):** `flutter build appbundle --release` and `flutter build apk --release` on this machine when possible.
+   - **iOS:** do **not** require a local Mac. TestFlight is the iOS ship path (step 6). If a local IPA happens to exist, attach it to the GitHub Release; otherwise mark iOS in release notes as “TestFlight via Actions” and continue.
 5. **GitHub Release** — **skip** with the same docs-only / no-release scope. When releasing:
    - Choose the next semver tag from `app/pubspec.yaml` `version:` (e.g. `1.0.0+1` → tag `v1.0.0`). If that tag already exists, bump the version in `pubspec.yaml`, commit on `main`, and use the new tag.
-   - Create the release with `gh release create <tag> --title <title> --notes <notes>` targeting the merged `main` commit.
-   - **Attach both platforms when files exist:** Android APK/AAB and iOS IPA.
-   - Release notes must list which artifacts were attached and call out any missing platform.
-6. **Clean branches:** delete the merged feature branch locally and on `origin`. Delete other fully merged `feature-update-*` / `feature/*` branches locally and on `origin` if safe. **Never delete `main`.** Do not force-delete unmerged work without asking.
-7. Report: commit SHA, merge result, Pages/docs URL if relevant, **GitHub Release URL** (or “skipped — docs only”), and which branches were deleted.
+   - Create the release with `gh release create <tag> --title <title> --notes <notes>` targeting the merged `main` commit. Publishing the tag/release **starts** `.github/workflows/ios-testflight.yml`.
+   - **Attach Android** APK/AAB when files exist. Attach iOS IPA only if present locally.
+   - Release notes must list attached artifacts and state that iOS goes to TestFlight via GitHub Actions when CI is used.
+6. **TestFlight (App Store Connect)** — **skip** only for docs-only / no-release / `no TestFlight`. Otherwise:
+   - Confirm repo secrets exist: `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_PRIVATE_KEY` (same Apple API key pattern as Shopped).
+   - After the release tag is on `main`/`origin`, ensure the **iOS TestFlight** workflow is running (`release: published` / `push: tags v*` / or `gh workflow run ios-testflight.yml` if it did not start).
+   - Report the Actions run URL. Do not claim TestFlight is Ready to Test until the workflow succeeds; note that Apple still processes the build after upload.
+7. **Clean branches:** delete the merged feature branch locally and on `origin`. Delete other fully merged `feature-update-*` / `feature/*` branches locally and on `origin` if safe. **Never delete `main`.** Do not force-delete unmerged work without asking.
+8. Report: commit SHA, merge result, Pages/docs URL if relevant, **GitHub Release URL**, **TestFlight Actions URL** (or “skipped”), and which branches were deleted.
 
 ## Notes
-- These triggers override the usual “confirm before commit/push” preference **only** for the actions listed under `Go!` (including publishing a GitHub Release).
+- These triggers override the usual “confirm before commit/push” preference **only** for the actions listed under `Go!` (including publishing a GitHub Release and kicking TestFlight CI).
 - Downloads and other outward actions still need confirmation unless covered by `Go!`.
 - Keep `AGENTS.md` in sync if these workflows change.

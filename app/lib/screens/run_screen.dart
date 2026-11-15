@@ -40,7 +40,7 @@ class _RunScreenState extends State<RunScreen> {
   Color _bg(BuildContext context) {
     if (engine.status == EngineStatus.finished) return PhaseColors.complete;
     final phase = engine.phase;
-    if (phase == null) return TimedColors.of(context).bg;
+    if (phase == null) return TimeItColors.of(context).bg;
     return PhaseColors.of(phase);
   }
 

@@ -1,0 +1,213 @@
+require "fileutils"
+require "securerandom"
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Sign TimeIt, build an IPA, and upload to TestFlight"
+  lane :testflight_release do
+    api_key = app_store_connect_api_key(
+      key_id: ENV.fetch("APP_STORE_CONNECT_KEY_ID"),
+      issuer_id: ENV.fetch("APP_STORE_CONNECT_ISSUER_ID"),
+      key_content: ENV.fetch("APP_STORE_CONNECT_PRIVATE_KEY"),
+      duration: 1200,
+      in_house: false
+    )
+
+    setup_ci(force: true) if ENV["CI"]
+
+    # Ensure Developer Portal App ID + App Store Connect record exist (idempotent).
+    produce(
+      api_key: api_key,
+      app_identifier: "com.nuclearfessel.timeit",
+      app_name: "TimeIt",
+      sku: "timeit",
+      language: "en-US",
+      skip_itc: false,
+      skip_devcenter: false
+    )
+
+    keychain_name = ENV.fetch("MATCH_KEYCHAIN_NAME", "fastlane_tmp_keychain")
+    keychain_password = ENV.fetch("MATCH_KEYCHAIN_PASSWORD", "")
+    keychain_path = File.expand_path("~/Library/Keychains/#{keychain_name}-db")
+    cache_dir = File.expand_path("signing-cache", __dir__)
+    FileUtils.mkdir_p(cache_dir)
+
+    ensure_distribution_certificate!(
+      api_key: api_key,
+      keychain_path: keychain_path,
+      keychain_password: keychain_password,
+      cache_dir: cache_dir
+    )
+
+    get_provisioning_profile(
+      api_key: api_key,
+      app_identifier: "com.nuclearfessel.timeit",
+      force: true
+    )
+
+    profile_name = lane_context[SharedValues::SIGH_NAME]
+    profile_path = lane_context[SharedValues::SIGH_PROFILE_PATH]
+    parsed_profile = FastlaneCore::ProvisioningProfile.parse(profile_path)
+    team_id = Array(parsed_profile["TeamIdentifier"]).first
+    team_id ||= parsed_profile.dig("Entitlements", "com.apple.developer.team-identifier")
+    UI.user_error!("Could not read Team ID from provisioning profile at #{profile_path}") if team_id.to_s.empty?
+    UI.message("Using Team ID #{team_id} from #{profile_name}")
+
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      path: "Runner.xcodeproj",
+      targets: ["Runner"],
+      build_configurations: ["Release"],
+      code_sign_identity: "iPhone Distribution",
+      bundle_identifier: "com.nuclearfessel.timeit",
+      profile_name: profile_name,
+      team_id: team_id
+    )
+    update_project_team(path: "Runner.xcodeproj", teamid: team_id)
+
+    export_plist = File.expand_path("ExportOptions.plist", __dir__)
+    File.write(
+      export_plist,
+      <<~PLIST
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+        	<key>method</key>
+        	<string>app-store-connect</string>
+        	<key>teamID</key>
+        	<string>#{team_id}</string>
+        	<key>signingStyle</key>
+        	<string>manual</string>
+        	<key>provisioningProfiles</key>
+        	<dict>
+        		<key>com.nuclearfessel.timeit</key>
+        		<string>#{profile_name}</string>
+        	</dict>
+        	<key>uploadSymbols</key>
+        	<true/>
+        	<key>compileBitcode</key>
+        	<false/>
+        	<key>destination</key>
+        	<string>export</string>
+        </dict>
+        </plist>
+      PLIST
+    )
+
+    validate_ios_upload_plist!
+
+    build_name = ENV.fetch("BUILD_NAME")
+    build_number = ENV.fetch("BUILD_NUMBER")
+
+    Dir.chdir("..") do
+      sh(
+        "flutter", "build", "ipa", "--release",
+        "--build-name=#{build_name}",
+        "--build-number=#{build_number}",
+        "--export-options-plist=#{export_plist}"
+      )
+    end
+
+    ipa = Dir[File.expand_path("../../build/ios/ipa/*.ipa", __dir__)].first
+    UI.user_error!("No IPA found under build/ios/ipa") if ipa.nil?
+    UI.message("Uploading #{ipa} (profile #{profile_path})")
+
+    upload_to_testflight(
+      api_key: api_key,
+      ipa: ipa,
+      skip_waiting_for_build_processing: true,
+      distribute_external: false
+    )
+  end
+end
+
+def ensure_distribution_certificate!(api_key:, keychain_path:, keychain_password:, cache_dir:)
+  cached_p12 = File.join(cache_dir, "dist.p12")
+  cached_password_file = File.join(cache_dir, "password.txt")
+
+  if File.exist?(cached_p12) && File.exist?(cached_password_file)
+    UI.success("Importing cached Distribution certificate")
+    import_certificate(
+      certificate_path: cached_p12,
+      certificate_password: File.read(cached_password_file).strip,
+      keychain_path: keychain_path,
+      keychain_password: keychain_password
+    )
+    return
+  end
+
+  begin
+    get_certificates(
+      api_key: api_key,
+      keychain_path: keychain_path,
+      keychain_password: keychain_password
+    )
+  rescue StandardError => error
+    raise error unless error.message.include?("maximum number")
+
+    UI.important("Distribution certificate limit reached; revoking orphans and retrying")
+    revoke_orphaned_distribution_certificates!
+    get_certificates(
+      api_key: api_key,
+      keychain_path: keychain_path,
+      keychain_password: keychain_password
+    )
+  end
+
+  export_password = SecureRandom.hex(16)
+  File.write(cached_password_file, export_password)
+  sh(
+    "security", "export",
+    "-k", keychain_path,
+    "-t", "identities",
+    "-f", "pkcs12",
+    "-P", export_password,
+    "-o", cached_p12
+  )
+  UI.success("Cached Distribution certificate for later CI runs")
+end
+
+def validate_ios_upload_plist!
+  require "plist"
+  info = Plist.parse_xml(File.expand_path("../Runner/Info.plist", __dir__))
+  ipad = Array(info["UISupportedInterfaceOrientations~ipad"])
+  required = %w[
+    UIInterfaceOrientationPortrait
+    UIInterfaceOrientationPortraitUpsideDown
+    UIInterfaceOrientationLandscapeLeft
+    UIInterfaceOrientationLandscapeRight
+  ]
+  missing = required - ipad
+  full_screen = info["UIRequiresFullScreen"] == true
+  return if full_screen || missing.empty?
+
+  UI.user_error!(
+    "Info.plist is not App Store Connect ready for iPad: missing #{missing.join(', ')}. " \
+    "Add those orientations or set UIRequiresFullScreen."
+  )
+end
+
+def revoke_orphaned_distribution_certificates!
+  require "spaceship"
+
+  token = Spaceship::ConnectAPI::Token.create(
+    key_id: ENV.fetch("APP_STORE_CONNECT_KEY_ID"),
+    issuer_id: ENV.fetch("APP_STORE_CONNECT_ISSUER_ID"),
+    key: ENV.fetch("APP_STORE_CONNECT_PRIVATE_KEY")
+  )
+  Spaceship::ConnectAPI.token = token
+
+  Spaceship::ConnectAPI::Certificate.all.each do |cert|
+    type = cert.certificate_type.to_s
+    next unless type.include?("DISTRIBUTION")
+
+    UI.important("Revoking Distribution certificate #{cert.id} (#{type})")
+    begin
+      cert.delete!
+    rescue StandardError => error
+      UI.error("Could not revoke #{cert.id}: #{error}")
+    end
+  end
+end

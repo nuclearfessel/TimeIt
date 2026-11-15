@@ -5,19 +5,19 @@ gaps remain transparent over that plate. This avoids same-color lane loss and
 keeps the dark wordmark readable on every supplied gradient.
 
 ```html
-<a class="timed-header-brand" href="./" aria-label="Timed home">
-  <img src="assets/timed/Web/header-logo-on-color.svg" alt="Timed">
+<a class="timeit-header-brand" href="./" aria-label="TimeIt home">
+  <img src="assets/timeit/Web/header-logo-on-color.svg" alt="TimeIt">
 </a>
 ```
 ```css
-.timed-header-brand { display:inline-flex; flex-shrink:0; }
-.timed-header-brand img { display:block; height:48px; width:auto; max-width:100%; }
+.timeit-header-brand { display:inline-flex; flex-shrink:0; }
+.timeit-header-brand img { display:block; height:48px; width:auto; max-width:100%; }
 ```
 Keep the same header sizing on home and guide; adjust both together if needed.
 The plate already includes clear space: do not add one-sided padding.
 Do not invert/filter this image in dark mode or set opacity below 1.
-Use `Brand/timed-horizontal-light.svg` on neutral light sections and
-`Brand/timed-horizontal-dark.svg` on neutral dark sections instead.
+Use `Brand/timeit-horizontal-light.svg` on neutral light sections and
+`Brand/timeit-horizontal-dark.svg` on neutral dark sections instead.
 Do not assume a white wordmark passes normal-text contrast on all bright phase bands.
 
 Inspected site gradient stops:

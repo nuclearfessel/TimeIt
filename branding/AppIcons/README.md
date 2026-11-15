@@ -1,4 +1,4 @@
-# Timed mobile icons
+# TimeIt mobile icons
 
 Default: dark full-bleed square with the three-color track.
 Follow iOS/README.md and Android/README.md for actual app integration.

@@ -9,7 +9,7 @@ Set/retain ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon in the Runner target.
 The explicit phone, iPad compatibility and marketing slots support the existing
 Flutter catalog layout; iPad slots do not announce a new supported product.
 
-`timed-app-store-1024.png` is the marketing master. The optional light master
+`timeit-app-store-1024.png` is the marketing master. The optional light master
 and transparent foreground are in ../Sources/. They are not automatically
 registered appearance variants; make deliberate Xcode changes if adopting them.
 This package does not contain a compiled Icon Composer `.icon` file.

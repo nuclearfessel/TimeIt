@@ -13,7 +13,7 @@ from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.boundsPen import BoundsPen
 from PIL import Image, ImageFont, ImageOps
 def font(*args, **kwargs):
-    raise ValueError('Use a registered Timed static font')
+    raise ValueError('Use a registered TimeIt static font')
 
 ROOT = Path(__file__).resolve().parents[1]
 NS = "http://www.w3.org/2000/svg"

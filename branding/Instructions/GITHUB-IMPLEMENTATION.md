@@ -1,11 +1,14 @@
-# Other-agent implementation brief — Timed
+# Other-agent implementation brief — TimeIt
 
-Repository: https://github.com/nuclearfessel/Timed
+Repository: https://github.com/nuclearfessel/TimeIt
+The product is now named **TimeIt**. The repository is `TimeIt`;
+Pages path is `/TimeIt/`.
 Reviewed on 2026-11-14. Re-read the current source before editing; it is changing.
 
 ## Boundaries
-Implement only Timed branding. The Flutter app lives in `app/`.
-Preserve timer behavior, stored routines, IDs, versions, signing and dependencies.
+Implement only TimeIt branding. The Flutter app lives in `app/`.
+Update the user-visible app name/launcher label to **TimeIt** on iOS and Android.
+Preserve timer behavior, stored routines, bundle/package IDs, versions, signing and dependencies.
 Do not add desktop/Watch support, Pomodoro, preset exercises, payments or analytics.
 No publishing, release, merge or store submission without the owner's approval.
 

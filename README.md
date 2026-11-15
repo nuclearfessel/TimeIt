@@ -1,36 +1,36 @@
-# Timed
+# TimeIt
 
 A workout interval timer with simple rounds, or advanced rounds each with their own phase stack.
 
-<a href="https://nuclearfessel.github.io/Timed/">
+<a href="https://nuclearfessel.github.io/TimeIt/">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="branding/Graphics/readme-banner-dark.svg">
-    <img src="branding/Graphics/readme-banner-light.svg" alt="Timed: make every interval yours. A workout interval timer for iOS and Android." width="1600">
+    <img src="branding/Graphics/readme-banner-light.svg" alt="TimeIt: make every interval yours. A workout interval timer for iOS and Android." width="1600">
   </picture>
 </a>
 
-**Site:** [nuclearfessel.github.io/Timed](https://nuclearfessel.github.io/Timed/) · **Guide:** [Using Timed](https://nuclearfessel.github.io/Timed/guide.html) · **Releases:** [GitHub Releases](https://github.com/nuclearfessel/Timed/releases)
+**Site:** [nuclearfessel.github.io/TimeIt](https://nuclearfessel.github.io/TimeIt/) · **Guide:** [Using TimeIt](https://nuclearfessel.github.io/TimeIt/guide.html) · **Releases:** [GitHub Releases](https://github.com/nuclearfessel/TimeIt/releases)
 
-Timed is free. **iOS and Android only** — no web, desktop, Apple Watch, or Wear OS. No Pomodoro. No pre-built exercises.
+TimeIt is free. **iOS and Android only** — no web, desktop, Apple Watch, or Wear OS. No Pomodoro. No pre-built exercises.
 
 ## Screenshots
 
 <p>
-  <img src="docs/assets/timed/Screenshots/01-home.svg" alt="Timed home screen with simple and advanced timers." width="210">
+  <img src="docs/assets/timeit/Screenshots/01-home.svg" alt="TimeIt home screen with simple and advanced timers." width="210">
   &nbsp;
-  <img src="docs/assets/timed/Screenshots/02-run-portrait.svg" alt="Run screen in portrait: phase color, large digits, up next and controls." width="210">
+  <img src="docs/assets/timeit/Screenshots/02-run-portrait.svg" alt="Run screen in portrait: phase color, large digits, up next and controls." width="210">
   &nbsp;
-  <img src="docs/assets/timed/Screenshots/05-editor-simple.svg" alt="Simple timer editor with standby, work, rest, and rounds." width="210">
+  <img src="docs/assets/timeit/Screenshots/05-editor-simple.svg" alt="Simple timer editor with standby, work, rest, and rounds." width="210">
 </p>
 
 <p>
-  <img src="docs/assets/timed/Screenshots/06-editor-advanced.svg" alt="Advanced editor with rounds, each with their own phase stack." width="210">
+  <img src="docs/assets/timeit/Screenshots/06-editor-advanced.svg" alt="Advanced editor with rounds, each with their own phase stack." width="210">
   &nbsp;
-  <img src="docs/assets/timed/Screenshots/04-settings.svg" alt="Settings with Light and Dark theme and sound toggles." width="210">
+  <img src="docs/assets/timeit/Screenshots/04-settings.svg" alt="Settings with Light and Dark theme and sound toggles." width="210">
 </p>
 
 <p>
-  <img src="docs/assets/timed/Screenshots/08-run-landscape.svg" alt="Run screen in landscape with the timer on top and controls underneath." width="900">
+  <img src="docs/assets/timeit/Screenshots/08-run-landscape.svg" alt="Run screen in landscape with the timer on top and controls underneath." width="900">
 </p>
 
 ## Your session at a glance
@@ -63,7 +63,7 @@ Create your own timers and sets. Choose simple rounds or build a custom sequence
 
 ## Getting started
 
-Choose Simple or Advanced, configure the timer and start. See the [guide](https://nuclearfessel.github.io/Timed/guide.html) for full instructions.
+Choose Simple or Advanced, configure the timer and start. See the [guide](https://nuclearfessel.github.io/TimeIt/guide.html) for full instructions.
 
 <p>
   <picture>
@@ -107,7 +107,7 @@ Start a session, pause and resume it, skip to the next phase or reset to the fir
 
 ## Mobile platforms
 
-Timed targets iOS and Android. Check [GitHub Releases](https://github.com/nuclearfessel/Timed/releases) and the [installation guide](https://nuclearfessel.github.io/Timed/guide.html#install) for current packages. iOS distribution requires signing on a Mac.
+TimeIt targets iOS and Android. Check [GitHub Releases](https://github.com/nuclearfessel/TimeIt/releases) and the [installation guide](https://nuclearfessel.github.io/TimeIt/guide.html#install) for current packages. iOS builds ship to TestFlight via GitHub Actions and App Store Connect (no personal Mac required for the CI path).
 
 <p>
   <picture>
@@ -131,7 +131,7 @@ flutter run
 ## Repo layout
 - `app/` — Flutter app
 - `docs/` — GitHub Pages site and guide
-- `docs/assets/timed/` — public brand assets for Pages
+- `docs/assets/timeit/` — public brand assets for Pages
 - `branding/` — full brand package (icons sources, store art, guidelines)
 - `docs/research.md`, `docs/reference-apps.md` — research notes
 - `reference/index.html` — private screen reference board

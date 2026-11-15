@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/workout_timer.dart';
 
 class TimerStore extends ChangeNotifier {
-  static const _key = 'timed.workout_timers.v1';
+  static const _key = 'timeit.workout_timers.v1';
 
   final List<WorkoutTimer> _timers = [];
   bool loaded = false;
