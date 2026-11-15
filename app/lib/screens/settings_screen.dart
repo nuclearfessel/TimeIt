@@ -110,7 +110,7 @@ class SettingsScreen extends StatelessWidget {
               const SizedBox(height: 8),
               _BeepCountSlider(
                 title: 'Start beeps',
-                subtitle: 'How many beeps when a phase begins',
+                subtitle: 'One beep per second at the start of each phase',
                 value: settings.startBeepCount,
                 onChanged: settings.setStartBeepCount,
               ),

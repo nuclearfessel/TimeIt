@@ -34,7 +34,7 @@ class CueAudio {
     }
   }
 
-  /// Plays [kind] up to [count] times with a short gap (used for start beeps).
+  /// Plays [kind] [count] times, one beep per second (start-of-phase cues).
   Future<void> playRepeats(CueKind kind, int count) async {
     final n = count.clamp(0, SettingsStore.maxBeepCount);
     if (n <= 0) return;
@@ -43,13 +43,18 @@ class CueAudio {
       if (generation != _playGeneration) return;
       await play(kind);
       if (i < n - 1) {
-        await Future<void>.delayed(const Duration(milliseconds: 200));
+        await Future<void>.delayed(const Duration(seconds: 1));
       }
     }
   }
 
-  Future<void> dispose() async {
+  /// Stops an in-flight one-per-second start-beep sequence.
+  void cancelRepeats() {
     _playGeneration++;
+  }
+
+  Future<void> dispose() async {
+    cancelRepeats();
     await _player.dispose();
   }
 }

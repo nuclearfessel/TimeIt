@@ -100,6 +100,7 @@ class TimerEngine extends ChangeNotifier {
 
   void pause() {
     if (status != EngineStatus.running) return;
+    _audio.cancelRepeats();
     _remainingWhenPaused = remaining;
     _phaseEndsAt = null;
     status = EngineStatus.paused;
@@ -133,6 +134,7 @@ class TimerEngine extends ChangeNotifier {
   }
 
   void stop() {
+    _audio.cancelRepeats();
     _ticker?.cancel();
     _phaseEndsAt = null;
     _index = 0;
@@ -166,6 +168,7 @@ class TimerEngine extends ChangeNotifier {
 
   void _advance({required bool playCue}) {
     if (_index >= _schedule.length - 1) {
+      _audio.cancelRepeats();
       _ticker?.cancel();
       _phaseEndsAt = null;
       status = EngineStatus.finished;
