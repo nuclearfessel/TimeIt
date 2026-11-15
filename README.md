@@ -16,17 +16,17 @@ Timed is free. **iOS and Android only** — no web, desktop, Apple Watch, or Wea
 ## Screenshots
 
 <p>
-  <img src="docs/assets/timed/Screenshots/01-home.svg" alt="Timed home screen with simple and advanced timers." width="420">
+  <img src="docs/assets/timed/Screenshots/01-home.svg" alt="Timed home screen with simple and advanced timers." width="210">
   &nbsp;
-  <img src="docs/assets/timed/Screenshots/02-run-portrait.svg" alt="Run screen in portrait: phase color, large digits, up next and controls." width="420">
+  <img src="docs/assets/timed/Screenshots/02-run-portrait.svg" alt="Run screen in portrait: phase color, large digits, up next and controls." width="210">
   &nbsp;
-  <img src="docs/assets/timed/Screenshots/05-editor-simple.svg" alt="Simple timer editor with standby, work, rest, and rounds." width="420">
+  <img src="docs/assets/timed/Screenshots/05-editor-simple.svg" alt="Simple timer editor with standby, work, rest, and rounds." width="210">
 </p>
 
 <p>
-  <img src="docs/assets/timed/Screenshots/06-editor-advanced.svg" alt="Advanced editor with rounds, each with their own phase stack." width="420">
+  <img src="docs/assets/timed/Screenshots/06-editor-advanced.svg" alt="Advanced editor with rounds, each with their own phase stack." width="210">
   &nbsp;
-  <img src="docs/assets/timed/Screenshots/04-settings.svg" alt="Settings with Light and Dark theme and sound toggles." width="420">
+  <img src="docs/assets/timed/Screenshots/04-settings.svg" alt="Settings with Light and Dark theme and sound toggles." width="210">
 </p>
 
 <p>
