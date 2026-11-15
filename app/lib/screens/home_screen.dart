@@ -143,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                               ListTile(
                                 title: const Text('Simple timer'),
                                 subtitle: const Text(
-                                  'Standby, work, rest, rounds',
+                                  'Standby, work, rest, and rounds',
                                 ),
                                 onTap: () =>
                                     Navigator.pop(ctx, TimerKind.simple),
@@ -151,7 +151,7 @@ class HomeScreen extends StatelessWidget {
                               ListTile(
                                 title: const Text('Advanced timer'),
                                 subtitle: const Text(
-                                  'Stack standby, work, and rest',
+                                  'Rounds with their own phase stacks',
                                 ),
                                 onTap: () =>
                                     Navigator.pop(ctx, TimerKind.advanced),
@@ -204,7 +204,7 @@ class _EmptyState extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-              'Create a timer. Simple work/rest rounds, or an advanced stack of standby, work, and rest.',
+              'Create a timer. Simple work/rest rounds, or advanced rounds each with their own phase stack.',
               textAlign: TextAlign.center,
               style: TextStyle(color: colors.mute, height: 1.4),
             ),
@@ -245,7 +245,7 @@ class _TimerCard extends StatelessWidget {
         timer.kind == TimerKind.simple ? 'Simple' : 'Advanced';
     final summary = timer.kind == TimerKind.simple
         ? '${formatSeconds(timer.workSeconds)} work · ${formatSeconds(timer.restSeconds)} rest · ${timer.rounds} rounds'
-        : '${timer.steps.length} phases · ${timer.cycles} cycles · ${formatSeconds(timer.totalSeconds)}';
+        : '${timer.advancedRoundCount} rounds · ${timer.advancedPhaseCount} phases · ${formatSeconds(timer.totalSeconds)}';
 
     return Material(
       color: colors.surface,

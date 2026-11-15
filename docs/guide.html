@@ -38,7 +38,7 @@
     <div class="guide-hero-core">
       <p class="guide-kicker">Guide</p>
       <h1>Using Timed</h1>
-      <p>Create your own workout timers, stack standby / work / rest, and run them with full-screen phase colors and alert sounds.</p>
+      <p>Create your own workout timers — simple rounds or advanced rounds with their own phase stacks — and run them with full-screen phase colors and alert sounds.</p>
       <div class="phase-legend" aria-label="Phase colors">
         <span><i class="standby"></i>Standby</span>
         <span><i class="work"></i>Work</span>
@@ -97,24 +97,26 @@
     <section class="rest" id="advanced">
       <p class="section-phase">Rest</p>
       <h2>Advanced timers</h2>
-      <p>Advanced mode builds a <strong>phase stack</strong> you control:</p>
+      <p>Advanced mode is a list of <strong>rounds</strong>. Each round has its own phase stack:</p>
       <ul>
-        <li>Add standby, work, or rest phases in any order</li>
-        <li>Set each phase duration</li>
-        <li>Drag to reorder the stack (fully rounded rows while dragging)</li>
-        <li>Set <strong>cycles</strong> to repeat the whole stack</li>
+        <li>Add rounds; each round can differ from the others</li>
+        <li>Inside a round, add standby, work, or rest phases in any order</li>
+        <li>Set each phase duration and drag to reorder phases within the round</li>
+        <li>Duplicate or delete a round; rounds run in order from first to last</li>
       </ul>
-      <p>Delete any phase you do not need. Keep at least one phase with a duration greater than zero.</p>
-      <div class="mini-strip" role="img" aria-label="Example advanced stack">
-        <span class="standby">Standby</span>
-        <span class="work">Work</span>
-        <span class="rest">Rest</span>
-        <span class="work">Work</span>
+      <p>Delete any phase you do not need. Keep at least one phase with a duration greater than zero across your rounds.</p>
+      <p>Example: Round 1 might be standby → work → rest; Round 2 only work → rest; Round 3 a shorter work → rest. Same idea as Simple’s rounds, but each round can have a different stack.</p>
+      <div class="mini-strip" role="img" aria-label="Example advanced rounds with different stacks">
+        <span class="standby">R1 Standby</span>
+        <span class="work">R1 Work</span>
+        <span class="rest">R1 Rest</span>
+        <span class="work">R2 Work</span>
+        <span class="rest">R2 Rest</span>
       </div>
       <figure class="brand-figure">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="assets/timed/Graphics/timer-types-dark.svg" />
-          <img src="assets/timed/Graphics/timer-types-light.svg" alt="Simple rounds compared with flexible advanced phase stacks." width="1600" height="900" />
+          <img src="assets/timed/Graphics/timer-types-light.svg" alt="Simple rounds compared with advanced rounds that each have their own phase stack." width="1600" height="900" />
         </picture>
       </figure>
     </section>
@@ -128,7 +130,7 @@
         <li>Use <strong>Pause</strong> / <strong>Resume</strong>, <strong>Skip</strong> to jump ahead, or <strong>Reset</strong> to return to the first phase.</li>
         <li>When the sequence finishes, the screen shows <strong>Done</strong> and you can restart.</li>
       </ol>
-      <p>Large Hepta Slab digits show time left in the phase. An “up next” strip previews the following block.</p>
+      <p>Large Hepta Slab digits show time left in the phase on the left two-thirds of the run screen. The right third shows the phase stack, up next, and Start / Pause / Skip / Reset — the same layout on iPhone, iPad, and Android phones and tablets, in portrait and landscape.</p>
       <figure class="brand-figure">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="assets/timed/Graphics/run-controls-dark.svg" />

@@ -4,7 +4,7 @@ Workout interval timer for **iOS and Android only** (no web, desktop, or watch t
 
 ## Features (v1)
 - Simple timers: standby, work, rest, rounds
-- Advanced timers: stack standby / work / rest phases, repeat by cycles
+- Advanced timers: rounds, each with its own standby / work / rest phase stack
 - Create, edit, delete your own timers (no pre-built exercises)
 - Full-screen phase colors and alert sounds (phase change, last-3 countdown, complete)
 - Settings: Light / Dark (not system), sound preference stubs
