@@ -125,14 +125,14 @@
         <li>Use <strong>Pause</strong> / <strong>Resume</strong>, <strong>Skip</strong> to jump ahead, or <strong>Reset</strong> to return to the first phase.</li>
         <li>When the sequence finishes, the screen shows <strong>Done</strong> and you can restart.</li>
       </ol>
-      <p>In portrait, the run screen stacks vertically: large digits on top, then what’s up next and Start / Pause / Skip / Reset. In landscape it splits two-thirds / one-third — timer on the left, stack list plus up next and controls on the right.</p>
+      <p>In both portrait and landscape, the run screen puts large digits on top, then what’s up next and Start / Pause / Skip / Reset underneath. There is no phase stack list on the run screen.</p>
       <figure class="shot-figure shot-portrait">
         <img src="assets/timed/Screenshots/02-run-portrait.svg" alt="Portrait run screen with work phase, up next, and Start control." width="1272" height="2772" />
         <figcaption>Portrait run screen.</figcaption>
       </figure>
       <figure class="shot-figure shot-wide">
-        <img src="assets/timed/Screenshots/08-run-landscape.svg" alt="Landscape run screen with the same split layout and Pause control." width="2772" height="1272" />
-        <figcaption>Landscape — 2/3 · 1/3 with the stack list.</figcaption>
+        <img src="assets/timed/Screenshots/08-run-landscape.svg" alt="Landscape run screen with the timer on top and controls underneath." width="2772" height="1272" />
+        <figcaption>Landscape — same vertical layout as portrait: timer, then up next and controls.</figcaption>
       </figure>
     </section>
 
@@ -174,6 +174,7 @@
       <h2>Install</h2>
       <p>Android release builds are on <a href="https://github.com/nuclearfessel/Timed/releases">GitHub Releases</a> (<code>.apk</code> for direct install, <code>.aab</code> for Play upload).</p>
       <p>iOS release packages need a Mac with Xcode signing. When an IPA is published, it will appear on the same Releases page.</p>
+      <p><strong>Install or update:</strong> on both Android and iOS, installing Timed checks whether the app is already on the device. If it is, the package <em>updates</em> in place (same app id, data kept). If it is not, it installs fresh. From this repo, run <code>scripts/install-device.ps1</code> (Windows) or <code>scripts/install-device.sh</code> (macOS/Linux) with a connected device — the script detects the existing install and chooses update vs install automatically.</p>
       <p>Source and issue tracking live in the <a href="https://github.com/nuclearfessel/Timed">Timed repository</a>.</p>
       <figure class="brand-figure">
         <picture>

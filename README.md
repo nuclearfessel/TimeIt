@@ -30,7 +30,7 @@ Timed is free. **iOS and Android only** — no web, desktop, Apple Watch, or Wea
 </p>
 
 <p>
-  <img src="docs/assets/timed/Screenshots/08-run-landscape.svg" alt="Run screen in landscape with the same two-thirds timer and one-third stack layout." width="900">
+  <img src="docs/assets/timed/Screenshots/08-run-landscape.svg" alt="Run screen in landscape with the timer on top and controls underneath." width="900">
 </p>
 
 ## Your session at a glance

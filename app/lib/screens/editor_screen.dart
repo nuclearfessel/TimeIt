@@ -541,7 +541,7 @@ class _PhaseAddRow extends StatelessWidget {
   }
 }
 
-/// Phase add control: color swatch + label with fixed gap and vertical center.
+/// Phase add control: color swatch + plus + label on one text line (middle-aligned).
 class _PhaseAddChip extends StatelessWidget {
   const _PhaseAddChip({required this.type, required this.onPressed});
 
@@ -551,6 +551,14 @@ class _PhaseAddChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = TimedColors.of(context);
+    final labelStyle = TextStyle(
+      fontFamily: 'PlusJakartaSans',
+      fontWeight: FontWeight.w500,
+      fontSize: 14,
+      height: 1.2,
+      leadingDistribution: TextLeadingDistribution.even,
+      color: colors.fg,
+    );
     return Material(
       color: colors.surface,
       shape: StadiumBorder(side: BorderSide(color: colors.line)),
@@ -571,13 +579,29 @@ class _PhaseAddChip extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
               ),
-              const SizedBox(width: 10),
-              Text(
-                '+ ${type.label}',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                  height: 1.1,
+              const SizedBox(width: 8),
+              Text.rich(
+                TextSpan(
+                  style: labelStyle,
+                  children: [
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.middle,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: Transform.translate(
+                          offset: const Offset(0, 0.5),
+                          child: SizedBox(
+                            width: 11,
+                            height: 11,
+                            child: CustomPaint(
+                              painter: _PlusPainter(color: colors.fg),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextSpan(text: type.label),
+                  ],
                 ),
               ),
             ],
@@ -586,6 +610,29 @@ class _PhaseAddChip extends StatelessWidget {
       ),
     );
   }
+}
+
+class _PlusPainter extends CustomPainter {
+  _PlusPainter({required this.color});
+
+  final Color color;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1.7
+      ..strokeCap = StrokeCap.square;
+    final cx = size.width / 2;
+    final cy = size.height / 2;
+    canvas.drawLine(Offset(cx, 0.5), Offset(cx, size.height - 0.5), paint);
+    canvas.drawLine(Offset(0.5, cy), Offset(size.width - 0.5, cy), paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant _PlusPainter oldDelegate) =>
+      oldDelegate.color != color;
 }
 
 class _SheetPhaseOption extends StatelessWidget {

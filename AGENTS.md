@@ -79,9 +79,13 @@ Full detail: `.cursor/rules/workflow-triggers.mdc`.
 - Desktop handoff: `C:\Users\bitte\Desktop\Apps\Timed` (Interlocking Lanes, corrected weave).
 - Wired into `branding/`, `docs/assets/timed/`, Android `mipmap` / adaptive icons, iOS `AppIcon.appiconset`, and `app/assets/brand/`.
 
+## Device install / update
+- Package id: `com.nuclearfessel.timed` (Android and iOS).
+- Installing over an existing copy **updates** in place; otherwise it installs fresh.
+- Helper: `scripts/install-device.ps1` (Windows) / `scripts/install-device.sh` (macOS/Linux). Detects an existing install and uses update vs install accordingly (`adb install -r` on Android; `ideviceinstaller` on iOS when available).
+
 ## Suggested next steps
 1. Hands-on test the three shortlisted apps when useful (checklist in `docs/reference-apps.md`).
 2. Wire music ducking and vibrate stubs from Settings; decide richer cues later.
-3. Polish landscape layouts across home, editor, run, and settings.
-4. Accessibility: announcement model for screen readers; audio policy.
-5. TestFlight via GitHub Actions + App Store Connect API key (Mac or CI).
+3. Accessibility: announcement model for screen readers; audio policy.
+4. TestFlight via GitHub Actions + App Store Connect API key (Mac or CI).
