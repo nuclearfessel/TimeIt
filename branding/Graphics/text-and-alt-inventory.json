@@ -2792,5 +2792,1241 @@
         "row": null
       }
     ]
+  },
+  {
+    "file": "Graphics/session-overview-light.svg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Illustrated standby, work and rest phases alongside a conceptual phone timer, not an app screenshot. Durations are examples.",
+    "text": [
+      {
+        "text": "YOUR SESSION, AT A GLANCE",
+        "bounds": [
+          134.0,
+          58.23950000000001,
+          380.452,
+          73.76050000000001
+        ],
+        "baseline": 71.1085,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Your next interval, in focus.",
+        "bounds": [
+          72.0,
+          156.1455,
+          959.093,
+          211.8545
+        ],
+        "baseline": 202.5745,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          1212.0,
+          326.9875,
+          1301.875,
+          347.0125
+        ],
+        "baseline": 346.7375,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          1270.773,
+          425.541,
+          1341.2269999999999,
+          442.459
+        ],
+        "baseline": 442.195,
+        "row": null
+      },
+      {
+        "text": "00:45",
+        "bounds": [
+          1211.616,
+          484.07199999999995,
+          1400.384,
+          533.928
+        ],
+        "baseline": 533.16,
+        "row": null
+      },
+      {
+        "text": "UP NEXT / REST",
+        "bounds": [
+          1248.9975,
+          695.4225,
+          1363.0024999999998,
+          708.5775
+        ],
+        "baseline": 706.7775,
+        "row": null
+      },
+      {
+        "text": "Pause",
+        "bounds": [
+          1277.48,
+          784.4300000000001,
+          1334.52,
+          799.57
+        ],
+        "baseline": 799.33,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          108.0,
+          326.772,
+          222.64,
+          345.228
+        ],
+        "baseline": 344.94,
+        "row": null
+      },
+      {
+        "text": "A moment to get ready.",
+        "bounds": [
+          108.0,
+          377.78749999999997,
+          383.29999999999995,
+          402.2125
+        ],
+        "baseline": 396.7125,
+        "row": null
+      },
+      {
+        "text": "00:10",
+        "bounds": [
+          826.2159999999999,
+          342.746,
+          972.0,
+          383.254
+        ],
+        "baseline": 382.63,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          108.0,
+          502.77200000000005,
+          184.768,
+          521.2280000000001
+        ],
+        "baseline": 520.94,
+        "row": null
+      },
+      {
+        "text": "The interval you chose.",
+        "bounds": [
+          108.0,
+          553.7875,
+          375.29999999999995,
+          578.2125
+        ],
+        "baseline": 572.7125,
+        "row": null
+      },
+      {
+        "text": "00:45",
+        "bounds": [
+          820.126,
+          518.746,
+          972.0,
+          559.254
+        ],
+        "baseline": 558.63,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          108.0,
+          678.772,
+          166.01600000000002,
+          697.2280000000001
+        ],
+        "baseline": 696.94,
+        "row": null
+      },
+      {
+        "text": "Space to recover.",
+        "bounds": [
+          108.0,
+          730.0375,
+          313.2,
+          753.9625
+        ],
+        "baseline": 748.9625,
+        "row": null
+      },
+      {
+        "text": "00:15",
+        "bounds": [
+          827.126,
+          694.746,
+          972.0,
+          735.254
+        ],
+        "baseline": 734.63,
+        "row": null
+      },
+      {
+        "text": "Phase labels. Countdown digits. A clear next step.",
+        "bounds": [
+          72.0,
+          885.818,
+          850.418,
+          914.182
+        ],
+        "baseline": 907.938,
+        "row": null
+      },
+      {
+        "text": "CONCEPT ILLUSTRATION \u00b7 NOT AN APP SCREENSHOT \u00b7 SAMPLE DURATIONS",
+        "bounds": [
+          72.0,
+          964.6170000000001,
+          598.6579999999999,
+          975.383
+        ],
+        "baseline": 975.215,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/run-controls-light.svg",
+    "width": 1600,
+    "height": 900,
+    "alt": "Start begins the timer; Pause and Resume stop and continue; Skip advances a phase; Reset returns to the first phase. Illustrated controls, not a screenshot.",
+    "text": [
+      {
+        "text": "YOU CONTROL THE SESSION",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          374.186,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Keep your own pace.",
+        "bounds": [
+          72.0,
+          154.085,
+          787.9970000000001,
+          213.91500000000002
+        ],
+        "baseline": 200.895,
+        "row": null
+      },
+      {
+        "text": "Start",
+        "bounds": [
+          100.0,
+          468.75525,
+          177.817,
+          491.24475
+        ],
+        "baseline": 490.95475,
+        "row": null
+      },
+      {
+        "text": "Begin the timer.",
+        "bounds": [
+          100.0,
+          537.7415,
+          255.995,
+          558.2585
+        ],
+        "baseline": 553.6385,
+        "row": null
+      },
+      {
+        "text": "Pause / Resume",
+        "bounds": [
+          472.0,
+          467.28349999999995,
+          722.733,
+          492.7165
+        ],
+        "baseline": 490.1935,
+        "row": null
+      },
+      {
+        "text": "Stop, then continue.",
+        "bounds": [
+          472.0,
+          537.9514999999999,
+          671.688,
+          558.0485
+        ],
+        "baseline": 553.8485,
+        "row": null
+      },
+      {
+        "text": "Skip",
+        "bounds": [
+          844.0,
+          465.5,
+          914.415,
+          494.5
+        ],
+        "baseline": 488.41,
+        "row": null
+      },
+      {
+        "text": "Go to the next phase.",
+        "bounds": [
+          844.0,
+          537.9514999999999,
+          1052.457,
+          558.0485
+        ],
+        "baseline": 553.8485,
+        "row": null
+      },
+      {
+        "text": "Reset",
+        "bounds": [
+          1216.0,
+          468.90025,
+          1303.4840000000002,
+          491.09975000000003
+        ],
+        "baseline": 490.79525,
+        "row": null
+      },
+      {
+        "text": "Return to the first phase.",
+        "bounds": [
+          1216.0,
+          537.9514999999999,
+          1456.9950000000001,
+          558.0485
+        ],
+        "baseline": 553.8485,
+        "row": null
+      },
+      {
+        "text": "Simple or advanced: the same essential run controls.",
+        "bounds": [
+          72.0,
+          715.5,
+          921.9445,
+          744.5
+        ],
+        "baseline": 738.41,
+        "row": null
+      },
+      {
+        "text": "CONTROL DIAGRAM \u00b7 NOT INTERACTIVE BUTTONS OR AN APP SCREENSHOT",
+        "bounds": [
+          72.0,
+          844.2325,
+          650.215,
+          855.7674999999999
+        ],
+        "baseline": 855.5875,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/mobile-platforms-light.svg",
+    "width": 1600,
+    "height": 960,
+    "alt": "Timed for iOS and Android, with conceptual phone illustrations, not screenshots. Check GitHub Releases and the guide for current packages and signing requirements.",
+    "text": [
+      {
+        "text": "BUILT FOR YOUR PHONE",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          335.415,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "One timer. Two platforms.",
+        "bounds": [
+          72.0,
+          153.685,
+          946.8,
+          214.315
+        ],
+        "baseline": 201.715,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          220.0,
+          338.9875,
+          309.875,
+          359.0125
+        ],
+        "baseline": 358.7375,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          238.79000000000002,
+          437.541,
+          345.21000000000004,
+          454.459
+        ],
+        "baseline": 454.195,
+        "row": null
+      },
+      {
+        "text": "00:10",
+        "bounds": [
+          201.556,
+          496.07199999999995,
+          382.444,
+          545.928
+        ],
+        "baseline": 545.16,
+        "row": null
+      },
+      {
+        "text": "UP NEXT / WORK",
+        "bounds": [
+          228.97,
+          651.4225,
+          355.03,
+          664.5775
+        ],
+        "baseline": 662.7775,
+        "row": null
+      },
+      {
+        "text": "Pause",
+        "bounds": [
+          263.48,
+          740.4300000000001,
+          320.52000000000004,
+          755.57
+        ],
+        "baseline": 755.33,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          576.0,
+          338.9875,
+          665.875,
+          359.0125
+        ],
+        "baseline": 358.7375,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          621.4509999999999,
+          437.541,
+          674.549,
+          454.459
+        ],
+        "baseline": 454.195,
+        "row": null
+      },
+      {
+        "text": "00:15",
+        "bounds": [
+          558.116,
+          496.07199999999995,
+          737.884,
+          545.928
+        ],
+        "baseline": 545.16,
+        "row": null
+      },
+      {
+        "text": "UP NEXT / WORK",
+        "bounds": [
+          584.97,
+          651.4225,
+          711.03,
+          664.5775
+        ],
+        "baseline": 662.7775,
+        "row": null
+      },
+      {
+        "text": "Pause",
+        "bounds": [
+          619.48,
+          740.4300000000001,
+          676.52,
+          755.57
+        ],
+        "baseline": 755.33,
+        "row": null
+      },
+      {
+        "text": "iOS",
+        "bounds": [
+          270.53200000000004,
+          856.0029999999999,
+          313.468,
+          875.997
+        ],
+        "baseline": 875.685,
+        "row": null
+      },
+      {
+        "text": "Android",
+        "bounds": [
+          596.1999999999999,
+          856.0029999999999,
+          699.8,
+          875.997
+        ],
+        "baseline": 875.685,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          1092.0,
+          321.965,
+          1341.25,
+          378.03499999999997
+        ],
+        "baseline": 377.265,
+        "row": null
+      },
+      {
+        "text": "Your own timers.",
+        "bounds": [
+          944.0,
+          473.78049999999996,
+          1153.644,
+          494.2195
+        ],
+        "baseline": 493.89549999999997,
+        "row": null
+      },
+      {
+        "text": "Simple rounds or custom stacks.",
+        "bounds": [
+          944.0,
+          528.0805,
+          1354.456,
+          553.9195
+        ],
+        "baseline": 548.5195,
+        "row": null
+      },
+      {
+        "text": "Standby, work and rest.",
+        "bounds": [
+          944.0,
+          584.8105,
+          1242.456,
+          611.1895000000001
+        ],
+        "baseline": 605.2495,
+        "row": null
+      },
+      {
+        "text": "Downloads and install instructions:",
+        "bounds": [
+          944.0,
+          712.3100000000001,
+          1271.9,
+          727.69
+        ],
+        "baseline": 727.45,
+        "row": null
+      },
+      {
+        "text": "See GitHub Releases and the guide.",
+        "bounds": [
+          944.0,
+          751.253,
+          1317.752,
+          772.7470000000001
+        ],
+        "baseline": 767.907,
+        "row": null
+      },
+      {
+        "text": "CONCEPT DEVICES \u00b7 NOT SCREENSHOTS \u00b7 RELEASE AVAILABILITY VARIES BY PLATFORM",
+        "bounds": [
+          72.0,
+          930.6170000000001,
+          689.808,
+          941.383
+        ],
+        "baseline": 941.215,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/session-overview-dark.svg",
+    "width": 1600,
+    "height": 1000,
+    "alt": "Illustrated standby, work and rest phases alongside a conceptual phone timer, not an app screenshot. Durations are examples.",
+    "text": [
+      {
+        "text": "YOUR SESSION, AT A GLANCE",
+        "bounds": [
+          134.0,
+          58.23950000000001,
+          380.452,
+          73.76050000000001
+        ],
+        "baseline": 71.1085,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Your next interval, in focus.",
+        "bounds": [
+          72.0,
+          156.1455,
+          959.093,
+          211.8545
+        ],
+        "baseline": 202.5745,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          1212.0,
+          326.9875,
+          1301.875,
+          347.0125
+        ],
+        "baseline": 346.7375,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          1270.773,
+          425.541,
+          1341.2269999999999,
+          442.459
+        ],
+        "baseline": 442.195,
+        "row": null
+      },
+      {
+        "text": "00:45",
+        "bounds": [
+          1211.616,
+          484.07199999999995,
+          1400.384,
+          533.928
+        ],
+        "baseline": 533.16,
+        "row": null
+      },
+      {
+        "text": "UP NEXT / REST",
+        "bounds": [
+          1248.9975,
+          695.4225,
+          1363.0024999999998,
+          708.5775
+        ],
+        "baseline": 706.7775,
+        "row": null
+      },
+      {
+        "text": "Pause",
+        "bounds": [
+          1277.48,
+          784.4300000000001,
+          1334.52,
+          799.57
+        ],
+        "baseline": 799.33,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          108.0,
+          326.772,
+          222.64,
+          345.228
+        ],
+        "baseline": 344.94,
+        "row": null
+      },
+      {
+        "text": "A moment to get ready.",
+        "bounds": [
+          108.0,
+          377.78749999999997,
+          383.29999999999995,
+          402.2125
+        ],
+        "baseline": 396.7125,
+        "row": null
+      },
+      {
+        "text": "00:10",
+        "bounds": [
+          826.2159999999999,
+          342.746,
+          972.0,
+          383.254
+        ],
+        "baseline": 382.63,
+        "row": null
+      },
+      {
+        "text": "WORK",
+        "bounds": [
+          108.0,
+          502.77200000000005,
+          184.768,
+          521.2280000000001
+        ],
+        "baseline": 520.94,
+        "row": null
+      },
+      {
+        "text": "The interval you chose.",
+        "bounds": [
+          108.0,
+          553.7875,
+          375.29999999999995,
+          578.2125
+        ],
+        "baseline": 572.7125,
+        "row": null
+      },
+      {
+        "text": "00:45",
+        "bounds": [
+          820.126,
+          518.746,
+          972.0,
+          559.254
+        ],
+        "baseline": 558.63,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          108.0,
+          678.772,
+          166.01600000000002,
+          697.2280000000001
+        ],
+        "baseline": 696.94,
+        "row": null
+      },
+      {
+        "text": "Space to recover.",
+        "bounds": [
+          108.0,
+          730.0375,
+          313.2,
+          753.9625
+        ],
+        "baseline": 748.9625,
+        "row": null
+      },
+      {
+        "text": "00:15",
+        "bounds": [
+          827.126,
+          694.746,
+          972.0,
+          735.254
+        ],
+        "baseline": 734.63,
+        "row": null
+      },
+      {
+        "text": "Phase labels. Countdown digits. A clear next step.",
+        "bounds": [
+          72.0,
+          885.818,
+          850.418,
+          914.182
+        ],
+        "baseline": 907.938,
+        "row": null
+      },
+      {
+        "text": "CONCEPT ILLUSTRATION \u00b7 NOT AN APP SCREENSHOT \u00b7 SAMPLE DURATIONS",
+        "bounds": [
+          72.0,
+          964.6170000000001,
+          598.6579999999999,
+          975.383
+        ],
+        "baseline": 975.215,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/run-controls-dark.svg",
+    "width": 1600,
+    "height": 900,
+    "alt": "Start begins the timer; Pause and Resume stop and continue; Skip advances a phase; Reset returns to the first phase. Illustrated controls, not a screenshot.",
+    "text": [
+      {
+        "text": "YOU CONTROL THE SESSION",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          374.186,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "Keep your own pace.",
+        "bounds": [
+          72.0,
+          154.085,
+          787.9970000000001,
+          213.91500000000002
+        ],
+        "baseline": 200.895,
+        "row": null
+      },
+      {
+        "text": "Start",
+        "bounds": [
+          100.0,
+          468.75525,
+          177.817,
+          491.24475
+        ],
+        "baseline": 490.95475,
+        "row": null
+      },
+      {
+        "text": "Begin the timer.",
+        "bounds": [
+          100.0,
+          537.7415,
+          255.995,
+          558.2585
+        ],
+        "baseline": 553.6385,
+        "row": null
+      },
+      {
+        "text": "Pause / Resume",
+        "bounds": [
+          472.0,
+          467.28349999999995,
+          722.733,
+          492.7165
+        ],
+        "baseline": 490.1935,
+        "row": null
+      },
+      {
+        "text": "Stop, then continue.",
+        "bounds": [
+          472.0,
+          537.9514999999999,
+          671.688,
+          558.0485
+        ],
+        "baseline": 553.8485,
+        "row": null
+      },
+      {
+        "text": "Skip",
+        "bounds": [
+          844.0,
+          465.5,
+          914.415,
+          494.5
+        ],
+        "baseline": 488.41,
+        "row": null
+      },
+      {
+        "text": "Go to the next phase.",
+        "bounds": [
+          844.0,
+          537.9514999999999,
+          1052.457,
+          558.0485
+        ],
+        "baseline": 553.8485,
+        "row": null
+      },
+      {
+        "text": "Reset",
+        "bounds": [
+          1216.0,
+          468.90025,
+          1303.4840000000002,
+          491.09975000000003
+        ],
+        "baseline": 490.79525,
+        "row": null
+      },
+      {
+        "text": "Return to the first phase.",
+        "bounds": [
+          1216.0,
+          537.9514999999999,
+          1456.9950000000001,
+          558.0485
+        ],
+        "baseline": 553.8485,
+        "row": null
+      },
+      {
+        "text": "Simple or advanced: the same essential run controls.",
+        "bounds": [
+          72.0,
+          715.5,
+          921.9445,
+          744.5
+        ],
+        "baseline": 738.41,
+        "row": null
+      },
+      {
+        "text": "CONTROL DIAGRAM \u00b7 NOT INTERACTIVE BUTTONS OR AN APP SCREENSHOT",
+        "bounds": [
+          72.0,
+          844.2325,
+          650.215,
+          855.7674999999999
+        ],
+        "baseline": 855.5875,
+        "row": null
+      }
+    ]
+  },
+  {
+    "file": "Graphics/mobile-platforms-dark.svg",
+    "width": 1600,
+    "height": 960,
+    "alt": "Timed for iOS and Android, with conceptual phone illustrations, not screenshots. Check GitHub Releases and the guide for current packages and signing requirements.",
+    "text": [
+      {
+        "text": "BUILT FOR YOUR PHONE",
+        "bounds": [
+          134.0,
+          59.463499999999996,
+          335.415,
+          72.53649999999999
+        ],
+        "baseline": 72.3325,
+        "row": null
+      },
+      {
+        "text": "iOS / ANDROID",
+        "bounds": [
+          1404.069,
+          58.545500000000004,
+          1528.0,
+          73.45450000000001
+        ],
+        "baseline": 71.4145,
+        "row": null
+      },
+      {
+        "text": "One timer. Two platforms.",
+        "bounds": [
+          72.0,
+          153.685,
+          946.8,
+          214.315
+        ],
+        "baseline": 201.715,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          220.0,
+          338.9875,
+          309.875,
+          359.0125
+        ],
+        "baseline": 358.7375,
+        "row": null
+      },
+      {
+        "text": "STANDBY",
+        "bounds": [
+          238.79000000000002,
+          437.541,
+          345.21000000000004,
+          454.459
+        ],
+        "baseline": 454.195,
+        "row": null
+      },
+      {
+        "text": "00:10",
+        "bounds": [
+          201.556,
+          496.07199999999995,
+          382.444,
+          545.928
+        ],
+        "baseline": 545.16,
+        "row": null
+      },
+      {
+        "text": "UP NEXT / WORK",
+        "bounds": [
+          228.97,
+          651.4225,
+          355.03,
+          664.5775
+        ],
+        "baseline": 662.7775,
+        "row": null
+      },
+      {
+        "text": "Pause",
+        "bounds": [
+          263.48,
+          740.4300000000001,
+          320.52000000000004,
+          755.57
+        ],
+        "baseline": 755.33,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          576.0,
+          338.9875,
+          665.875,
+          359.0125
+        ],
+        "baseline": 358.7375,
+        "row": null
+      },
+      {
+        "text": "REST",
+        "bounds": [
+          621.4509999999999,
+          437.541,
+          674.549,
+          454.459
+        ],
+        "baseline": 454.195,
+        "row": null
+      },
+      {
+        "text": "00:15",
+        "bounds": [
+          558.116,
+          496.07199999999995,
+          737.884,
+          545.928
+        ],
+        "baseline": 545.16,
+        "row": null
+      },
+      {
+        "text": "UP NEXT / WORK",
+        "bounds": [
+          584.97,
+          651.4225,
+          711.03,
+          664.5775
+        ],
+        "baseline": 662.7775,
+        "row": null
+      },
+      {
+        "text": "Pause",
+        "bounds": [
+          619.48,
+          740.4300000000001,
+          676.52,
+          755.57
+        ],
+        "baseline": 755.33,
+        "row": null
+      },
+      {
+        "text": "iOS",
+        "bounds": [
+          270.53200000000004,
+          856.0029999999999,
+          313.468,
+          875.997
+        ],
+        "baseline": 875.685,
+        "row": null
+      },
+      {
+        "text": "Android",
+        "bounds": [
+          596.1999999999999,
+          856.0029999999999,
+          699.8,
+          875.997
+        ],
+        "baseline": 875.685,
+        "row": null
+      },
+      {
+        "text": "Timed",
+        "bounds": [
+          1092.0,
+          321.965,
+          1341.25,
+          378.03499999999997
+        ],
+        "baseline": 377.265,
+        "row": null
+      },
+      {
+        "text": "Your own timers.",
+        "bounds": [
+          944.0,
+          473.78049999999996,
+          1153.644,
+          494.2195
+        ],
+        "baseline": 493.89549999999997,
+        "row": null
+      },
+      {
+        "text": "Simple rounds or custom stacks.",
+        "bounds": [
+          944.0,
+          528.0805,
+          1354.456,
+          553.9195
+        ],
+        "baseline": 548.5195,
+        "row": null
+      },
+      {
+        "text": "Standby, work and rest.",
+        "bounds": [
+          944.0,
+          584.8105,
+          1242.456,
+          611.1895000000001
+        ],
+        "baseline": 605.2495,
+        "row": null
+      },
+      {
+        "text": "Downloads and install instructions:",
+        "bounds": [
+          944.0,
+          712.3100000000001,
+          1271.9,
+          727.69
+        ],
+        "baseline": 727.45,
+        "row": null
+      },
+      {
+        "text": "See GitHub Releases and the guide.",
+        "bounds": [
+          944.0,
+          751.253,
+          1317.752,
+          772.7470000000001
+        ],
+        "baseline": 767.907,
+        "row": null
+      },
+      {
+        "text": "CONCEPT DEVICES \u00b7 NOT SCREENSHOTS \u00b7 RELEASE AVAILABILITY VARIES BY PLATFORM",
+        "bounds": [
+          72.0,
+          930.6170000000001,
+          689.808,
+          941.383
+        ],
+        "baseline": 941.215,
+        "row": null
+      }
+    ]
   }
 ]
