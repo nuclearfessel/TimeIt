@@ -16,16 +16,8 @@ platform :ios do
 
     setup_ci(force: true) if ENV["CI"]
 
-    # Ensure Developer Portal App ID + App Store Connect record exist (idempotent).
-    produce(
-      api_key: api_key,
-      app_identifier: "com.nuclearfessel.timeit",
-      app_name: "TimeIt",
-      sku: "timeit",
-      language: "en-US",
-      skip_itc: false,
-      skip_devcenter: false
-    )
+    # produce() does not accept App Store Connect API keys — use Spaceship instead.
+    ensure_app_store_connect_app!
 
     keychain_name = ENV.fetch("MATCH_KEYCHAIN_NAME", "fastlane_tmp_keychain")
     keychain_password = ENV.fetch("MATCH_KEYCHAIN_PASSWORD", "")
@@ -189,15 +181,50 @@ def validate_ios_upload_plist!
   )
 end
 
-def revoke_orphaned_distribution_certificates!
+def connect_api_token!
   require "spaceship"
-
   token = Spaceship::ConnectAPI::Token.create(
     key_id: ENV.fetch("APP_STORE_CONNECT_KEY_ID"),
     issuer_id: ENV.fetch("APP_STORE_CONNECT_ISSUER_ID"),
     key: ENV.fetch("APP_STORE_CONNECT_PRIVATE_KEY")
   )
   Spaceship::ConnectAPI.token = token
+  token
+end
+
+def ensure_app_store_connect_app!
+  connect_api_token!
+
+  bundle_id = "com.nuclearfessel.timeit"
+  existing_bundle = Spaceship::ConnectAPI::BundleId.all.find { |b| b.identifier == bundle_id }
+  if existing_bundle.nil?
+    UI.message("Creating Developer Portal Bundle ID #{bundle_id}")
+    Spaceship::ConnectAPI::BundleId.create(
+      name: "TimeIt",
+      identifier: bundle_id,
+      platform: Spaceship::ConnectAPI::Platform::IOS
+    )
+  else
+    UI.success("Bundle ID #{bundle_id} already exists")
+  end
+
+  existing_app = Spaceship::ConnectAPI::App.find(bundle_id)
+  if existing_app.nil?
+    UI.message("Creating App Store Connect app TimeIt")
+    Spaceship::ConnectAPI::App.create(
+      name: "TimeIt",
+      primary_locale: "en-US",
+      version_string: "1.0",
+      sku: "timeit",
+      bundle_id: bundle_id
+    )
+  else
+    UI.success("App Store Connect app for #{bundle_id} already exists")
+  end
+end
+
+def revoke_orphaned_distribution_certificates!
+  connect_api_token!
 
   Spaceship::ConnectAPI::Certificate.all.each do |cert|
     type = cert.certificate_type.to_s
