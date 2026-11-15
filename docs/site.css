@@ -233,11 +233,11 @@ img {
   display: block;
 }
 
-/* Portrait phone shots: keep them large enough to read. */
+/* Portrait phone shots: compact so they don't dominate the page. */
 .shot-figure.shot-portrait img,
 .shot-figure.shot-portrait object,
 .shot-figure.shot-portrait svg {
-  max-width: min(100%, 34rem);
+  max-width: min(100%, 17rem);
 }
 
 .shot-figure.shot-wide img,
@@ -253,7 +253,7 @@ img {
   max-width: 36rem;
 }
 
-/* Guide: center shots; portrait ~100px shorter than the 34rem default. */
+/* Guide: center shots; portraits at half the previous display width. */
 .guide-wrap .shot-figure {
   display: flex;
   flex-direction: column;
@@ -266,7 +266,7 @@ img {
 .guide-wrap .shot-figure.shot-portrait img,
 .guide-wrap .shot-figure.shot-portrait object,
 .guide-wrap .shot-figure.shot-portrait svg {
-  max-width: min(100%, 31.125rem);
+  max-width: min(100%, 15.5rem);
 }
 
 .guide-wrap .shot-figure.shot-wide img,
