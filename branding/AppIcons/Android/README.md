@@ -18,7 +18,7 @@ android:roundIcon="@mipmap/ic_launcher_round"
 - AdaptiveLayers/ supplies transparent SVG/PNG authoring copies; Android uses
   the density-specific PNGs via mipmap references. This preserves the actual
   transparent over-under crossings; do not convert SVG masks to plain vector paths.
-- GooglePlay/timed-play-store-512.png is the full-square 32-bit sRGB listing
+- GooglePlay/timeit-play-store-512.png is the full-square 32-bit sRGB listing
   icon, below 1MB. Let Play apply rounding and shadow.
 
 Use a compile SDK supporting API 33 resources; inspect the existing Flutter

@@ -1,0 +1,19 @@
+/* Scoped starter, not a replacement application theme. */
+@font-face{font-family:"Hepta Slab";src:url("../Fonts/HeptaSlab-SemiBold.woff") format("woff");font-weight:600;font-display:swap}
+@font-face{font-family:"Plus Jakarta Sans";src:url("../Fonts/PlusJakartaSans-Regular.woff") format("woff");font-weight:400;font-display:swap}
+@font-face{font-family:"Plus Jakarta Sans";src:url("../Fonts/PlusJakartaSans-Bold.woff") format("woff");font-weight:700;font-display:swap}
+.timeit-brand[data-theme="light"]{color-scheme:light;--timeit-bg:#F7F6F3;--timeit-surface:#FFFFFF;--timeit-ink:#161618;--timeit-muted:#61616B;--timeit-line:#C6C3BC;}
+.timeit-brand[data-theme="dark"]{color-scheme:dark;--timeit-bg:#0B0B0C;--timeit-surface:#161618;--timeit-ink:#F4F4EF;--timeit-muted:#A8A8AE;--timeit-line:#343438;}
+
+.timeit-brand{--timeit-bg:#0B0B0C;--timeit-ink:#F4F4EF;--timeit-muted:#A8A8AE;--timeit-line:#343438;--phase-standby:#009E73;--phase-work:#D55E00;--phase-rest:#0072B2;background:var(--timeit-bg);color:var(--timeit-ink);font:400 18px/1.6 "Plus Jakarta Sans",sans-serif}
+.timeit-brand :is(h1,h2,h3,.timer-digits){font-family:"Hepta Slab",serif;font-weight:600;line-height:1.15}
+.timeit-brand .timer-digits{font-variant-numeric:tabular-nums}
+.timeit-brand img{max-width:100%;height:auto}
+.timeit-brand .phase-band{display:flex;align-items:center;gap:24px;padding:24px 32px}
+.timeit-brand .standby{background:var(--phase-standby);color:#060909}
+.timeit-brand .work{background:var(--phase-work);color:#060909}
+.timeit-brand .rest{background:var(--phase-rest);color:#FFFFFF}
+.timeit-brand a{color:inherit;text-underline-offset:.2em}
+.timeit-brand :focus-visible{outline:3px solid currentColor;outline-offset:4px}
+@media(max-width:600px){.timeit-brand .phase-band{flex-wrap:wrap;gap:16px;padding:20px}}
+@media(prefers-reduced-motion:reduce){.timeit-brand *{scroll-behavior:auto!important;transition:none!important}}

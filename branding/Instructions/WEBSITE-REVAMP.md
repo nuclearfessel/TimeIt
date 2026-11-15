@@ -1,9 +1,13 @@
-# Revamp Timed’s GitHub Pages home and guide
+# Rebrand TimeIt’s GitHub Pages home and guide
+
+The product name is **TimeIt**. The repository remains `nuclearfessel/Timed`,
+so preserve its current GitHub Pages URLs and `/TimeIt/` asset prefix unless the
+owner separately renames the repository.
 
 ## Scope and inspected source
-- Home: https://nuclearfessel.github.io/Timed/
-- Guide: https://nuclearfessel.github.io/Timed/guide.html
-- Repository: https://github.com/nuclearfessel/Timed
+- Home: https://nuclearfessel.github.io/TimeIt/
+- Guide: https://nuclearfessel.github.io/TimeIt/guide.html
+- Repository: https://github.com/nuclearfessel/TimeIt
 - Public source and both live pages were inspected on 2026-11-14. Recheck before editing.
 - Pages source: `docs/index.html`, `docs/guide.html`, shared `docs/site.css`
   and `docs/back-to-top.js`. Inspect the actual Pages configuration before shipping.
@@ -17,6 +21,11 @@ This document is an implementation brief, not an already-built or published site
 ## Approved identity
 Use **Interlocking Lanes**, the corrected three-loop woven symbol, everywhere
 the app is identified. Each pair alternates over/under at its two crossings.
+Use the selected 180° clockwise orientation: the triangle points upward and the
+green lane sits along the bottom.
+Replace visible product-name references with **TimeIt** in page titles, headings,
+navigation labels, metadata, and accessible names. Do not change the repository
+slug or `/TimeIt/` deployment prefix as part of this branding pass.
 Keep the supplied SVG masks intact. Do not replace the mark with the old
 half-track, Switchback, Closed Circuit, Track T, a clock or a generic exercise icon.
 
@@ -48,7 +57,7 @@ Do not accidentally reinstate earlier issues with invisible navigation controls.
 1. Replace the colored header identity with `Web/header-logo-on-color.svg`.
    Keep navigation to Download, Guide and Source as real keyboard-operable links.
 2. Build one semantic HTML hero, not a banner image plus a duplicate large H1.
-   Place the woven mark beside “Timed”, a concise interval-timer description,
+    Place the woven mark beside “TimeIt”, a concise interval-timer description,
    and the separate headline “Make every interval yours.”
 3. Keep the current release and guide actions. Resolve the current GitHub release
    rather than copying the inspected v1.0.1 into new hardcoded links.
@@ -63,7 +72,7 @@ Do not accidentally reinstate earlier issues with invisible navigation controls.
    deployed asset URL. Use the favicon set from `Web/`.
 
 ### Guide — `docs/guide.html`
-1. Keep one descriptive H1 (“Using Timed”), with the protected horizontal logo in
+1. Keep one descriptive H1 (“Using TimeIt”), with the protected horizontal logo in
    the shared header. Do not place a large promotional image above every section.
 2. Add or refine a compact linked table of contents: sidebar on desktop,
    accessible disclosure on mobile. Keep existing anchor IDs stable.
@@ -89,17 +98,17 @@ If a heading must change, leave a compatible anchor in place.
 
 ## Asset mapping and theme behavior
 Keep the repository’s archival masters under `branding/`. Copy only public
-website assets into `docs/assets/timed/`, preserving the package’s Brand/,
+website assets into `docs/assets/timeit/`, preserving the package’s Brand/,
 Graphics/, Web/, Fonts/ and Licenses/ relationships. A Pages site serving `docs/`
 cannot necessarily load repository-root `branding/` via `../branding/`.
 
 Example from either page:
 ```html
-<link rel="icon" href="assets/timed/Web/favicon.ico">
-<img src="assets/timed/Web/header-logo-on-color.svg"
-     alt="Timed" class="brand-logo">
+<link rel="icon" href="assets/timeit/Web/favicon.ico">
+<img src="assets/timeit/Web/header-logo-on-color.svg"
+     alt="TimeIt" class="brand-logo">
 ```
-Use relative URLs so `/Timed/` is retained. Do not use `/assets/...` or file-system
+Use relative URLs so `/TimeIt/` is retained. Do not use `/assets/...` or file-system
 paths. Keep `Web/` next to `Fonts/` if using the delivered relative font URLs.
 Apply `Web/brand.css` as a scoped reference, not a wholesale replacement that
 breaks existing components or overrides accessibility styles.
@@ -122,7 +131,8 @@ unnecessary animation; respect reduced-motion preferences.
 ## Verification and delivery
 Check home and guide at 360, 390, 768 and 1280px, in both themes and at 200% zoom.
 Test keyboard navigation, TOC/skip/back-to-top links, release URLs, image/font
-requests, favicons and social-card URLs beneath `/Timed/`. No page overflow.
+requests, favicons and social-card URLs beneath the existing `/TimeIt/` path.
+No page overflow.
 Test logo masking and crossings in the browser, not just a design editor.
 
 Preserve the repository’s docs-only release safeguards: a Pages-only change

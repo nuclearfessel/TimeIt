@@ -1,4 +1,4 @@
-# Timed — start here
+# TimeIt — start here
 
 **Selected identity: Interlocking Lanes**, with the corrected over-under weave.
 
@@ -10,9 +10,9 @@
 - `Previews/colored-header-proof.png`
 
 ## Find the files
-- Standalone logo: `Brand/timed-mark-color.svg` or `.png`
-- Horizontal logo: `Brand/timed-horizontal-light.svg` / `timed-horizontal-dark.svg`
-- Optional tagline: `Brand/timed-tagline-light.svg` / `timed-tagline-dark.svg`
+- Standalone logo: `Brand/timeit-mark-color.svg` or `.png`
+- Horizontal logo: `Brand/timeit-horizontal-light.svg` / `timeit-horizontal-dark.svg`
+- Optional tagline: `Brand/timeit-tagline-light.svg` / `timeit-tagline-dark.svg`
 - Colored GitHub Pages headers: `Web/header-logo-on-color.svg`
 - iOS app icons: `AppIcons/iOS/`
 - Android app icons: `AppIcons/Android/`
@@ -28,6 +28,7 @@
 5. `Instructions/QA-CHECKLIST.md`
 6. `Instructions/README-LAYOUT.md` — placement map and copy-ready image embeds
 
-The alternative symbols are retained outside this production package.
+The product is named TimeIt. The repository is `nuclearfessel/TimeIt` and Pages
+live at `https://nuclearfessel.github.io/TimeIt/`.
 Native builds, device tests, GitHub changes and publishing remain for the
 implementation agent. The package contains artwork and a handoff, not a deployed website.

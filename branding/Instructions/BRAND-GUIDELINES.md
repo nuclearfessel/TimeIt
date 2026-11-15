@@ -1,4 +1,4 @@
-# Timed branding
+# TimeIt branding
 
 ## Identity
 The mark is the approved Interlocking Lanes symbol, with three capsule tracks
@@ -11,7 +11,7 @@ crossing gaps in color and monochrome exports; never flatten them to a backgroun
 Do not turn it into a clock face or borrow either other app's symbol.
 
 ## Typography
-- Hepta Slab SemiBold (600): Timed wordmark, large headlines and timer digits.
+- Hepta Slab SemiBold (600): TimeIt wordmark, large headlines and timer digits.
 - Plus Jakarta Sans Regular (400): descriptions and supporting copy.
 - Plus Jakarta Sans Bold (700): phase labels, metadata and short navigation.
 - Preserve actual glyph alignment. Do not use font line boxes or guess top offsets.
@@ -33,7 +33,7 @@ which has its own approved light/dark values and currently uses #F4F4F5 dark tex
 - Header rule y=100; title/track bounds y=164..460; phase bands begin y=524.
   This yields equal 64px gaps above and below the complete header block.
 - Symbol right edge aligns with the content right edge.
-- “Timed” aligns with the symbol's top; the separate tagline aligns with its bottom.
+- “TimeIt” aligns with the symbol's top; the separate tagline aligns with its bottom.
 - Do not put “READY. WORK. RECOVER.” or any other text inside the symbol.
 - Phase numbers, labels, details and digits share each band's visual center.
 - Minimum logo clear space: one outer-lane thickness; use more where possible.

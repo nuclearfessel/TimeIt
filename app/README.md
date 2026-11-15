@@ -1,4 +1,4 @@
-# Timed (Flutter app)
+# TimeIt (Flutter app)
 
 Workout interval timer for **iOS and Android only** (no web, desktop, or watch targets).
 

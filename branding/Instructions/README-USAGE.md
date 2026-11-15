@@ -7,7 +7,7 @@ Assuming the package directories are installed under repository-root `branding/`
   <source media="(prefers-color-scheme: dark)"
           srcset="branding/Graphics/readme-banner-dark.svg">
   <img src="branding/Graphics/readme-banner-light.svg"
-       alt="Timed: create your own standby, work and rest interval routines."
+       alt="TimeIt: create your own standby, work and rest interval routines."
        width="1600" height="1158">
 </picture>
 ```
@@ -22,8 +22,8 @@ independently. Use relative URLs under the deployed project prefix.
 System-theme `<picture>` does not automatically follow a custom manual theme
 toggle; update image sources when the site uses an explicit theme choice.
 
-Use transparent Brand/timed-horizontal-light.svg on a light surface and
-timed-horizontal-dark.svg on a dark surface. For small badges use the mark alone.
+Use transparent Brand/timeit-horizontal-light.svg on a light surface and
+timeit-horizontal-dark.svg on a dark surface. For small badges use the mark alone.
 Use the 1200×630 PNG social cards for Open Graph previews after verifying an
 actual published absolute URL. No production URL is supplied or invented.
 

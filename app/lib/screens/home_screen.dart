@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
     return AnimatedBuilder(
       animation: store,
       builder: (context, _) {
@@ -44,13 +44,13 @@ class HomeScreen extends StatelessWidget {
             title: Row(
               children: [
                 Image.asset(
-                  'assets/brand/timed-mark-color.png',
+                  'assets/brand/timeit-mark-color.png',
                   height: 28,
                   width: 28,
                   filterQuality: FilterQuality.high,
                 ),
                 const SizedBox(width: 10),
-                const Text('Timed'),
+                const Text('TimeIt'),
               ],
             ),
             actions: [
@@ -199,7 +199,7 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(28),
@@ -207,7 +207,7 @@ class _EmptyState extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/brand/timed-mark-color.png',
+              'assets/brand/timeit-mark-color.png',
               height: 56,
               width: 56,
               filterQuality: FilterQuality.high,
@@ -260,7 +260,7 @@ class _TimerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
     final kindLabel =
         timer.kind == TimerKind.simple ? 'Simple' : 'Advanced';
     final summary = timer.kind == TimerKind.simple
@@ -331,7 +331,7 @@ class _NewTimerSheetOption extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
     return Material(
       color: colors.bg,
       borderRadius: BorderRadius.circular(14),

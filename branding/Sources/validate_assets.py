@@ -42,13 +42,13 @@ def validate():
                     resource_type,name=value[1:].split("/",1)
                     assert any(android.glob(f"res/{resource_type}*/{name}.*")),(path,value)
                 elif value.startswith("@color/"):
-                    colors=ET.parse(android/"res/values/timed_launcher_colors.xml").getroot()
+                    colors=ET.parse(android/"res/values/timeit_launcher_colors.xml").getroot()
                     assert any(c.get("name")==value.split("/",1)[1] for c in colors),(path,value)
     for name,size in (("mdpi",48),("hdpi",72),("xhdpi",96),("xxhdpi",144),("xxxhdpi",192)):
         assert Image.open(android/"res"/f"mipmap-{name}/ic_launcher.png").size==(size,size)
     for density,size in (("mdpi",108),("hdpi",162),("xhdpi",216),("xxhdpi",324),("xxxhdpi",432)):
         layers=[Image.open(android/"res"/f"mipmap-{density}/{name}.png").convert("RGBA")
-                for name in ("timed_launcher_foreground","timed_launcher_monochrome")]
+                for name in ("timeit_launcher_foreground","timeit_launcher_monochrome")]
         assert all(im.size==(size,size) for im in layers)
         assert layers[0].getchannel("A").tobytes()==layers[1].getchannel("A").tobytes()
     fg=Image.open(android/"AdaptiveLayers/foreground-432.png").convert("RGBA")
@@ -59,7 +59,7 @@ def validate():
             if fg.getpixel((x,y))[3]>10:
                 assert (x-215.5)**2+(y-215.5)**2 <=132**2
                 assert mono.getpixel((x,y))[:3]==(255,255,255)
-    with Image.open(android/"GooglePlay/timed-play-store-512.png") as im:
+    with Image.open(android/"GooglePlay/timeit-play-store-512.png") as im:
         assert im.size==(512,512) and im.mode=="RGBA" and im.getchannel("A").getextrema()==(255,255)
     for p in (OUT/"Store").glob("*.png"):
         im=Image.open(p).convert("RGB")

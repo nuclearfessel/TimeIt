@@ -1,4 +1,4 @@
-# Timed README graphics — placement and embeds
+# TimeIt README graphics — placement and embeds
 
 The full set is in `Graphics/`, in light/dark SVG and PNG pairs. Open `Previews/readme-graphics-light.png` or `readme-graphics-dark.png` to review it.
 
@@ -8,7 +8,7 @@ Use banner + features + workflow as a compact core. The remaining panels provide
 
 **Illustrations, not screenshots:** the phone and control drawings explain the product; do not caption them as the exact current app interface. No store availability, native theme behavior or unimplemented sound preferences are implied.
 
-## Timed
+## TimeIt
 
 A workout interval timer with simple rounds or advanced stacks of standby, work and rest.
 
@@ -17,7 +17,7 @@ A workout interval timer with simple rounds or advanced stacks of standby, work 
   <source media="(prefers-color-scheme: dark)"
           srcset="branding/Graphics/readme-banner-dark.svg">
   <img src="branding/Graphics/readme-banner-light.svg"
-       alt="Timed: make every interval yours. A workout interval timer for iOS and Android." width="1600">
+       alt="TimeIt: make every interval yours. A workout interval timer for iOS and Android." width="1600">
 </picture>
 ```
 
@@ -49,7 +49,7 @@ Create your own timers and sets. Choose simple rounds or build a custom sequence
 
 ## Getting started
 
-Choose Simple or Advanced, configure the timer and start. See the [guide](https://nuclearfessel.github.io/Timed/guide.html) for full instructions.
+Choose Simple or Advanced, configure the timer and start. See the [guide](https://nuclearfessel.github.io/TimeIt/guide.html) for full instructions.
 
 ```html
 <picture>
@@ -101,7 +101,7 @@ Start a session, pause and resume it, skip to the next phase or reset to the fir
 
 ## Mobile platforms
 
-Timed targets iOS and Android. Check [GitHub Releases](https://github.com/nuclearfessel/Timed/releases) and the [installation guide](https://nuclearfessel.github.io/Timed/guide.html#install) for current packages. iOS distribution requires signing on a Mac.
+TimeIt targets iOS and Android. Check [GitHub Releases](https://github.com/nuclearfessel/TimeIt/releases) and the [installation guide](https://nuclearfessel.github.io/TimeIt/guide.html#install) for current packages. iOS distribution requires signing on a Mac.
 
 ```html
 <picture>
@@ -118,5 +118,5 @@ Timed targets iOS and Android. Check [GitHub Releases](https://github.com/nuclea
 - Use the PNG with the same basename where SVG is unsupported.
 - Keep natural aspect ratios; never stretch or crop text-bearing graphics.
 - Verify light/dark GitHub rendering and asset links from the actual README.
-- For GitHub Pages, use docs/assets/timed/ paths and the separate website brief.
+- For GitHub Pages, use docs/assets/timeit/ paths and the separate website brief.
 - Keep the app logos and colored-header protected logo unchanged.

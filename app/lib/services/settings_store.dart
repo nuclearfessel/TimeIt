@@ -25,13 +25,13 @@ enum AppAppearance {
 }
 
 class SettingsStore extends ChangeNotifier {
-  static const _appearanceKey = 'timed.settings.appearance.v1';
-  static const _alertSoundsKey = 'timed.settings.alert_sounds.v1';
-  static const _countdownBeepsKey = 'timed.settings.countdown_beeps.v1';
-  static const _startBeepsKey = 'timed.settings.start_beeps.v1';
-  static const _endBeepsKey = 'timed.settings.end_beeps.v1';
-  static const _lowerMusicKey = 'timed.settings.lower_music.v1';
-  static const _vibrateKey = 'timed.settings.vibrate.v1';
+  static const _appearanceKey = 'timeit.settings.appearance.v1';
+  static const _alertSoundsKey = 'timeit.settings.alert_sounds.v1';
+  static const _countdownBeepsKey = 'timeit.settings.countdown_beeps.v1';
+  static const _startBeepsKey = 'timeit.settings.start_beeps.v1';
+  static const _endBeepsKey = 'timeit.settings.end_beeps.v1';
+  static const _lowerMusicKey = 'timeit.settings.lower_music.v1';
+  static const _vibrateKey = 'timeit.settings.vibrate.v1';
 
   static const int maxBeepCount = 5;
 

@@ -15,11 +15,11 @@ Future<void> main() async {
   final settings = SettingsStore();
   await Future.wait([timers.load(), settings.load()]);
 
-  runApp(TimedApp(timers: timers, settings: settings));
+  runApp(TimeItApp(timers: timers, settings: settings));
 }
 
-class TimedApp extends StatelessWidget {
-  const TimedApp({
+class TimeItApp extends StatelessWidget {
+  const TimeItApp({
     super.key,
     required this.timers,
     required this.settings,
@@ -34,7 +34,7 @@ class TimedApp extends StatelessWidget {
       animation: settings,
       builder: (context, _) {
         return MaterialApp(
-          title: 'Timed',
+          title: 'TimeIt',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.light(),
           darkTheme: AppTheme.dark(),

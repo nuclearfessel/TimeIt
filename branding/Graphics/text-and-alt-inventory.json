@@ -3,7 +3,7 @@
     "file": "Graphics/readme-banner-dark.svg",
     "width": 1600,
     "height": 1158,
-    "alt": "Timed workout interval timer for iOS and Android. Standby, work and rest; illustrative durations, not an app screenshot.",
+    "alt": "TimeIt workout interval timer for iOS and Android. Standby, work and rest; illustrative durations, not an app screenshot.",
     "text": [
       {
         "text": "INTERVAL TRAINING, ON YOUR TERMS.",
@@ -28,14 +28,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           72.0,
-          163.99999999999997,
-          623.9499999999999,
-          287.354
+          164.0,
+          640.6,
+          285.968
         ],
-        "baseline": 285.65999999999997,
+        "baseline": 284.351,
         "row": null
       },
       {
@@ -857,7 +857,7 @@
     "file": "Graphics/social-card-dark.svg",
     "width": 1200,
     "height": 630,
-    "alt": "Timed interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
+    "alt": "TimeIt interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
     "text": [
       {
         "text": "INTERVAL TRAINING, ON YOUR TERMS.",
@@ -871,14 +871,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           48.0,
-          104.353,
-          384.45,
-          179.647
+          104.776,
+          395.6,
+          179.224
         ],
-        "baseline": 178.613,
+        "baseline": 178.237,
         "row": null
       },
       {
@@ -986,7 +986,7 @@
     "file": "Store/google-play-feature-dark.svg",
     "width": 1024,
     "height": 500,
-    "alt": "Timed interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
+    "alt": "TimeIt interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
     "text": [
       {
         "text": "INTERVAL TRAINING, ON YOUR TERMS.",
@@ -1000,14 +1000,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           48.0,
-          104.353,
-          384.45,
-          179.647
+          104.776,
+          395.6,
+          179.224
         ],
-        "baseline": 178.613,
+        "baseline": 178.237,
         "row": null
       },
       {
@@ -1115,14 +1115,14 @@
     "file": "Previews/brand-overview-dark.svg",
     "width": 1600,
     "height": 920,
-    "alt": "Timed brand: track symbol, Hepta Slab and Plus Jakarta Sans, and green/orange/blue phase colors.",
+    "alt": "TimeIt brand: track symbol, Hepta Slab and Plus Jakarta Sans, and green/orange/blue phase colors.",
     "text": [
       {
-        "text": "THE TIMED IDENTITY",
+        "text": "THE TIMEIT IDENTITY",
         "bounds": [
           134.0,
           59.6675,
-          304.846,
+          307.846,
           72.3325
         ],
         "baseline": 72.3325,
@@ -1140,14 +1140,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           388.0,
-          254.64920833333338,
-          787.5999999999999,
-          344.3612083333334
+          255.15320833333334,
+          799.8,
+          343.85720833333335
         ],
-        "baseline": 343.1292083333334,
+        "baseline": 342.68120833333336,
         "row": null
       },
       {
@@ -1299,7 +1299,7 @@
     "file": "Graphics/readme-banner-light.svg",
     "width": 1600,
     "height": 1158,
-    "alt": "Timed workout interval timer for iOS and Android. Standby, work and rest; illustrative durations, not an app screenshot.",
+    "alt": "TimeIt workout interval timer for iOS and Android. Standby, work and rest; illustrative durations, not an app screenshot.",
     "text": [
       {
         "text": "INTERVAL TRAINING, ON YOUR TERMS.",
@@ -1324,14 +1324,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           72.0,
-          163.99999999999997,
-          623.9499999999999,
-          287.354
+          164.0,
+          640.6,
+          285.968
         ],
-        "baseline": 285.65999999999997,
+        "baseline": 284.351,
         "row": null
       },
       {
@@ -2153,7 +2153,7 @@
     "file": "Graphics/social-card-light.svg",
     "width": 1200,
     "height": 630,
-    "alt": "Timed interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
+    "alt": "TimeIt interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
     "text": [
       {
         "text": "INTERVAL TRAINING, ON YOUR TERMS.",
@@ -2167,14 +2167,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           48.0,
-          104.353,
-          384.45,
-          179.647
+          104.776,
+          395.6,
+          179.224
         ],
-        "baseline": 178.613,
+        "baseline": 178.237,
         "row": null
       },
       {
@@ -2282,7 +2282,7 @@
     "file": "Store/google-play-feature-light.svg",
     "width": 1024,
     "height": 500,
-    "alt": "Timed interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
+    "alt": "TimeIt interval timer. Create your own standby, work and rest routine. Illustrative timing graphic, not a screenshot.",
     "text": [
       {
         "text": "INTERVAL TRAINING, ON YOUR TERMS.",
@@ -2296,14 +2296,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           48.0,
-          104.353,
-          384.45,
-          179.647
+          104.776,
+          395.6,
+          179.224
         ],
-        "baseline": 178.613,
+        "baseline": 178.237,
         "row": null
       },
       {
@@ -2411,14 +2411,14 @@
     "file": "Previews/brand-overview-light.svg",
     "width": 1600,
     "height": 920,
-    "alt": "Timed brand: track symbol, Hepta Slab and Plus Jakarta Sans, and green/orange/blue phase colors.",
+    "alt": "TimeIt brand: track symbol, Hepta Slab and Plus Jakarta Sans, and green/orange/blue phase colors.",
     "text": [
       {
-        "text": "THE TIMED IDENTITY",
+        "text": "THE TIMEIT IDENTITY",
         "bounds": [
           134.0,
           59.6675,
-          304.846,
+          307.846,
           72.3325
         ],
         "baseline": 72.3325,
@@ -2436,14 +2436,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           388.0,
-          254.64920833333338,
-          787.5999999999999,
-          344.3612083333334
+          255.15320833333334,
+          799.8,
+          343.85720833333335
         ],
-        "baseline": 343.1292083333334,
+        "baseline": 342.68120833333336,
         "row": null
       },
       {
@@ -2592,162 +2592,162 @@
     ]
   },
   {
-    "file": "Brand/timed-horizontal-light.svg",
-    "width": 498,
+    "file": "Brand/timeit-horizontal-light.svg",
+    "width": 507,
     "height": 160,
-    "alt": "Transparent Timed horizontal logo for light backgrounds.",
+    "alt": "Transparent TimeIt horizontal logo for light backgrounds.",
     "text": [
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           164.43059490084985,
-          46.35799999999999,
-          465.13059490084987,
-          113.642
+          46.736000000000004,
+          474.03059490084985,
+          113.26400000000001
         ],
-        "baseline": 112.71799999999999,
+        "baseline": 112.382,
         "row": null
       }
     ]
   },
   {
-    "file": "Brand/timed-wordmark-light.svg",
-    "width": 365,
-    "height": 132,
-    "alt": "Transparent Timed wordmark.",
+    "file": "Brand/timeit-wordmark-light.svg",
+    "width": 374,
+    "height": 131,
+    "alt": "Transparent TimeIt wordmark.",
     "text": [
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           32.0,
           32.0,
-          332.7,
-          99.284
+          341.59999999999997,
+          98.528
         ],
-        "baseline": 98.36,
+        "baseline": 97.646,
         "row": null
       }
     ]
   },
   {
-    "file": "Brand/timed-stacked-light.svg",
-    "width": 365,
-    "height": 256,
-    "alt": "Transparent Timed stacked logo.",
+    "file": "Brand/timeit-stacked-light.svg",
+    "width": 374,
+    "height": 255,
+    "alt": "Transparent TimeIt stacked logo.",
     "text": [
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
-          32.14999999999999,
+          32.2,
           156.0,
-          332.85,
-          223.28400000000002
+          341.79999999999995,
+          222.52800000000002
         ],
-        "baseline": 222.36,
+        "baseline": 221.64600000000002,
         "row": null
       }
     ]
   },
   {
-    "file": "Brand/timed-horizontal-dark.svg",
-    "width": 498,
+    "file": "Brand/timeit-horizontal-dark.svg",
+    "width": 507,
     "height": 160,
-    "alt": "Transparent Timed horizontal logo for dark backgrounds.",
+    "alt": "Transparent TimeIt horizontal logo for dark backgrounds.",
     "text": [
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           164.43059490084985,
-          46.35799999999999,
-          465.13059490084987,
-          113.642
+          46.736000000000004,
+          474.03059490084985,
+          113.26400000000001
         ],
-        "baseline": 112.71799999999999,
+        "baseline": 112.382,
         "row": null
       }
     ]
   },
   {
-    "file": "Brand/timed-wordmark-dark.svg",
-    "width": 365,
-    "height": 132,
-    "alt": "Transparent Timed wordmark.",
+    "file": "Brand/timeit-wordmark-dark.svg",
+    "width": 374,
+    "height": 131,
+    "alt": "Transparent TimeIt wordmark.",
     "text": [
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           32.0,
           32.0,
-          332.7,
-          99.284
+          341.59999999999997,
+          98.528
         ],
-        "baseline": 98.36,
+        "baseline": 97.646,
         "row": null
       }
     ]
   },
   {
-    "file": "Brand/timed-stacked-dark.svg",
-    "width": 365,
-    "height": 256,
-    "alt": "Transparent Timed stacked logo.",
+    "file": "Brand/timeit-stacked-dark.svg",
+    "width": 374,
+    "height": 255,
+    "alt": "Transparent TimeIt stacked logo.",
     "text": [
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
-          32.14999999999999,
+          32.2,
           156.0,
-          332.85,
-          223.28400000000002
+          341.79999999999995,
+          222.52800000000002
         ],
-        "baseline": 222.36,
+        "baseline": 221.64600000000002,
         "row": null
       }
     ]
   },
   {
-    "file": "Brand/timed-mark-color.svg",
+    "file": "Brand/timeit-mark-color.svg",
     "width": 446,
     "height": 415,
-    "alt": "Transparent Timed Interlocking Lanes mark, color.",
+    "alt": "Transparent TimeIt Interlocking Lanes mark, color.",
     "text": []
   },
   {
-    "file": "Brand/timed-mark-black.svg",
+    "file": "Brand/timeit-mark-black.svg",
     "width": 446,
     "height": 415,
-    "alt": "Transparent Timed Interlocking Lanes mark, black.",
+    "alt": "Transparent TimeIt Interlocking Lanes mark, black.",
     "text": []
   },
   {
-    "file": "Brand/timed-mark-white.svg",
+    "file": "Brand/timeit-mark-white.svg",
     "width": 446,
     "height": 415,
-    "alt": "Transparent Timed Interlocking Lanes mark, white.",
+    "alt": "Transparent TimeIt Interlocking Lanes mark, white.",
     "text": []
   },
   {
-    "file": "Brand/timed-mark-grayscale.svg",
+    "file": "Brand/timeit-mark-grayscale.svg",
     "width": 446,
     "height": 415,
-    "alt": "Transparent Timed Interlocking Lanes mark, grayscale.",
+    "alt": "Transparent TimeIt Interlocking Lanes mark, grayscale.",
     "text": []
   },
   {
-    "file": "Brand/timed-tagline-light.svg",
+    "file": "Brand/timeit-tagline-light.svg",
     "width": 667,
     "height": 239,
-    "alt": "Timed Interlocking Lanes logo with a separate tagline for light backgrounds.",
+    "alt": "TimeIt Interlocking Lanes logo with a separate tagline for light backgrounds.",
     "text": [
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           260.0,
-          52.15400000000001,
-          588.1,
-          125.846
+          52.56800000000001,
+          596.8,
+          125.432
         ],
-        "baseline": 125.834,
+        "baseline": 125.46600000000001,
         "row": null
       },
       {
@@ -2764,20 +2764,20 @@
     ]
   },
   {
-    "file": "Brand/timed-tagline-dark.svg",
+    "file": "Brand/timeit-tagline-dark.svg",
     "width": 667,
     "height": 239,
-    "alt": "Timed Interlocking Lanes logo with a separate tagline for dark backgrounds.",
+    "alt": "TimeIt Interlocking Lanes logo with a separate tagline for dark backgrounds.",
     "text": [
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           260.0,
-          52.15400000000001,
-          588.1,
-          125.846
+          52.56800000000001,
+          596.8,
+          125.432
         ],
-        "baseline": 125.834,
+        "baseline": 125.46600000000001,
         "row": null
       },
       {
@@ -2833,14 +2833,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           1212.0,
-          326.9875,
-          1301.875,
-          347.0125
+          327.09999999999997,
+          1305.0,
+          346.9
         ],
-        "baseline": 346.7375,
+        "baseline": 346.6375,
         "row": null
       },
       {
@@ -3165,7 +3165,7 @@
     "file": "Graphics/mobile-platforms-light.svg",
     "width": 1600,
     "height": 960,
-    "alt": "Timed for iOS and Android, with conceptual phone illustrations, not screenshots. Check GitHub Releases and the guide for current packages and signing requirements.",
+    "alt": "TimeIt for iOS and Android, with conceptual phone illustrations, not screenshots. Check GitHub Releases and the guide for current packages and signing requirements.",
     "text": [
       {
         "text": "BUILT FOR YOUR PHONE",
@@ -3201,14 +3201,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           220.0,
-          338.9875,
-          309.875,
-          359.0125
+          339.09999999999997,
+          313.0,
+          358.9
         ],
-        "baseline": 358.7375,
+        "baseline": 358.6375,
         "row": null
       },
       {
@@ -3256,14 +3256,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           576.0,
-          338.9875,
-          665.875,
-          359.0125
+          339.09999999999997,
+          669.0,
+          358.9
         ],
-        "baseline": 358.7375,
+        "baseline": 358.6375,
         "row": null
       },
       {
@@ -3333,14 +3333,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           1092.0,
-          321.965,
-          1341.25,
-          378.03499999999997
+          322.28000000000003,
+          1349.0,
+          377.72
         ],
-        "baseline": 377.265,
+        "baseline": 376.985,
         "row": null
       },
       {
@@ -3451,14 +3451,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           1212.0,
-          326.9875,
-          1301.875,
-          347.0125
+          327.09999999999997,
+          1305.0,
+          346.9
         ],
-        "baseline": 346.7375,
+        "baseline": 346.6375,
         "row": null
       },
       {
@@ -3783,7 +3783,7 @@
     "file": "Graphics/mobile-platforms-dark.svg",
     "width": 1600,
     "height": 960,
-    "alt": "Timed for iOS and Android, with conceptual phone illustrations, not screenshots. Check GitHub Releases and the guide for current packages and signing requirements.",
+    "alt": "TimeIt for iOS and Android, with conceptual phone illustrations, not screenshots. Check GitHub Releases and the guide for current packages and signing requirements.",
     "text": [
       {
         "text": "BUILT FOR YOUR PHONE",
@@ -3819,14 +3819,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           220.0,
-          338.9875,
-          309.875,
-          359.0125
+          339.09999999999997,
+          313.0,
+          358.9
         ],
-        "baseline": 358.7375,
+        "baseline": 358.6375,
         "row": null
       },
       {
@@ -3874,14 +3874,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           576.0,
-          338.9875,
-          665.875,
-          359.0125
+          339.09999999999997,
+          669.0,
+          358.9
         ],
-        "baseline": 358.7375,
+        "baseline": 358.6375,
         "row": null
       },
       {
@@ -3951,14 +3951,14 @@
         "row": null
       },
       {
-        "text": "Timed",
+        "text": "TimeIt",
         "bounds": [
           1092.0,
-          321.965,
-          1341.25,
-          378.03499999999997
+          322.28000000000003,
+          1349.0,
+          377.72
         ],
-        "baseline": 377.265,
+        "baseline": 376.985,
         "row": null
       },
       {

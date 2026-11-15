@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# Install or update Timed on a connected device (Android via adb; iOS via ideviceinstaller when present).
+# Install or update TimeIt on a connected device (Android via adb; iOS via ideviceinstaller when present).
 # Usage:
 #   ./scripts/install-device.sh
 #   ./scripts/install-device.sh --apk path/to/app-release.apk
-#   ./scripts/install-device.sh --ipa path/to/Timed.ipa
-# If Timed is already installed, the package is updated in place. Otherwise it installs fresh.
+#   ./scripts/install-device.sh --ipa path/to/TimeIt.ipa
+# If TimeIt is already installed, the package is updated in place. Otherwise it installs fresh.
 
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-ANDROID_PACKAGE="com.nuclearfessel.timed"
-IOS_BUNDLE_ID="com.nuclearfessel.timed"
+ANDROID_PACKAGE="com.nuclearfessel.timeit"
+IOS_BUNDLE_ID="com.nuclearfessel.timeit"
 APK=""
 IPA=""
 
@@ -45,9 +45,9 @@ install_android() {
     exit 1
   fi
   if adb shell pm path "$ANDROID_PACKAGE" >/dev/null 2>&1; then
-    echo "Android: Timed is already installed — updating."
+    echo "Android: TimeIt is already installed — updating."
   else
-    echo "Android: Timed is not installed — installing."
+    echo "Android: TimeIt is not installed — installing."
   fi
   echo "Using $apk_path"
   adb install -r "$apk_path"
@@ -62,9 +62,9 @@ install_ios() {
     exit 1
   fi
   if ideviceinstaller list 2>/dev/null | grep -q "$IOS_BUNDLE_ID"; then
-    echo "iOS: Timed is already installed — updating."
+    echo "iOS: TimeIt is already installed — updating."
   else
-    echo "iOS: Timed is not installed — installing."
+    echo "iOS: TimeIt is not installed — installing."
   fi
   echo "Using $ipa_path"
   ideviceinstaller -i "$ipa_path"
@@ -86,7 +86,7 @@ if [[ "$DID" -eq 0 ]]; then
   cat <<EOF
 No device install ran.
 - Android: connect a device/emulator, build an APK, then re-run (or pass --apk).
-- iOS: on a Mac, pass --ipa path/to/Timed.ipa (same bundle id updates an existing install).
+- iOS: on a Mac, pass --ipa path/to/TimeIt.ipa (same bundle id updates an existing install).
 EOF
   exit 1
 fi

@@ -1,13 +1,13 @@
-# Instructions for any AI assistant working on Timed
+# Instructions for any AI assistant working on TimeIt
 
 Read this first. It carries everything the project owner has told the previous assistant, so you can continue without the earlier conversation. Then read `README.md`, `docs/reference-apps.md` and `docs/research.md`.
 
-The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` and the rule in `.cursor/rules/timed.mdc`, which points back here.
+The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` and the rule in `.cursor/rules/timeit.mdc`, which points back here.
 
 ## Who and what
 - The owner is a **designer** who wants to create a **new interval timer app for iOS and Android**.
 - **Building has started** (owner asked 2026-11-13). App code lives in `app/` on branch `feature/flutter-interval-timer`. Keep research docs; do not invent scope beyond what the owner decided.
-- Local folder: `D:\ClaudeLocalExperiments\Timed` (Windows). GitHub: public repo `nuclearfessel/Timed`, branch `main`.
+- Local folder: `D:\ClaudeLocalExperiments\TimeIt` (Windows). GitHub: public repo `nuclearfessel/TimeIt`, branch `main`.
 
 ## Owner's instructions (verbatim intent)
 1. **Research before building.** The owner explicitly said nothing should be built yet and wanted research first, then asked for deep research on interval timers on both Android and iOS.
@@ -17,10 +17,10 @@ The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` a
 5. **Do not add pre-built exercises.** The app must let users **create and delete their own default timers and timer sets**.
 6. **Reduce the reference board to only the shortlisted apps.**
 7. **Typefaces (Google Fonts):** **Hepta Slab** for large numbers (timer digits) and headers; **Plus Jakarta Sans** for everything else.
-8. **GitHub repo named `Timed`** (created as private).
+8. **GitHub repo named `TimeIt`** (created as private).
 9. **Save the info locally** so the work can continue in a non-Claude AI app. That is why this file exists.
 10. **Shipping targets only:** **iOS and Android only.** No web, desktop, Apple Watch, Wear OS, or other platforms — ever.
-11. **GitHub repo visibility:** **public** (`nuclearfessel/Timed`).
+11. **GitHub repo visibility:** **public** (`nuclearfessel/TimeIt`).
 12. **Product intent (owner, 2026-11-13):** workout interval timer with **simple and advanced** timers. Advanced stacks **standby, work, and rest** timers. **Alert sounds.** **One tech stack**, deployable to both iOS and Android (not separate native codebases).
 12b. **Rounds model (owner, 2026-11-14):** both modes use the word **rounds** (not cycles). Advanced: each round has its **own** phase stack; rounds run in order and may differ from one another.
 13. **Monetization (2026-11-14):** none — **completely free**.
@@ -53,7 +53,7 @@ The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` a
 ## Workflow trigger phrases (owner, 2026-11-14)
 Full detail: `.cursor/rules/workflow-triggers.mdc`.
 1. **`implement` / `implement it`** (case-insensitive) or **`New!`** (case-sensitive): create and check out `feature-update-<YYYYMMDD-HHmmss>`, then continue the request.
-2. **`Go!`** (case-sensitive): commit, push, merge to `main`, then clean/delete merged feature branches (never delete `main`). Release builds + GitHub Release run unless scoped (e.g. docs only / no release builds). See `.cursor/rules/workflow-triggers.mdc`.
+2. **`Go!`** (case-sensitive): commit, push, merge to `main`, GitHub Release, then **TestFlight via GitHub Actions** (App Store Connect API secrets + `.github/workflows/ios-testflight.yml`), then clean/delete merged feature branches (never delete `main`). Release builds + Release + TestFlight run unless scoped (e.g. docs only / no release builds / no TestFlight). See `.cursor/rules/workflow-triggers.mdc`.
 
 ## Project contents
 - `README.md`: public app overview (no open-questions list).
@@ -76,16 +76,30 @@ Full detail: `.cursor/rules/workflow-triggers.mdc`.
 - Store screenshots belong to their owners; keep the board for private reference.
 
 ## Brand package
-- Desktop handoff: `C:\Users\bitte\Desktop\Apps\Timed` (Interlocking Lanes, corrected weave).
-- Wired into `branding/`, `docs/assets/timed/`, Android `mipmap` / adaptive icons, iOS `AppIcon.appiconset`, and `app/assets/brand/`.
+- Desktop handoff: `C:\Users\bitte\Desktop\Apps\TimeIt` (Interlocking Lanes, corrected weave).
+- Wired into `branding/`, `docs/assets/timeit/`, Android `mipmap` / adaptive icons, iOS `AppIcon.appiconset`, and `app/assets/brand/`.
+
+## Naming (2026-11-14)
+- Product name: **TimeIt** (formerly Timed).
+- Bundle / application id: `com.nuclearfessel.timeit`.
+- GitHub: `nuclearfessel/TimeIt`. Pages: `https://nuclearfessel.github.io/TimeIt/`.
+- App Store Connect must use the **TimeIt** app record + `com.nuclearfessel.timeit` App ID (not the old Timed id).
+- Brand package (Interlocking Lanes + TimeIt wordmarks) wired from `C:\Users\bitte\Desktop\Apps\TimeIt` into `branding/`, `docs/assets/timeit/`, Android/iOS icons, and `app/assets/brand/`.
 
 ## Device install / update
-- Package id: `com.nuclearfessel.timed` (Android and iOS).
+- Package id: `com.nuclearfessel.timeit` (Android and iOS).
 - Installing over an existing copy **updates** in place; otherwise it installs fresh.
 - Helper: `scripts/install-device.ps1` (Windows) / `scripts/install-device.sh` (macOS/Linux). Detects an existing install and uses update vs install accordingly (`adb install -r` on Android; `ideviceinstaller` on iOS when available).
+
+## TestFlight / App Store Connect (2026-11-14)
+- Bundle id: `com.nuclearfessel.timeit`. Fastlane: `app/ios/fastlane` (`testflight_release`). Workflow: `.github/workflows/ios-testflight.yml` on `macos-latest`.
+- Repo secrets (already set on `nuclearfessel/TimeIt`): `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_PRIVATE_KEY` (`.p8` contents — same Apple account key pattern as Shopped).
+- Fastlane `produce` creates the Developer Portal App ID + Connect app record if missing, then signs, builds IPA, uploads to TestFlight.
+- **`Go!`** publishes a GitHub Release tag → workflow runs → build appears in App Store Connect → TestFlight after Apple processing. No personal Mac required.
+- Skip with owner scope: `docs only` / `no release builds` / `no TestFlight`.
 
 ## Suggested next steps
 1. Hands-on test the three shortlisted apps when useful (checklist in `docs/reference-apps.md`).
 2. Wire music ducking and vibrate stubs from Settings; decide richer cues later.
 3. Accessibility: announcement model for screen readers; audio policy.
-4. TestFlight via GitHub Actions + App Store Connect API key (Mac or CI).
+4. Say **`Go!`** when ready to ship (includes TestFlight CI).

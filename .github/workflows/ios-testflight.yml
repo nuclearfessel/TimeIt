@@ -1,0 +1,108 @@
+name: iOS TestFlight
+
+# Ships a signed IPA to TestFlight via App Store Connect API (same keys as Shopped).
+# Triggered by Go! when a version tag / GitHub Release is published, or manually.
+on:
+  workflow_dispatch:
+    inputs:
+      build_name:
+        description: "Marketing version (e.g. 1.0.8). Empty = read from app/pubspec.yaml"
+        required: false
+        type: string
+      build_number:
+        description: "Build number (e.g. 9). Empty = read from app/pubspec.yaml"
+        required: false
+        type: string
+  release:
+    types: [published]
+  push:
+    tags:
+      - "v*"
+
+concurrency:
+  group: ios-testflight
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  testflight:
+    runs-on: macos-latest
+    timeout-minutes: 90
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: version
+        working-directory: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+          PUBSPEC="app/pubspec.yaml"
+          line=$(grep -E '^version:' "$PUBSPEC" | head -n1 | awk '{print $2}')
+          name="${line%%+*}"
+          code="${line##*+}"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            if [[ -n "${{ inputs.build_name }}" ]]; then name="${{ inputs.build_name }}"; fi
+            if [[ -n "${{ inputs.build_number }}" ]]; then code="${{ inputs.build_number }}"; fi
+          elif [[ "${{ github.ref_type }}" == "tag" ]]; then
+            tag="${GITHUB_REF_NAME#v}"
+            if [[ "$tag" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+              name="$tag"
+            fi
+          fi
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "Building TimeIt $name+$code for TestFlight"
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.47.4"
+          channel: stable
+          cache: true
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: app/ios
+
+      - name: Cache iOS Distribution certificate
+        uses: actions/cache@v4
+        with:
+          path: app/ios/fastlane/signing-cache
+          key: ios-distribution-cert-v1
+
+      - name: Build signed IPA and upload to TestFlight
+        working-directory: app/ios
+        env:
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+          BUILD_NAME: ${{ steps.version.outputs.name }}
+          BUILD_NUMBER: ${{ steps.version.outputs.code }}
+        run: |
+          set -euo pipefail
+          if [[ -z "${APP_STORE_CONNECT_KEY_ID}" || -z "${APP_STORE_CONNECT_ISSUER_ID}" || -z "${APP_STORE_CONNECT_PRIVATE_KEY}" ]]; then
+            echo "Missing App Store Connect secrets. Add APP_STORE_CONNECT_KEY_ID, APP_STORE_CONNECT_ISSUER_ID, and APP_STORE_CONNECT_PRIVATE_KEY."
+            exit 1
+          fi
+          bundle exec fastlane testflight_release
+
+      - name: Upload IPA artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TimeIt-${{ steps.version.outputs.name }}-ipa
+          path: app/build/ios/ipa/*.ipa
+          if-no-files-found: warn
+          retention-days: 14

@@ -10,7 +10,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
 
     return AnimatedBuilder(
       animation: settings,
@@ -33,7 +33,7 @@ class SettingsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Light and Dark are set here. Timed does not follow the system theme.',
+                'Light and Dark are set here. TimeIt does not follow the system theme.',
                 style: TextStyle(
                   color: colors.mute,
                   fontSize: 13,
@@ -141,7 +141,7 @@ class SettingsScreen extends StatelessWidget {
               const SizedBox(height: 8),
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                title: const Text('Timed'),
+                title: const Text('TimeIt'),
                 subtitle: Text(
                   'Workout interval timer · v1.0.6',
                   style: TextStyle(
@@ -169,7 +169,7 @@ class _SectionLabel extends StatelessWidget {
       text,
       style: AppTheme.header.copyWith(
         fontSize: 18,
-        color: TimedColors.of(context).fg,
+        color: TimeItColors.of(context).fg,
       ),
     );
   }
@@ -190,7 +190,7 @@ class _BeepCountSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = TimedColors.of(context);
+    final colors = TimeItColors.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
