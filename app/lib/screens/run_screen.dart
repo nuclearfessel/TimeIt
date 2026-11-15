@@ -154,59 +154,70 @@ class _TimerPane extends StatelessWidget {
               final digitSize = (constraints.maxWidth / 3.8)
                   .clamp(40.0, 96.0)
                   .toDouble();
+              final tight = constraints.maxHeight < 220;
+              final gap = tight ? 6.0 : 12.0;
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      phaseLabel,
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 2,
-                        fontSize: 18,
-                        color: onBg.withValues(alpha: 0.92),
-                      ),
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: constraints.maxWidth - 16,
                     ),
-                    const SizedBox(height: 12),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        digits,
-                        maxLines: 1,
-                        softWrap: false,
-                        style: AppTheme.digits.copyWith(
-                          fontSize: digitSize,
-                          height: 1,
-                          letterSpacing: -1,
-                          color: onBg,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          phaseLabel,
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 2,
+                            fontSize: tight ? 14.0 : 18.0,
+                            color: onBg.withValues(alpha: 0.92),
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    if (showProgress)
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(999),
-                        child: LinearProgressIndicator(
-                          value: progress,
-                          minHeight: 8,
-                          backgroundColor: onBg.withValues(alpha: 0.2),
-                          color: onBg,
+                        SizedBox(height: gap),
+                        Text(
+                          digits,
+                          maxLines: 1,
+                          softWrap: false,
+                          style: AppTheme.digits.copyWith(
+                            fontSize: digitSize,
+                            height: 1,
+                            letterSpacing: -1,
+                            color: onBg,
+                          ),
                         ),
-                      ),
-                    const SizedBox(height: 12),
-                    Text(
-                      stepSummary,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'PlusJakartaSans',
-                        color: onBg.withValues(alpha: 0.85),
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
+                        SizedBox(height: tight ? 8 : 16),
+                        if (showProgress)
+                          SizedBox(
+                            width: constraints.maxWidth - 16,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(999),
+                              child: LinearProgressIndicator(
+                                value: progress,
+                                minHeight: 8,
+                                backgroundColor: onBg.withValues(alpha: 0.2),
+                                color: onBg,
+                              ),
+                            ),
+                          ),
+                        SizedBox(height: gap),
+                        Text(
+                          stepSummary,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: 'PlusJakartaSans',
+                            color: onBg.withValues(alpha: 0.85),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               );
             },
