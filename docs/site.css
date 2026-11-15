@@ -216,6 +216,43 @@ img {
   border-radius: 12px;
 }
 
+.shot-figure {
+  margin: 2rem 0 0;
+  padding: 0;
+}
+
+.shot-figure img {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: #111;
+}
+
+.shot-figure.shot-wide img {
+  max-width: 720px;
+}
+
+.shot-figure figcaption {
+  margin-top: 0.65rem;
+  font-size: 0.92rem;
+  color: var(--mute);
+  max-width: 36rem;
+}
+
+.shot-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.shot-row .shot-figure {
+  margin: 0;
+  flex: 1 1 220px;
+}
+
 .cta-row {
   display: flex;
   flex-wrap: wrap;

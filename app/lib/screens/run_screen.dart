@@ -57,10 +57,6 @@ class _RunScreenState extends State<RunScreen> {
       builder: (context, _) {
         final bg = _bg(context);
         const onBg = Colors.white;
-        final size = MediaQuery.sizeOf(context);
-        // Scale digits to the left pane so phones and tablets stay readable.
-        final digitSize = (size.width * 0.22).clamp(52.0, 120.0);
-
         return AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.light,
           child: Scaffold(
@@ -77,7 +73,6 @@ class _RunScreenState extends State<RunScreen> {
                         title: widget.timer.name,
                         phaseLabel: _phaseLabel,
                         digits: formatDuration(engine.remaining),
-                        digitSize: digitSize,
                         progress: engine.status == EngineStatus.finished
                             ? 1
                             : engine.phaseProgress,
@@ -114,7 +109,6 @@ class _TimerPane extends StatelessWidget {
     required this.title,
     required this.phaseLabel,
     required this.digits,
-    required this.digitSize,
     required this.progress,
     required this.stepSummary,
     required this.showProgress,
@@ -125,7 +119,6 @@ class _TimerPane extends StatelessWidget {
   final String title;
   final String phaseLabel;
   final String digits;
-  final double digitSize;
   final double progress;
   final String stepSummary;
   final bool showProgress;
@@ -162,65 +155,60 @@ class _TimerPane extends StatelessWidget {
         Expanded(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              return FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: Alignment.center,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: constraints.maxWidth,
-                    maxHeight: constraints.maxHeight,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          phaseLabel,
-                          style: TextStyle(
-                            fontFamily: 'PlusJakartaSans',
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: 2,
-                            fontSize: 18,
-                            color: onBg.withValues(alpha: 0.92),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          digits,
-                          style: AppTheme.digits.copyWith(
-                            fontSize: digitSize,
-                            color: onBg,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        if (showProgress)
-                          SizedBox(
-                            width: constraints.maxWidth.clamp(120, 420),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(999),
-                              child: LinearProgressIndicator(
-                                value: progress,
-                                minHeight: 8,
-                                backgroundColor:
-                                    onBg.withValues(alpha: 0.2),
-                                color: onBg,
-                              ),
-                            ),
-                          ),
-                        const SizedBox(height: 12),
-                        Text(
-                          stepSummary,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: onBg.withValues(alpha: 0.85),
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
+              final digitSize = (constraints.maxWidth / 3.8)
+                  .clamp(40.0, 96.0)
+                  .toDouble();
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      phaseLabel,
+                      style: TextStyle(
+                        fontFamily: 'PlusJakartaSans',
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: 2,
+                        fontSize: 18,
+                        color: onBg.withValues(alpha: 0.92),
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 12),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        digits,
+                        maxLines: 1,
+                        softWrap: false,
+                        style: AppTheme.digits.copyWith(
+                          fontSize: digitSize,
+                          height: 1,
+                          letterSpacing: -1,
+                          color: onBg,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    if (showProgress)
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(999),
+                        child: LinearProgressIndicator(
+                          value: progress,
+                          minHeight: 8,
+                          backgroundColor: onBg.withValues(alpha: 0.2),
+                          color: onBg,
+                        ),
+                      ),
+                    const SizedBox(height: 12),
+                    Text(
+                      stepSummary,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: onBg.withValues(alpha: 0.85),
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
               );
             },
