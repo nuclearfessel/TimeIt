@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Using Timed — Guide</title>
   <meta name="description" content="How to use Timed: simple timers, advanced stacks, running a workout, sounds, and settings." />
+  <meta property="og:title" content="Using Timed — Guide" />
+  <meta property="og:description" content="Create your own standby, work, and rest interval routines." />
+  <meta property="og:image" content="https://nuclearfessel.github.io/Timed/assets/timed/Graphics/social-card-light.png" />
+  <link rel="icon" href="assets/timed/Web/favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/timed/Web/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/timed/Web/favicon-180.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Hepta+Slab:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -20,7 +26,9 @@
       <span class="rest"></span>
     </div>
     <div class="topbar">
-      <a class="brand-mark" href="index.html">Timed</a>
+      <a class="timed-header-brand" href="index.html" aria-label="Timed home">
+        <img src="assets/timed/Web/header-logo-on-color.svg" alt="Timed" width="160" height="48" />
+      </a>
       <nav aria-label="Site">
         <a href="index.html">Home</a>
         &nbsp;·&nbsp;
@@ -59,6 +67,12 @@
         <li>Tap a timer to run it, or use edit / delete on the row.</li>
       </ol>
       <p>Timed does not ship pre-built exercises. You create and delete your own timers and sets.</p>
+      <figure class="brand-figure">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="assets/timed/Graphics/workflow-dark.svg" />
+          <img src="assets/timed/Graphics/workflow-light.svg" alt="Workflow: create a timer, stack phases, then run with phase colors and sounds." width="1600" height="900" />
+        </picture>
+      </figure>
     </section>
 
     <section class="work" id="simple">
@@ -72,6 +86,12 @@
         <li><strong>Rounds</strong> — how many work bouts to run</li>
       </ul>
       <p>Rest is skipped after the last round. Save the timer with a name you will recognize later.</p>
+      <figure class="brand-figure">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="assets/timed/Graphics/phases-dark.svg" />
+          <img src="assets/timed/Graphics/phases-light.svg" alt="Standby green, work orange, and rest blue phase bands with readable labels." width="1600" height="900" />
+        </picture>
+      </figure>
     </section>
 
     <section class="rest" id="advanced">
@@ -100,8 +120,9 @@
         <li>Open a timer from home.</li>
         <li>Tap <strong>Start</strong>. The screen fills with the current phase color.</li>
         <li>Use <strong>Pause</strong> / <strong>Resume</strong>, <strong>Skip</strong> to jump ahead, or <strong>Reset</strong> to return to the first phase.</li>
+        <li>When the sequence finishes, the screen shows <strong>Done</strong> and you can restart.</li>
       </ol>
-      <p>Large Hepta Slab digits show time left in the phase. An “up next” strip previews the following block. When the sequence finishes, the screen shows <strong>Done</strong> and you can restart.</p>
+      <p>Large Hepta Slab digits show time left in the phase. An “up next” strip previews the following block.</p>
     </section>
 
     <section class="standby" id="sounds">

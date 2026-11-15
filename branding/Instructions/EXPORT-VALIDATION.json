@@ -1,0 +1,10 @@
+{
+  "svg": 38,
+  "png": 85,
+  "ios_slots": 18,
+  "text_layout": "passed at export",
+  "logo_transparency_and_centering": "passed",
+  "native_icon_resource_checks": "passed",
+  "android_safe_circle": "passed",
+  "native_build_and_store_validation": "not performed"
+}

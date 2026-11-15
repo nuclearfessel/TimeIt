@@ -6,7 +6,7 @@ alwaysApply: true
 Read `AGENTS.md` at the project root before doing anything. It holds the owner's instructions, decisions, fonts and working preferences.
 
 Key rules (full detail in `AGENTS.md`):
-- App code lives in `app/` (Flutter). Do not invent scope beyond what the owner decided.
+- App code lives in `app/` (Flutter). **iOS and Android only** — no web, desktop, Watch, or Wear. Do not invent scope beyond what the owner decided.
 - No Pomodoro features. No pre-built exercises; users create and delete their own timers and timer sets.
 - Fonts (Google Fonts): Hepta Slab for large numbers and headers; Plus Jakarta Sans for everything else.
 - Confirm before downloads, commits, pushes or other outward-facing actions — except when the owner uses the workflow triggers in `workflow-triggers.mdc` (`implement` / `New!` / `Go!`).

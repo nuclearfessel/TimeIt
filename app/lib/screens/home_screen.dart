@@ -41,7 +41,18 @@ class HomeScreen extends StatelessWidget {
         final timers = store.timers;
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Timed'),
+            title: Row(
+              children: [
+                Image.asset(
+                  'assets/brand/timed-mark-color.png',
+                  height: 28,
+                  width: 28,
+                  filterQuality: FilterQuality.high,
+                ),
+                const SizedBox(width: 10),
+                const Text('Timed'),
+              ],
+            ),
             actions: [
               IconButton(
                 tooltip: 'Settings',
@@ -179,20 +190,28 @@ class _EmptyState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset(
+              'assets/brand/timed-mark-color.png',
+              height: 56,
+              width: 56,
+              filterQuality: FilterQuality.high,
+            ),
+            const SizedBox(height: 18),
             Text(
-              'Your timers',
-              style: AppTheme.header.copyWith(fontSize: 28),
+              'Your next routine starts here.',
+              style: AppTheme.header.copyWith(fontSize: 26),
+              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
             Text(
-              'Create a simple work/rest timer, or an advanced stack of standby, work, and rest.',
+              'Create a timer. Simple work/rest rounds, or an advanced stack of standby, work, and rest.',
               textAlign: TextAlign.center,
               style: TextStyle(color: colors.mute, height: 1.4),
             ),
             const SizedBox(height: 28),
             FilledButton(
               onPressed: onSimple,
-              child: const Text('Create simple timer'),
+              child: const Text('Create timer'),
             ),
             const SizedBox(height: 12),
             OutlinedButton(

@@ -1,0 +1,25 @@
+{
+  "phase": {
+    "standby": "#009E73",
+    "work": "#D55E00",
+    "rest": "#0072B2"
+  },
+  "light": {
+    "bg": "#F7F6F3",
+    "surface": "#FFFFFF",
+    "ink": "#161618",
+    "muted": "#61616B",
+    "line": "#C6C3BC"
+  },
+  "dark": {
+    "bg": "#0B0B0C",
+    "surface": "#161618",
+    "ink": "#F4F4EF",
+    "muted": "#A8A8AE",
+    "line": "#343438"
+  },
+  "fonts": {
+    "display": "Hepta Slab",
+    "body": "Plus Jakarta Sans"
+  }
+}
