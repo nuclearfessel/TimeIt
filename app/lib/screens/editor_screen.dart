@@ -79,9 +79,13 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   Future<int?> _pickSeconds(String title, int current) {
-    return showDialog<int>(
+    // Bottom sheet (not AlertDialog): iOS soft keyboard attaches reliably.
+    return showModalBottomSheet<int>(
       context: context,
-      builder: (_) => _NumberPickerDialog(
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      builder: (_) => _NumberPickerSheet(
         title: title,
         initial: current,
         min: 0,
@@ -92,9 +96,12 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   Future<int?> _pickRounds(int current) {
-    return showDialog<int>(
+    return showModalBottomSheet<int>(
       context: context,
-      builder: (_) => _NumberPickerDialog(
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      builder: (_) => _NumberPickerSheet(
         title: 'Rounds',
         initial: current,
         min: 1,
@@ -818,10 +825,10 @@ class _StepTile extends StatelessWidget {
   }
 }
 
-/// Number dialog with reliable keyboard focus (post-frame + TextInput.show).
-/// Optional in-field +/- steppers for count fields like rounds.
-class _NumberPickerDialog extends StatefulWidget {
-  const _NumberPickerDialog({
+/// Number picker as a bottom sheet — AlertDialog + TextField is unreliable for
+/// the iOS soft keyboard. Optional in-field −/+ for counts like rounds.
+class _NumberPickerSheet extends StatefulWidget {
+  const _NumberPickerSheet({
     required this.title,
     required this.initial,
     required this.min,
@@ -838,10 +845,10 @@ class _NumberPickerDialog extends StatefulWidget {
   final bool showSteppers;
 
   @override
-  State<_NumberPickerDialog> createState() => _NumberPickerDialogState();
+  State<_NumberPickerSheet> createState() => _NumberPickerSheetState();
 }
 
-class _NumberPickerDialogState extends State<_NumberPickerDialog> {
+class _NumberPickerSheetState extends State<_NumberPickerSheet> {
   late final TextEditingController _controller;
   late final FocusNode _focus;
   Animation<double>? _routeAnimation;
@@ -857,8 +864,6 @@ class _NumberPickerDialogState extends State<_NumberPickerDialog> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // iOS often suppresses the keyboard if focus is requested while the dialog
-    // route is still animating. Wait until the transition completes.
     final animation = ModalRoute.of(context)?.animation;
     if (!identical(animation, _routeAnimation)) {
       _routeAnimation?.removeStatusListener(_onRouteStatus);
@@ -900,11 +905,10 @@ class _NumberPickerDialogState extends State<_NumberPickerDialog> {
       baseOffset: 0,
       extentOffset: _controller.text.length,
     );
-    // Extra beat after the route settles — needed on iOS SoftKeyboard.
-    await Future<void>.delayed(const Duration(milliseconds: 120));
+    await Future<void>.delayed(const Duration(milliseconds: 50));
     if (!mounted) return;
     if (!_focus.hasFocus) {
-      FocusScope.of(context).requestFocus(_focus);
+      _focus.requestFocus();
     }
     await SystemChannels.textInput.invokeMethod<void>('TextInput.show');
   }
@@ -935,8 +939,6 @@ class _NumberPickerDialogState extends State<_NumberPickerDialog> {
     required bool enabled,
     required VoidCallback onPressed,
   }) {
-    // ExcludeFocus: IconButtons inside InputDecorator steal primary focus on
-    // iOS and the soft keyboard never attaches to the TextField.
     return ExcludeFocus(
       child: IconButton(
         onPressed: enabled ? onPressed : null,
@@ -957,7 +959,7 @@ class _NumberPickerDialogState extends State<_NumberPickerDialog> {
     );
   }
 
-  Widget _inFieldStepper({
+  Widget _stepper({
     required TimeItColors colors,
     required IconData icon,
     required String tooltip,
@@ -968,12 +970,11 @@ class _NumberPickerDialogState extends State<_NumberPickerDialog> {
       builder: (context, value, _) {
         final current = _parsed;
         final next = nextFrom(current);
-        final enabled = next != current;
         return _stepperButton(
           colors: colors,
           icon: icon,
           tooltip: tooltip,
-          enabled: enabled,
+          enabled: next != current,
           onPressed: () => _nudge(next - current),
         );
       },
@@ -983,17 +984,11 @@ class _NumberPickerDialogState extends State<_NumberPickerDialog> {
   @override
   Widget build(BuildContext context) {
     final colors = TimeItColors.of(context);
-    // Darker inset so − / + and digits read clearly inside the field.
     final fieldFill = Color.lerp(colors.bg, colors.surface, 0.22)!;
-    final border = OutlineInputBorder(
-      borderSide: BorderSide(color: colors.line),
-      borderRadius: BorderRadius.circular(10),
-    );
-    final focusedBorder = OutlineInputBorder(
-      borderSide: BorderSide(color: colors.accent, width: 1.5),
-      borderRadius: BorderRadius.circular(10),
-    );
+    final inset = MediaQuery.viewInsetsOf(context).bottom;
 
+    // Keep this TextField stable in the tree — rebuilding it on focus changes
+    // drops the iOS soft-keyboard connection.
     final field = TextField(
       controller: _controller,
       focusNode: _focus,
@@ -1003,67 +998,77 @@ class _NumberPickerDialogState extends State<_NumberPickerDialog> {
       inputFormatters: [FilteringTextInputFormatter.digitsOnly],
       textAlign: widget.showSteppers ? TextAlign.center : TextAlign.start,
       enableInteractiveSelection: true,
-      // Do not rebuild this TextField on every keystroke — that drops IME
-      // focus. Only the in-field steppers listen to the controller.
+      autocorrect: false,
+      enableSuggestions: false,
       onTap: _ensureKeyboard,
       onSubmitted: (_) => Navigator.pop(context, _parsed),
       decoration: InputDecoration(
         suffixText: widget.showSteppers ? null : widget.suffixText,
-        filled: true,
-        fillColor: fieldFill,
-        border: border,
-        enabledBorder: border,
-        focusedBorder: focusedBorder,
-        // Keep horizontal inset for overlaid steppers so digits stay clear.
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: widget.showSteppers ? 48 : 14,
-          vertical: 14,
-        ),
+        border: InputBorder.none,
+        enabledBorder: InputBorder.none,
+        focusedBorder: InputBorder.none,
+        filled: false,
+        isDense: true,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
       ),
     );
 
-    final content = widget.showSteppers
-        // Overlay steppers instead of prefixIcon/suffixIcon so they stay
-        // visually inside the field without joining the focus traversal order.
-        ? Stack(
-            alignment: Alignment.center,
-            children: [
-              field,
-              Positioned(
-                left: 0,
-                child: _inFieldStepper(
+    final chrome = DecoratedBox(
+      decoration: BoxDecoration(
+        color: fieldFill,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: colors.line),
+      ),
+      child: widget.showSteppers
+          ? Row(
+              children: [
+                _stepper(
                   colors: colors,
                   icon: Icons.remove,
                   tooltip: 'Decrease',
                   nextFrom: (c) => (c - 1).clamp(widget.min, widget.max),
                 ),
-              ),
-              Positioned(
-                right: 0,
-                child: _inFieldStepper(
+                Expanded(child: field),
+                _stepper(
                   colors: colors,
                   icon: Icons.add,
                   tooltip: 'Increase',
                   nextFrom: (c) => (c + 1).clamp(widget.min, widget.max),
                 ),
+              ],
+            )
+          : field,
+    );
+
+    return Padding(
+      padding: EdgeInsets.fromLTRB(20, 4, 20, 16 + inset),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            widget.title,
+            style: AppTheme.header.copyWith(fontSize: 20, color: colors.fg),
+          ),
+          const SizedBox(height: 14),
+          chrome,
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel'),
+              ),
+              const SizedBox(width: 8),
+              FilledButton(
+                onPressed: () => Navigator.pop(context, _parsed),
+                child: const Text('Set'),
               ),
             ],
-          )
-        : field;
-
-    return AlertDialog(
-      title: Text(widget.title),
-      content: content,
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pop(context, _parsed),
-          child: const Text('Set'),
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 }
