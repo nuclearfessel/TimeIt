@@ -15,7 +15,7 @@ TimeIt is free. **iOS and Android only** — no web, desktop, Apple Watch, or We
 
 ## Screenshots
 
-<p>
+<p align="center">
   <img src="docs/assets/timeit/Screenshots/01-home.svg" alt="TimeIt home screen with simple and advanced timers." width="210">
   &nbsp;
   <img src="docs/assets/timeit/Screenshots/02-run-portrait.svg" alt="Run screen in portrait: phase color, large digits, up next and controls." width="210">
@@ -23,13 +23,13 @@ TimeIt is free. **iOS and Android only** — no web, desktop, Apple Watch, or We
   <img src="docs/assets/timeit/Screenshots/05-editor-simple.svg" alt="Simple timer editor with standby, work, rest, and rounds." width="210">
 </p>
 
-<p>
+<p align="center">
   <img src="docs/assets/timeit/Screenshots/06-editor-advanced.svg" alt="Advanced editor with rounds, each with their own phase stack." width="210">
   &nbsp;
   <img src="docs/assets/timeit/Screenshots/04-settings.svg" alt="Settings with Light and Dark theme and sound toggles." width="210">
 </p>
 
-<p>
+<p align="center">
   <img src="docs/assets/timeit/Screenshots/08-run-landscape.svg" alt="Run screen in landscape with the timer on top and controls underneath." width="900">
 </p>
 
