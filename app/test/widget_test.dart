@@ -13,6 +13,11 @@ void main() {
       workSeconds: 10,
       restSeconds: 5,
       rounds: 2,
+      simpleSteps: [
+        IntervalStep(type: PhaseType.standby, seconds: 5),
+        IntervalStep(type: PhaseType.work, seconds: 10),
+        IntervalStep(type: PhaseType.rest, seconds: 5),
+      ],
     );
     final steps = timer.expand();
     expect(steps.map((s) => s.type).toList(), [
@@ -22,6 +27,30 @@ void main() {
       PhaseType.work,
     ]);
     expect(timer.totalSeconds, 5 + 10 + 5 + 10);
+  });
+
+  test('simple timer can add extra phases in the stack', () {
+    final timer = WorkoutTimer(
+      name: 'Extra',
+      kind: TimerKind.simple,
+      rounds: 2,
+      simpleSteps: [
+        IntervalStep(type: PhaseType.work, seconds: 10),
+        IntervalStep(type: PhaseType.rest, seconds: 5),
+        IntervalStep(type: PhaseType.work, seconds: 8),
+        IntervalStep(type: PhaseType.rest, seconds: 4),
+      ],
+    );
+    final steps = timer.expand();
+    expect(steps.map((s) => '${s.type.name}:${s.seconds}').toList(), [
+      'work:10',
+      'rest:5',
+      'work:8',
+      'rest:4',
+      'work:10',
+      'rest:5',
+      'work:8',
+    ]);
   });
 
   test('advanced timer runs each round stack in order', () {
@@ -52,6 +81,17 @@ void main() {
     ]);
     expect(timer.totalSeconds, 5 + 10 + 20 + 8);
     expect(timer.advancedRoundCount, 2);
+  });
+
+  test('reordering advanced rounds changes run order and renumbers by index', () {
+    final timer = WorkoutTimer.newAdvanced();
+    expect(timer.advancedRounds.length, 3);
+    final firstBefore = timer.advancedRounds.first.steps.first.type;
+    final moved = timer.advancedRounds.removeAt(0);
+    timer.advancedRounds.add(moved);
+    final steps = timer.expand();
+    expect(steps.first.type, isNot(firstBefore));
+    expect(timer.advancedRounds.last.steps.first.type, firstBefore);
   });
 
   test('legacy steps and cycles migrate into identical rounds', () {

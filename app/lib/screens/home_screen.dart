@@ -137,27 +137,40 @@ class HomeScreen extends StatelessWidget {
                       backgroundColor: colors.surface,
                       builder: (ctx) {
                         return SafeArea(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              ListTile(
-                                title: const Text('Simple timer'),
-                                subtitle: const Text(
-                                  'Standby, work, rest, and rounds',
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 12, 8, 20),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Center(
+                                  child: Container(
+                                    width: 36,
+                                    height: 4,
+                                    decoration: BoxDecoration(
+                                      color: colors.line,
+                                      borderRadius: BorderRadius.circular(999),
+                                    ),
+                                  ),
                                 ),
-                                onTap: () =>
-                                    Navigator.pop(ctx, TimerKind.simple),
-                              ),
-                              ListTile(
-                                title: const Text('Advanced timer'),
-                                subtitle: const Text(
-                                  'Rounds with their own phase stacks',
+                                const SizedBox(height: 16),
+                                _NewTimerSheetOption(
+                                  title: 'Simple timer',
+                                  subtitle:
+                                      'Standby, work, rest phases and rounds',
+                                  onTap: () =>
+                                      Navigator.pop(ctx, TimerKind.simple),
                                 ),
-                                onTap: () =>
-                                    Navigator.pop(ctx, TimerKind.advanced),
-                              ),
-                              const SizedBox(height: 8),
-                            ],
+                                const SizedBox(height: 8),
+                                _NewTimerSheetOption(
+                                  title: 'Advanced timer',
+                                  subtitle:
+                                      'Rounds with their own phase stacks',
+                                  onTap: () =>
+                                      Navigator.pop(ctx, TimerKind.advanced),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -166,8 +179,11 @@ class HomeScreen extends StatelessWidget {
                       await _create(context, kind);
                     }
                   },
-                  icon: const Icon(Icons.add),
-                  label: const Text('New timer'),
+                  icon: const Icon(Icons.add, weight: 700),
+                  label: const Text(
+                    'New timer',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
                 ),
         );
       },
@@ -206,7 +222,11 @@ class _EmptyState extends StatelessWidget {
             Text(
               'Create a timer. Simple work/rest rounds, or advanced rounds each with their own phase stack.',
               textAlign: TextAlign.center,
-              style: TextStyle(color: colors.mute, height: 1.4),
+              style: TextStyle(
+                color: colors.mute,
+                height: 1.4,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             const SizedBox(height: 28),
             FilledButton(
@@ -244,7 +264,7 @@ class _TimerCard extends StatelessWidget {
     final kindLabel =
         timer.kind == TimerKind.simple ? 'Simple' : 'Advanced';
     final summary = timer.kind == TimerKind.simple
-        ? '${formatSeconds(timer.workSeconds)} work · ${formatSeconds(timer.restSeconds)} rest · ${timer.rounds} rounds'
+        ? '${timer.simpleSteps.length} phases · ${timer.rounds} rounds · ${formatSeconds(timer.totalSeconds)}'
         : '${timer.advancedRoundCount} rounds · ${timer.advancedPhaseCount} phases · ${formatSeconds(timer.totalSeconds)}';
 
     return Material(
@@ -274,6 +294,7 @@ class _TimerCard extends StatelessWidget {
                       style: TextStyle(
                         color: colors.mute,
                         fontSize: 13,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ],
@@ -288,6 +309,57 @@ class _TimerCard extends StatelessWidget {
                 tooltip: 'Delete',
                 onPressed: onDelete,
                 icon: const Icon(Icons.delete_outline),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NewTimerSheetOption extends StatelessWidget {
+  const _NewTimerSheetOption({
+    required this.title,
+    required this.subtitle,
+    required this.onTap,
+  });
+
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = TimedColors.of(context);
+    return Material(
+      color: colors.bg,
+      borderRadius: BorderRadius.circular(14),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(14),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                  height: 1.2,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                subtitle,
+                style: TextStyle(
+                  color: colors.mute,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 13,
+                  height: 1.35,
+                ),
               ),
             ],
           ),

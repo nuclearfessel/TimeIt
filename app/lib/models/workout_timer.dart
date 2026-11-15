@@ -26,9 +26,16 @@ class WorkoutTimer {
     this.workSeconds = 40,
     this.restSeconds = 20,
     this.rounds = 8,
+    List<IntervalStep>? simpleSteps,
     List<TimerRound>? advancedRounds,
     DateTime? updatedAt,
   })  : id = id ?? const Uuid().v4(),
+        simpleSteps = simpleSteps ??
+            _defaultSimpleSteps(
+              standbySeconds: standbySeconds,
+              workSeconds: workSeconds,
+              restSeconds: restSeconds,
+            ),
         advancedRounds = advancedRounds ??
             [
               TimerRound(
@@ -45,13 +52,16 @@ class WorkoutTimer {
   String name;
   TimerKind kind;
 
-  /// Simple timer fields.
+  /// Legacy simple scalar fields (kept in sync for older summaries / JSON).
   int standbySeconds;
   int workSeconds;
   int restSeconds;
 
-  /// Simple: how many work bouts (rest skipped after the last).
+  /// Simple: how many times to run the phase stack (rest skipped after last).
   int rounds;
+
+  /// Simple: editable phase stack (standby / work / rest in any mix).
+  List<IntervalStep> simpleSteps;
 
   /// Advanced: each round has its own phase stack.
   List<TimerRound> advancedRounds;
@@ -65,22 +75,64 @@ class WorkoutTimer {
         (sum, round) => sum + round.activeSteps().length,
       );
 
+  static List<IntervalStep> _defaultSimpleSteps({
+    required int standbySeconds,
+    required int workSeconds,
+    required int restSeconds,
+  }) {
+    return [
+      if (standbySeconds > 0)
+        IntervalStep(type: PhaseType.standby, seconds: standbySeconds),
+      IntervalStep(type: PhaseType.work, seconds: workSeconds < 1 ? 40 : workSeconds),
+      if (restSeconds > 0)
+        IntervalStep(type: PhaseType.rest, seconds: restSeconds),
+    ];
+  }
+
+  /// Keep scalar fields aligned with the simple stack for home summaries.
+  void syncSimpleScalarsFromSteps() {
+    final standby = simpleSteps.where((s) => s.type == PhaseType.standby);
+    final work = simpleSteps.where((s) => s.type == PhaseType.work);
+    final rest = simpleSteps.where((s) => s.type == PhaseType.rest);
+    standbySeconds = standby.isEmpty ? 0 : standby.first.seconds;
+    workSeconds = work.isEmpty ? 40 : work.first.seconds;
+    restSeconds = rest.isEmpty ? 0 : rest.first.seconds;
+  }
+
   /// Expand into the flat run sequence used by the engine.
   List<IntervalStep> expand() {
     if (kind == TimerKind.simple) {
-      final out = <IntervalStep>[];
-      if (standbySeconds > 0) {
-        out.add(IntervalStep(type: PhaseType.standby, seconds: standbySeconds));
+      final template = simpleSteps.where((s) => s.seconds > 0).toList();
+      if (template.isEmpty) {
+        return [IntervalStep(type: PhaseType.work, seconds: 30)];
       }
+      // Phases before the first work run once (e.g. standby). From the first
+      // work onward, the stack repeats for [rounds], skipping trailing rest
+      // after the last work bout.
+      final firstWork = template.indexWhere((s) => s.type == PhaseType.work);
+      final preface = firstWork > 0
+          ? template.sublist(0, firstWork)
+          : <IntervalStep>[];
+      final cycle =
+          firstWork >= 0 ? template.sublist(firstWork) : template;
+      final out = <IntervalStep>[
+        ...preface.map((s) => s.copy()),
+      ];
       final count = rounds < 1 ? 1 : rounds;
       for (var r = 0; r < count; r++) {
-        out.add(IntervalStep(type: PhaseType.work, seconds: workSeconds));
-        final isLast = r == count - 1;
-        if (!isLast && restSeconds > 0) {
-          out.add(IntervalStep(type: PhaseType.rest, seconds: restSeconds));
+        final isLastRound = r == count - 1;
+        for (var i = 0; i < cycle.length; i++) {
+          final step = cycle[i];
+          final trailingRest = isLastRound &&
+              step.type == PhaseType.rest &&
+              cycle.skip(i).every((s) => s.type == PhaseType.rest);
+          if (trailingRest) continue;
+          out.add(step.copy());
         }
       }
-      return out;
+      return out.isEmpty
+          ? [IntervalStep(type: PhaseType.work, seconds: 30)]
+          : out;
     }
 
     final out = <IntervalStep>[];
@@ -105,6 +157,7 @@ class WorkoutTimer {
       workSeconds: workSeconds,
       restSeconds: restSeconds,
       rounds: rounds,
+      simpleSteps: simpleSteps.map((s) => s.copy()).toList(),
       advancedRounds: advancedRounds.map((r) => r.copy()).toList(),
       updatedAt: updatedAt,
     );
@@ -118,19 +171,30 @@ class WorkoutTimer {
         'workSeconds': workSeconds,
         'restSeconds': restSeconds,
         'rounds': rounds,
+        'simpleSteps': simpleSteps.map((s) => s.toJson()).toList(),
         'advancedRounds': advancedRounds.map((r) => r.toJson()).toList(),
         'updatedAt': updatedAt.toIso8601String(),
       };
 
   factory WorkoutTimer.fromJson(Map<String, dynamic> json) {
+    final standby = (json['standbySeconds'] as num?)?.toInt() ?? 10;
+    final work = (json['workSeconds'] as num?)?.toInt() ?? 40;
+    final rest = (json['restSeconds'] as num?)?.toInt() ?? 20;
+    final simpleJson = json['simpleSteps'] as List<dynamic>?;
+    final simpleSteps = simpleJson == null
+        ? null
+        : simpleJson
+            .map((e) => IntervalStep.fromJson(e as Map<String, dynamic>))
+            .toList();
     return WorkoutTimer(
       id: json['id'] as String?,
       name: json['name'] as String? ?? 'Timer',
       kind: TimerKind.fromName(json['kind'] as String? ?? 'simple'),
-      standbySeconds: (json['standbySeconds'] as num?)?.toInt() ?? 10,
-      workSeconds: (json['workSeconds'] as num?)?.toInt() ?? 40,
-      restSeconds: (json['restSeconds'] as num?)?.toInt() ?? 20,
+      standbySeconds: standby,
+      workSeconds: work,
+      restSeconds: rest,
       rounds: (json['rounds'] as num?)?.toInt() ?? 8,
+      simpleSteps: simpleSteps,
       advancedRounds: _parseAdvancedRounds(json),
       updatedAt: DateTime.tryParse(json['updatedAt'] as String? ?? '') ??
           DateTime.now(),
@@ -168,6 +232,11 @@ class WorkoutTimer {
       workSeconds: 40,
       restSeconds: 20,
       rounds: 8,
+      simpleSteps: [
+        IntervalStep(type: PhaseType.standby, seconds: 10),
+        IntervalStep(type: PhaseType.work, seconds: 40),
+        IntervalStep(type: PhaseType.rest, seconds: 20),
+      ],
     );
   }
 

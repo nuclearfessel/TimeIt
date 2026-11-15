@@ -67,8 +67,8 @@
         <li>Tap a timer to run it, or use edit / delete on the row.</li>
       </ol>
       <p>Timed does not ship pre-built exercises. You create and delete your own timers and sets.</p>
-      <figure class="shot-figure">
-        <img src="assets/timed/Screenshots/01-home.png" alt="Timed home screen with saved simple and advanced timers." width="360" height="780" />
+      <figure class="shot-figure shot-portrait">
+        <img src="assets/timed/Screenshots/01-home.svg" alt="Timed home screen with saved simple and advanced timers." width="1272" height="2772" />
         <figcaption>Home lists your timers. Tap one to run it.</figcaption>
       </figure>
     </section>
@@ -84,8 +84,8 @@
         <li><strong>Rounds</strong> — how many work bouts to run</li>
       </ul>
       <p>Rest is skipped after the last round. Save the timer with a name you will recognize later.</p>
-      <figure class="shot-figure">
-        <img src="assets/timed/Screenshots/05-editor-simple.png" alt="Simple timer editor with standby, work, rest, and rounds." width="360" height="780" />
+      <figure class="shot-figure shot-portrait">
+        <img src="assets/timed/Screenshots/05-editor-simple.svg" alt="Simple timer editor with standby, work, rest, and rounds." width="1272" height="2772" />
         <figcaption>Simple editor — standby, work, rest, and rounds.</figcaption>
       </figure>
     </section>
@@ -98,6 +98,7 @@
         <li>Add rounds; each round can differ from the others</li>
         <li>Inside a round, add standby, work, or rest phases in any order</li>
         <li>Set each phase duration and drag to reorder phases within the round</li>
+        <li>Drag rounds up or down to reorder them — Round 1, 2, 3… renumber automatically</li>
         <li>Duplicate or delete a round; rounds run in order from first to last</li>
       </ul>
       <p>Delete any phase you do not need. Keep at least one phase with a duration greater than zero across your rounds.</p>
@@ -109,8 +110,8 @@
         <span class="work">R2 Work</span>
         <span class="rest">R2 Rest</span>
       </div>
-      <figure class="shot-figure">
-        <img src="assets/timed/Screenshots/06-editor-advanced.png" alt="Advanced editor showing Round 1, Round 2, and Round 3 with different phase stacks." width="360" height="780" />
+      <figure class="shot-figure shot-portrait">
+        <img src="assets/timed/Screenshots/06-editor-advanced.svg" alt="Advanced editor showing Round 1, Round 2, and Round 3 with different phase stacks." width="1272" height="2772" />
         <figcaption>Advanced editor — rounds with their own stacks.</figcaption>
       </figure>
     </section>
@@ -124,17 +125,15 @@
         <li>Use <strong>Pause</strong> / <strong>Resume</strong>, <strong>Skip</strong> to jump ahead, or <strong>Reset</strong> to return to the first phase.</li>
         <li>When the sequence finishes, the screen shows <strong>Done</strong> and you can restart.</li>
       </ol>
-      <p>Large Hepta Slab digits show time left in the phase on the left two-thirds of the run screen. The right third shows the phase stack, up next, and Start / Pause / Skip / Reset — the same layout on iPhone, iPad, and Android phones and tablets, in portrait and landscape.</p>
-      <div class="shot-row">
-        <figure class="shot-figure">
-          <img src="assets/timed/Screenshots/02-run-portrait.png" alt="Portrait run screen with work phase, stack, and Start control." width="360" height="780" />
-          <figcaption>Portrait run screen.</figcaption>
-        </figure>
-        <figure class="shot-figure shot-wide">
-          <img src="assets/timed/Screenshots/08-run-landscape.png" alt="Landscape run screen with the same split layout and Pause control." width="720" height="360" />
-          <figcaption>Landscape — same 2/3 · 1/3 split.</figcaption>
-        </figure>
-      </div>
+      <p>In portrait, the run screen stacks vertically: large digits on top, then what’s up next and Start / Pause / Skip / Reset. In landscape it splits two-thirds / one-third — timer on the left, stack list plus up next and controls on the right.</p>
+      <figure class="shot-figure shot-portrait">
+        <img src="assets/timed/Screenshots/02-run-portrait.svg" alt="Portrait run screen with work phase, up next, and Start control." width="1272" height="2772" />
+        <figcaption>Portrait run screen.</figcaption>
+      </figure>
+      <figure class="shot-figure shot-wide">
+        <img src="assets/timed/Screenshots/08-run-landscape.svg" alt="Landscape run screen with the same split layout and Pause control." width="2772" height="1272" />
+        <figcaption>Landscape — 2/3 · 1/3 with the stack list.</figcaption>
+      </figure>
     </section>
 
     <section class="standby" id="sounds">
@@ -142,11 +141,11 @@
       <h2>Sounds</h2>
       <p>By default Timed plays:</p>
       <ul>
-        <li>A cue when a phase begins</li>
-        <li>Short beeps in the last three seconds</li>
+        <li>Beeps when a phase begins (count is adjustable in Settings, up to 5)</li>
+        <li>Countdown beeps leading into the end of each phase (count is adjustable, up to 5)</li>
         <li>A completion sound when the workout ends</li>
       </ul>
-      <p>Turn these on or off in Settings. Lowering music during a workout and vibrate-on-alert are saved preferences for upcoming builds.</p>
+      <p>Turn alerts and countdown on or off in Settings, and set how many start and end beeps you want. Lowering music during a workout and vibrate-on-alert are saved preferences for upcoming builds.</p>
     </section>
 
     <section class="rest" id="settings">
@@ -155,14 +154,16 @@
       <p>Open Settings from the gear on the home screen.</p>
       <h3>Appearance</h3>
       <p>Choose <strong>Light</strong> or <strong>Dark</strong>. Timed does <em>not</em> follow the system theme — the choice is yours and stays until you change it.</p>
-      <figure class="shot-figure">
-        <img src="assets/timed/Screenshots/04-settings.png" alt="Settings screen with Light and Dark theme choice and sound toggles." width="360" height="780" />
+      <figure class="shot-figure shot-portrait">
+        <img src="assets/timed/Screenshots/04-settings.svg" alt="Settings screen with Light and Dark theme choice and sound toggles." width="1272" height="2772" />
         <figcaption>Settings — appearance and sound preferences.</figcaption>
       </figure>
       <h3>Sound</h3>
       <ul>
         <li>Alert sounds — phase changes and complete</li>
-        <li>Countdown beeps — last three seconds</li>
+        <li>Countdown beeps — on/off for end-of-phase ticks</li>
+        <li>Start beeps — slider, 0–5 beeps when a phase begins</li>
+        <li>End beeps — slider, 0–5 beeps leading into the end of each phase</li>
         <li>Lower music during workout — preference saved; audio ducking wiring comes next</li>
         <li>Vibrate on alert — preference saved; haptics wiring comes next</li>
       </ul>

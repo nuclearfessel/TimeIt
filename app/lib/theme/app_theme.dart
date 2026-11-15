@@ -119,11 +119,25 @@ class AppTheme {
       extensions: [colors],
     );
 
+    final body = base.textTheme.apply(
+      fontFamily: 'PlusJakartaSans',
+      bodyColor: colors.fg,
+      displayColor: colors.fg,
+    );
+    // Body / UI copy one step up (regular → medium). Headers stay Hepta Slab.
+    TextStyle medium(TextStyle? s) =>
+        (s ?? const TextStyle()).copyWith(fontWeight: FontWeight.w500);
+
     return base.copyWith(
-      textTheme: base.textTheme.apply(
-        fontFamily: 'PlusJakartaSans',
-        bodyColor: colors.fg,
-        displayColor: colors.fg,
+      textTheme: body.copyWith(
+        bodyLarge: medium(body.bodyLarge),
+        bodyMedium: medium(body.bodyMedium),
+        bodySmall: medium(body.bodySmall),
+        labelLarge: medium(body.labelLarge),
+        labelMedium: medium(body.labelMedium),
+        labelSmall: medium(body.labelSmall),
+        titleSmall: medium(body.titleSmall),
+        titleMedium: medium(body.titleMedium),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: colors.bg,
@@ -148,12 +162,57 @@ class AppTheme {
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         backgroundColor: colors.accent,
         foregroundColor: Colors.white,
+        extendedPadding: const EdgeInsets.symmetric(horizontal: 22),
+        extendedIconLabelSpacing: 10,
+        extendedTextStyle: const TextStyle(
+          fontFamily: 'PlusJakartaSans',
+          fontWeight: FontWeight.w700,
+          fontSize: 15,
+          letterSpacing: 0.1,
+        ),
+      ),
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          backgroundColor: colors.accent,
+          foregroundColor: Colors.white,
+          padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
+          textStyle: const TextStyle(
+            fontFamily: 'PlusJakartaSans',
+            fontWeight: FontWeight.w700,
+            fontSize: 15,
+          ),
+        ),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          textStyle: const TextStyle(
+            fontFamily: 'PlusJakartaSans',
+            fontWeight: FontWeight.w500,
+            fontSize: 14,
+          ),
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          textStyle: const TextStyle(
+            fontFamily: 'PlusJakartaSans',
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+      chipTheme: ChipThemeData(
+        labelStyle: TextStyle(
+          fontFamily: 'PlusJakartaSans',
+          fontWeight: FontWeight.w500,
+          color: colors.fg,
+        ),
       ),
       dividerColor: colors.line,
       snackBarTheme: SnackBarThemeData(
         backgroundColor: colors.surface,
         contentTextStyle: TextStyle(
           fontFamily: 'PlusJakartaSans',
+          fontWeight: FontWeight.w500,
           color: colors.fg,
         ),
       ),

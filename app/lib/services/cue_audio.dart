@@ -13,6 +13,7 @@ class CueAudio {
 
   final SettingsStore? _settings;
   late final AudioPlayer _player;
+  int _playGeneration = 0;
 
   Future<void> play(CueKind kind) async {
     final settings = _settings;
@@ -33,7 +34,22 @@ class CueAudio {
     }
   }
 
+  /// Plays [kind] up to [count] times with a short gap (used for start beeps).
+  Future<void> playRepeats(CueKind kind, int count) async {
+    final n = count.clamp(0, SettingsStore.maxBeepCount);
+    if (n <= 0) return;
+    final generation = ++_playGeneration;
+    for (var i = 0; i < n; i++) {
+      if (generation != _playGeneration) return;
+      await play(kind);
+      if (i < n - 1) {
+        await Future<void>.delayed(const Duration(milliseconds: 200));
+      }
+    }
+  }
+
   Future<void> dispose() async {
+    _playGeneration++;
     await _player.dispose();
   }
 }
