@@ -113,7 +113,6 @@ class _EditorScreenState extends State<EditorScreen> {
   void _commitRoundsField() {
     final parsed = int.tryParse(_rounds.text);
     _setRounds(parsed ?? draft.rounds);
-    FocusScope.of(context).unfocus();
   }
 
   Future<PhaseType?> _pickPhase(BuildContext context) {
@@ -159,6 +158,11 @@ class _EditorScreenState extends State<EditorScreen> {
           TextField(
             controller: _name,
             style: AppTheme.header.copyWith(fontSize: 22),
+            textInputAction: TextInputAction.next,
+            onTap: () {
+              // Some devices keep focus without showing the IME; force it.
+              SystemChannels.textInput.invokeMethod<void>('TextInput.show');
+            },
             decoration: const InputDecoration(
               labelText: 'Name',
               border: OutlineInputBorder(),
@@ -501,9 +505,9 @@ class _RoundCard extends StatelessWidget {
   }
 }
 
-/// Rounds live on the editor list — no dialog/sheet — so typing uses the same
-/// keyboard path as the Name field. − / + sit inside the field chrome.
-class _RoundsInlineField extends StatelessWidget {
+/// Rounds editor with −/+, a text field, and an in-app number pad.
+/// The OS soft keyboard has been unreliable on device; the pad always works.
+class _RoundsInlineField extends StatefulWidget {
   const _RoundsInlineField({
     required this.controller,
     required this.value,
@@ -519,40 +523,129 @@ class _RoundsInlineField extends StatelessWidget {
   final VoidCallback onSubmit;
 
   @override
+  State<_RoundsInlineField> createState() => _RoundsInlineFieldState();
+}
+
+class _RoundsInlineFieldState extends State<_RoundsInlineField> {
+  late final FocusNode _focus;
+
+  @override
+  void initState() {
+    super.initState();
+    _focus = FocusNode(debugLabel: 'rounds-field');
+  }
+
+  @override
+  void dispose() {
+    _focus.dispose();
+    super.dispose();
+  }
+
+  Future<void> _showIme() async {
+    _focus.requestFocus();
+    await Future<void>.delayed(Duration.zero);
+    if (!mounted) return;
+    await SystemChannels.textInput.invokeMethod<void>('TextInput.show');
+  }
+
+  void _typeDigit(String digit) {
+    final current = widget.controller.text;
+    // Fresh entry after focusing a full selection, or append.
+    final selectedAll = widget.controller.selection.baseOffset == 0 &&
+        widget.controller.selection.extentOffset == current.length &&
+        current.isNotEmpty;
+    final next = selectedAll ? digit : '$current$digit';
+    final parsed = int.tryParse(next);
+    if (parsed == null || parsed > 99) return;
+    widget.controller.value = TextEditingValue(
+      text: next,
+      selection: TextSelection.collapsed(offset: next.length),
+    );
+    widget.onTextChanged(next);
+  }
+
+  void _backspace() {
+    final current = widget.controller.text;
+    if (current.isEmpty) return;
+    final next = current.substring(0, current.length - 1);
+    widget.controller.value = TextEditingValue(
+      text: next,
+      selection: TextSelection.collapsed(offset: next.length),
+    );
+    if (next.isEmpty) return;
+    widget.onTextChanged(next);
+  }
+
+  Widget _stepper({
+    required TimeItColors colors,
+    required IconData icon,
+    required String tooltip,
+    required bool enabled,
+    required VoidCallback onPressed,
+  }) {
+    return ExcludeFocus(
+      child: IconButton(
+        onPressed: enabled ? onPressed : null,
+        tooltip: tooltip,
+        visualDensity: VisualDensity.compact,
+        style: IconButton.styleFrom(
+          foregroundColor: colors.fg,
+          disabledForegroundColor: colors.mute.withValues(alpha: 0.35),
+          padding: const EdgeInsets.all(8),
+        ).copyWith(
+          overlayColor: AppTheme.pressOverlay(
+            pressed: colors.accent.withValues(alpha: 0.20),
+            hovered: colors.accent.withValues(alpha: 0.10),
+          ),
+        ),
+        icon: Icon(icon, size: 22),
+      ),
+    );
+  }
+
+  Widget _padKey({
+    required TimeItColors colors,
+    required String label,
+    required VoidCallback onPressed,
+    IconData? icon,
+  }) {
+    return Material(
+      color: Color.lerp(colors.surface, colors.bg, 0.35),
+      borderRadius: BorderRadius.circular(10),
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(10),
+        overlayColor: AppTheme.pressOverlay(
+          pressed: colors.accent.withValues(alpha: 0.20),
+          hovered: colors.accent.withValues(alpha: 0.10),
+        ),
+        child: SizedBox(
+          height: 48,
+          child: Center(
+            child: icon != null
+                ? Icon(icon, color: colors.fg, size: 22)
+                : Text(
+                    label,
+                    style: AppTheme.header.copyWith(
+                      fontSize: 20,
+                      color: colors.fg,
+                    ),
+                  ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colors = TimeItColors.of(context);
     final fieldFill = Color.lerp(colors.bg, colors.surface, 0.22)!;
 
-    Widget stepper({
-      required IconData icon,
-      required String tooltip,
-      required bool enabled,
-      required VoidCallback onPressed,
-    }) {
-      return ExcludeFocus(
-        child: IconButton(
-          onPressed: enabled ? onPressed : null,
-          tooltip: tooltip,
-          visualDensity: VisualDensity.compact,
-          style: IconButton.styleFrom(
-            foregroundColor: colors.fg,
-            disabledForegroundColor: colors.mute.withValues(alpha: 0.35),
-            padding: const EdgeInsets.all(8),
-          ).copyWith(
-            overlayColor: AppTheme.pressOverlay(
-              pressed: colors.accent.withValues(alpha: 0.20),
-              hovered: colors.accent.withValues(alpha: 0.10),
-            ),
-          ),
-          icon: Icon(icon, size: 22),
-        ),
-      );
-    }
-
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -572,18 +665,22 @@ class _RoundsInlineField extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  stepper(
+                  _stepper(
+                    colors: colors,
                     icon: Icons.remove,
                     tooltip: 'Decrease',
-                    enabled: value > 1,
-                    onPressed: () => onNudge(value - 1),
+                    enabled: widget.value > 1,
+                    onPressed: () => widget.onNudge(widget.value - 1),
                   ),
                   Expanded(
                     child: TextField(
-                      controller: controller,
+                      controller: widget.controller,
+                      focusNode: _focus,
                       keyboardType: TextInputType.number,
                       textInputAction: TextInputAction.done,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
                       textAlign: TextAlign.center,
                       autocorrect: false,
                       enableSuggestions: false,
@@ -591,9 +688,15 @@ class _RoundsInlineField extends StatelessWidget {
                         fontSize: 22,
                         color: colors.fg,
                       ),
-                      onChanged: onTextChanged,
-                      onSubmitted: (_) => onSubmit(),
-                      onEditingComplete: onSubmit,
+                      onTap: () {
+                        widget.controller.selection = TextSelection(
+                          baseOffset: 0,
+                          extentOffset: widget.controller.text.length,
+                        );
+                        _showIme();
+                      },
+                      onChanged: widget.onTextChanged,
+                      onSubmitted: (_) => widget.onSubmit(),
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         enabledBorder: InputBorder.none,
@@ -606,14 +709,58 @@ class _RoundsInlineField extends StatelessWidget {
                       ),
                     ),
                   ),
-                  stepper(
+                  _stepper(
+                    colors: colors,
                     icon: Icons.add,
                     tooltip: 'Increase',
-                    enabled: value < 99,
-                    onPressed: () => onNudge(value + 1),
+                    enabled: widget.value < 99,
+                    onPressed: () => widget.onNudge(widget.value + 1),
                   ),
                 ],
               ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              'Tap digits to set rounds (1–99)',
+              style: TextStyle(
+                color: colors.mute,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 8),
+            // In-app pad — works even when the OS soft keyboard will not show.
+            GridView.count(
+              crossAxisCount: 3,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childAspectRatio: 1.85,
+              children: [
+                for (final d in ['1', '2', '3', '4', '5', '6', '7', '8', '9'])
+                  _padKey(
+                    colors: colors,
+                    label: d,
+                    onPressed: () => _typeDigit(d),
+                  ),
+                _padKey(
+                  colors: colors,
+                  label: '',
+                  icon: Icons.backspace_outlined,
+                  onPressed: _backspace,
+                ),
+                _padKey(
+                  colors: colors,
+                  label: '0',
+                  onPressed: () => _typeDigit('0'),
+                ),
+                _padKey(
+                  colors: colors,
+                  label: 'OK',
+                  onPressed: widget.onSubmit,
+                ),
+              ],
             ),
           ],
         ),
@@ -974,6 +1121,9 @@ class _SecondsPickerDialogState extends State<_SecondsPickerDialog> {
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         autocorrect: false,
         enableSuggestions: false,
+        onTap: () {
+          SystemChannels.textInput.invokeMethod<void>('TextInput.show');
+        },
         onSubmitted: (_) => Navigator.pop(context, _parsed),
         decoration: InputDecoration(
           suffixText: 'seconds',
