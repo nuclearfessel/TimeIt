@@ -3,6 +3,7 @@ import json
 import shutil
 import copy
 import sys
+import subprocess
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
@@ -307,8 +308,14 @@ def main():
     if source.exists():
         dest=OUT/"Sources/Symbols";dest.mkdir(parents=True,exist_ok=True)
         for variant in ("color","black","white"):
-            for ext in ("svg","png"):
-                shutil.copy2(source/f"symbol-{variant}.{ext}",dest/f"symbol-{variant}.{ext}")
+            node=ET.parse(source/f"symbol-{variant}.svg").getroot()
+            # The standalone-symbol export is the canonical approved 180°
+            # orientation; copy that source as-is to avoid double rotation.
+            node.set("data-brand-orientation","180-clockwise")
+            path=dest/f"symbol-{variant}.svg"
+            ET.ElementTree(node).write(path,encoding="utf-8",xml_declaration=True)
+            subprocess.run(["magick","-background","none",str(path),
+                            "-colorspace","sRGB",str(path.with_suffix(".png"))],check=True)
     for mode in ("light","dark"):
         for ext in ("svg","png"):
             (OUT/"Brand"/f"timed-track-lockup-{mode}.{ext}").unlink(missing_ok=True)

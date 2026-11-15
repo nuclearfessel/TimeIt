@@ -3,6 +3,9 @@
 ## Identity
 The mark is the approved Interlocking Lanes symbol, with three capsule tracks
 and six crossings. Each pair changes which lane is above at its two crossings.
+The official orientation is the approved 180-degree clockwise rotation:
+the triangle points upward, with the green lane along the bottom.
+All supplied assets already use this orientation. Do not rotate them again.
 It represents linked standby, work and rest phases. Preserve the transparent
 crossing gaps in color and monochrome exports; never flatten them to a background color.
 Do not turn it into a clock face or borrow either other app's symbol.

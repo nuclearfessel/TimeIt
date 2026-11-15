@@ -75,8 +75,13 @@ Full detail: `.cursor/rules/workflow-triggers.mdc`.
 - Third-party revenue and install figures are unreliable estimates.
 - Store screenshots belong to their owners; keep the board for private reference.
 
+## Brand package
+- Desktop handoff: `C:\Users\bitte\Desktop\Apps\Timed` (Interlocking Lanes, corrected weave).
+- Wired into `branding/`, `docs/assets/timed/`, Android `mipmap` / adaptive icons, iOS `AppIcon.appiconset`, and `app/assets/brand/`.
+
 ## Suggested next steps
 1. Hands-on test the three shortlisted apps when useful (checklist in `docs/reference-apps.md`).
 2. Wire music ducking and vibrate stubs from Settings; decide richer cues later.
 3. Polish landscape layouts across home, editor, run, and settings.
 4. Accessibility: announcement model for screen readers; audio policy.
+5. TestFlight via GitHub Actions + App Store Connect API key (Mac or CI).

@@ -2736,16 +2736,16 @@
   {
     "file": "Brand/timed-tagline-light.svg",
     "width": 667,
-    "height": 240,
+    "height": 239,
     "alt": "Timed Interlocking Lanes logo with a separate tagline for light backgrounds.",
     "text": [
       {
         "text": "Timed",
         "bounds": [
           260.0,
-          53.15400000000001,
+          52.15400000000001,
           588.1,
-          126.846
+          125.846
         ],
         "baseline": 125.834,
         "row": null
@@ -2754,9 +2754,9 @@
         "text": "Make every interval yours.",
         "bounds": [
           260.0,
-          159.345,
+          158.345,
           634.49,
-          188.655
+          187.655
         ],
         "baseline": 182.055,
         "row": null
@@ -2766,16 +2766,16 @@
   {
     "file": "Brand/timed-tagline-dark.svg",
     "width": 667,
-    "height": 240,
+    "height": 239,
     "alt": "Timed Interlocking Lanes logo with a separate tagline for dark backgrounds.",
     "text": [
       {
         "text": "Timed",
         "bounds": [
           260.0,
-          53.15400000000001,
+          52.15400000000001,
           588.1,
-          126.846
+          125.846
         ],
         "baseline": 125.834,
         "row": null
@@ -2784,9 +2784,9 @@
         "text": "Make every interval yours.",
         "bounds": [
           260.0,
-          159.345,
+          158.345,
           634.49,
-          188.655
+          187.655
         ],
         "baseline": 182.055,
         "row": null
