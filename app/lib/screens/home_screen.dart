@@ -24,7 +24,11 @@ class HomeScreen extends StatelessWidget {
         kind == TimerKind.simple ? WorkoutTimer.newSimple() : WorkoutTimer.newAdvanced();
     final saved = await Navigator.of(context).push<WorkoutTimer>(
       MaterialPageRoute(
-        builder: (_) => EditorScreen(timer: draft, isNew: true),
+        builder: (_) => EditorScreen(
+          timer: draft,
+          isNew: true,
+          skipLastRest: settings.skipLastRest,
+        ),
       ),
     );
     if (saved != null) {
@@ -36,7 +40,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = TimeItColors.of(context);
     return AnimatedBuilder(
-      animation: store,
+      animation: Listenable.merge([store, settings]),
       builder: (context, _) {
         final timers = store.timers;
         return Scaffold(
@@ -82,6 +86,7 @@ class HomeScreen extends StatelessWidget {
                         final timer = timers[i];
                         return _TimerCard(
                           timer: timer,
+                          skipLastRest: settings.skipLastRest,
                           onStart: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -96,8 +101,10 @@ class HomeScreen extends StatelessWidget {
                             final edited =
                                 await Navigator.of(context).push<WorkoutTimer>(
                               MaterialPageRoute(
-                                builder: (_) =>
-                                    EditorScreen(timer: timer.copy()),
+                                builder: (_) => EditorScreen(
+                                  timer: timer.copy(),
+                                  skipLastRest: settings.skipLastRest,
+                                ),
                               ),
                             );
                             if (edited != null) {
@@ -105,6 +112,10 @@ class HomeScreen extends StatelessWidget {
                             }
                           },
                           onDelete: () async {
+                            if (settings.deleteWithoutConfirmation) {
+                              await store.delete(timer.id);
+                              return;
+                            }
                             final ok = await showDialog<bool>(
                               context: context,
                               builder: (ctx) => AlertDialog(
@@ -128,61 +139,66 @@ class HomeScreen extends StatelessWidget {
                         );
                       },
                     ),
+          // Default Material endFloat margin is 16; pad so the button sits
+          // 32 from the right and 28 from the bottom (incl. safe inset).
           floatingActionButton: timers.isEmpty
               ? null
-              : FloatingActionButton.extended(
-                  onPressed: () async {
-                    final kind = await showModalBottomSheet<TimerKind>(
-                      context: context,
-                      backgroundColor: colors.surface,
-                      builder: (ctx) {
-                        return SafeArea(
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(8, 12, 8, 20),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Center(
-                                  child: Container(
-                                    width: 36,
-                                    height: 4,
-                                    decoration: BoxDecoration(
-                                      color: colors.line,
-                                      borderRadius: BorderRadius.circular(999),
+              : Padding(
+                  padding: const EdgeInsets.only(right: 16, bottom: 12),
+                  child: FloatingActionButton.extended(
+                    onPressed: () async {
+                      final kind = await showModalBottomSheet<TimerKind>(
+                        context: context,
+                        backgroundColor: colors.surface,
+                        builder: (ctx) {
+                          return SafeArea(
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(8, 12, 8, 20),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Center(
+                                    child: Container(
+                                      width: 36,
+                                      height: 4,
+                                      decoration: BoxDecoration(
+                                        color: colors.line,
+                                        borderRadius: BorderRadius.circular(999),
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(height: 16),
-                                _NewTimerSheetOption(
-                                  title: 'Simple timer',
-                                  subtitle:
-                                      'Standby, work, rest phases and rounds',
-                                  onTap: () =>
-                                      Navigator.pop(ctx, TimerKind.simple),
-                                ),
-                                const SizedBox(height: 8),
-                                _NewTimerSheetOption(
-                                  title: 'Advanced timer',
-                                  subtitle:
-                                      'Rounds with their own phase stacks',
-                                  onTap: () =>
-                                      Navigator.pop(ctx, TimerKind.advanced),
-                                ),
-                              ],
+                                  const SizedBox(height: 16),
+                                  _NewTimerSheetOption(
+                                    title: 'Simple timer',
+                                    subtitle:
+                                        'Standby, work, rest phases and rounds',
+                                    onTap: () =>
+                                        Navigator.pop(ctx, TimerKind.simple),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  _NewTimerSheetOption(
+                                    title: 'Advanced timer',
+                                    subtitle:
+                                        'Rounds with their own phase stacks',
+                                    onTap: () =>
+                                        Navigator.pop(ctx, TimerKind.advanced),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    );
-                    if (kind != null && context.mounted) {
-                      await _create(context, kind);
-                    }
-                  },
-                  icon: const Icon(Icons.add, weight: 700),
-                  label: const Text(
-                    'New timer',
-                    style: TextStyle(fontWeight: FontWeight.w700),
+                          );
+                        },
+                      );
+                      if (kind != null && context.mounted) {
+                        await _create(context, kind);
+                      }
+                    },
+                    icon: const Icon(Icons.add, weight: 700),
+                    label: const Text(
+                      'New timer',
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    ),
                   ),
                 ),
         );
@@ -321,12 +337,14 @@ class _EmptyState extends StatelessWidget {
 class _TimerCard extends StatelessWidget {
   const _TimerCard({
     required this.timer,
+    required this.skipLastRest,
     required this.onStart,
     required this.onEdit,
     required this.onDelete,
   });
 
   final WorkoutTimer timer;
+  final bool skipLastRest;
   final VoidCallback onStart;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
@@ -336,9 +354,10 @@ class _TimerCard extends StatelessWidget {
     final colors = TimeItColors.of(context);
     final kindLabel =
         timer.kind == TimerKind.simple ? 'Simple' : 'Advanced';
+    final total = formatSeconds(timer.totalSeconds(skipLastRest: skipLastRest));
     final summary = timer.kind == TimerKind.simple
-        ? '${timer.simpleSteps.length} phases · ${timer.rounds} rounds · ${formatSeconds(timer.totalSeconds)}'
-        : '${timer.advancedRoundCount} rounds · ${timer.advancedPhaseCount} phases · ${formatSeconds(timer.totalSeconds)}';
+        ? '${timer.simpleSteps.length} phases · ${timer.rounds} rounds · $total'
+        : '${timer.advancedRoundCount} rounds · ${timer.advancedPhaseCount} phases · $total';
 
     return Material(
       color: colors.surface,
