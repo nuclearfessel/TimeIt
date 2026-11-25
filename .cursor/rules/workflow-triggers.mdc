@@ -14,11 +14,11 @@ These phrases in the owner's message are commands. Act on them immediately.
 - `New!` (**case-sensitive**, including the exclamation mark)
 
 **Action:**
-1. Create and check out a new branch named `feature-update-<timestamp>`.
-2. Timestamp format: `YYYYMMDD-HHmmss` local time (example: `feature-update-20261114-142830`).
-3. Branch from the current default integration branch (`main` unless the owner says otherwise).
-4. If already on a dirty `feature-update-*` branch, stash or commit only if the owner already authorized it; otherwise create the new branch carrying uncommitted work only when git allows (`git checkout -b`), and tell the owner what came along.
-5. Confirm the branch name and that you are on it, then continue with their request.
+1. Create and check out a branch named exactly `feature-update-fixes`.
+2. Branch from the current default integration branch (`main` unless the owner says otherwise).
+3. If `feature-update-fixes` already exists locally or on `origin`, check it out (create tracking from `origin` if needed) instead of inventing a new name — do not use a timestamped `feature-update-*` name for this trigger.
+4. If already on a dirty `feature-update-fixes` (or other feature) branch, stash or commit only if the owner already authorized it; otherwise switch/create carrying uncommitted work only when git allows (`git checkout -b` / `git checkout`), and tell the owner what came along.
+5. Confirm you are on `feature-update-fixes`, then continue with their request.
 
 ## Ship → Go!
 

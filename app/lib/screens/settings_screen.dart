@@ -73,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Lower music during workout'),
                 subtitle: Text(
-                  'Coming soon — preference is saved',
+                  'Duck other audio while timer beeps play',
                   style: TextStyle(
                     color: colors.mute,
                     fontSize: 13,
@@ -190,7 +190,7 @@ class SettingsScreen extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 title: const Text('TimeIt'),
                 subtitle: Text(
-                  'Workout interval timer · v1.0.19',
+                  'Workout interval timer · v1.0.20',
                   style: TextStyle(
                     color: colors.mute,
                     fontWeight: FontWeight.w500,
