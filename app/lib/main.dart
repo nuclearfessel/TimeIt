@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'screens/home_screen.dart';
+import 'services/cue_audio.dart';
 import 'services/settings_store.dart';
 import 'services/timer_store.dart';
 import 'theme/app_theme.dart';
@@ -14,6 +15,12 @@ Future<void> main() async {
   final timers = TimerStore();
   final settings = SettingsStore();
   await Future.wait([timers.load(), settings.load()]);
+
+  // Set mix/duck audio context before any beep player is created. Default
+  // audioplayers focus is exclusive and would pause Spotify/etc.
+  await CueAudio.applyGlobalContext(
+    lowerMusic: settings.lowerMusicDuringWorkout,
+  );
 
   runApp(TimeItApp(timers: timers, settings: settings));
 }

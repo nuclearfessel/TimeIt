@@ -52,7 +52,7 @@ The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` a
 
 ## Workflow trigger phrases (owner, 2026-11-14)
 Full detail: `.cursor/rules/workflow-triggers.mdc`.
-1. **`implement` / `implement it`** (case-insensitive) or **`New!`** (case-sensitive): create and check out `feature-update-<YYYYMMDD-HHmmss>`, then continue the request.
+1. **`implement` / `implement it`** (case-insensitive) or **`New!`** (case-sensitive): create and check out `feature-update-fixes` (reuse that branch if it already exists), then continue the request.
 2. **`Go!`** (case-sensitive): commit, push, merge to `main`, GitHub Release, then **TestFlight via GitHub Actions** (App Store Connect API secrets + `.github/workflows/ios-testflight.yml`), then clean/delete merged feature branches (never delete `main`). Release builds + Release + TestFlight run unless scoped (e.g. docs only / no release builds / no TestFlight). See `.cursor/rules/workflow-triggers.mdc`.
 
 ## Project contents
@@ -102,6 +102,6 @@ Full detail: `.cursor/rules/workflow-triggers.mdc`.
 
 ## Suggested next steps
 1. Hands-on test the three shortlisted apps when useful (checklist in `docs/reference-apps.md`).
-2. Wire music ducking from Settings; decide richer cues later. (Vibrate on alert is wired.)
+2. Decide richer cues later. (Vibrate on alert and Lower music / mix-with-others are wired.)
 3. Accessibility: announcement model for screen readers; audio policy.
 4. Say **`Go!`** when ready to ship (includes TestFlight CI).

@@ -64,8 +64,9 @@ class SettingsStore extends ChangeNotifier {
   /// Sound for workout complete.
   AlertTone finishTone = AlertTone.chime;
 
-  /// Stub: duck other apps' audio during a workout (not wired to OS audio yet).
-  bool lowerMusicDuringWorkout = true;
+  /// When true, timer beeps briefly duck other apps' audio. When false, beeps
+  /// mix so music/podcasts keep playing at full volume.
+  bool lowerMusicDuringWorkout = false;
 
   /// Haptic feedback on phase / countdown / complete cues.
   bool vibrateOnAlert = false;
@@ -95,7 +96,7 @@ class SettingsStore extends ChangeNotifier {
       prefs.getString(_finishToneKey),
       fallback: AlertTone.chime,
     );
-    lowerMusicDuringWorkout = prefs.getBool(_lowerMusicKey) ?? true;
+    lowerMusicDuringWorkout = prefs.getBool(_lowerMusicKey) ?? false;
     vibrateOnAlert = prefs.getBool(_vibrateKey) ?? false;
     deleteWithoutConfirmation =
         prefs.getBool(_deleteWithoutConfirmKey) ?? false;

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import '../models/alert_tone.dart';
@@ -10,12 +13,76 @@ class CueAudio {
   CueAudio({this._settings}) {
     _player = AudioPlayer();
     _player.setReleaseMode(ReleaseMode.stop);
-    _player.setPlayerMode(PlayerMode.lowLatency);
+    // Media player (not SoundPool) so Android audio-focus / attributes apply
+    // reliably for mix-with-others vs duck.
+    _player.setPlayerMode(PlayerMode.mediaPlayer);
+    _settings?.addListener(_onSettingsChanged);
+    unawaited(_applyAudioContext());
   }
 
   final SettingsStore? _settings;
   late final AudioPlayer _player;
   int _playGeneration = 0;
+
+  /// How timer beeps interact with other apps' audio.
+  ///
+  /// Off → mix: Spotify/etc. keep playing (no audio focus / mixWithOthers).
+  /// On → duck: briefly lower other audio for the cue (never exclusive gain,
+  /// which would pause other apps entirely).
+  @visibleForTesting
+  static AudioContext audioContextFor({required bool lowerMusic}) {
+    return AudioContext(
+      android: AudioContextAndroid(
+        // Short UI beeps — not "music" — so OEMs are less likely to treat us
+        // as a competing media session.
+        contentType: AndroidContentType.sonification,
+        usageType: AndroidUsageType.assistanceSonification,
+        audioMode: AndroidAudioMode.normal,
+        isSpeakerphoneOn: false,
+        stayAwake: false,
+        audioFocus: lowerMusic
+            ? AndroidAudioFocus.gainTransientMayDuck
+            : AndroidAudioFocus.none,
+      ),
+      iOS: AudioContextIOS(
+        category: AVAudioSessionCategory.playback,
+        options: lowerMusic
+            ? {
+                AVAudioSessionOptions.mixWithOthers,
+                AVAudioSessionOptions.duckOthers,
+              }
+            : {
+                AVAudioSessionOptions.mixWithOthers,
+              },
+      ),
+    );
+  }
+
+  /// Apply the global + player context for the current Lower-music setting.
+  /// Safe to call before any [CueAudio] exists (e.g. from [main]).
+  static Future<void> applyGlobalContext({required bool lowerMusic}) async {
+    final ctx = audioContextFor(lowerMusic: lowerMusic);
+    try {
+      await AudioPlayer.global.setAudioContext(ctx);
+    } catch (_) {
+      // Context failure should never stop the timer UI.
+    }
+  }
+
+  void _onSettingsChanged() {
+    unawaited(_applyAudioContext());
+  }
+
+  Future<void> _applyAudioContext() async {
+    final lower = _settings?.lowerMusicDuringWorkout ?? false;
+    final ctx = audioContextFor(lowerMusic: lower);
+    try {
+      await AudioPlayer.global.setAudioContext(ctx);
+      await _player.setAudioContext(ctx);
+    } catch (_) {
+      // Context failure should never stop the timer UI.
+    }
+  }
 
   AlertTone toneFor(CueKind kind) {
     final settings = _settings;
@@ -46,6 +113,9 @@ class CueAudio {
   /// Preview a tone from Settings (ignores the alert-sounds master switch).
   Future<void> playTone(AlertTone tone) async {
     try {
+      // Re-apply immediately before play so a mid-session toggle is honored
+      // and we never beep under the package default (exclusive focus).
+      await _applyAudioContext();
       await _player.stop();
       await _player.play(AssetSource(tone.assetPath));
     } catch (_) {
@@ -89,6 +159,7 @@ class CueAudio {
 
   Future<void> dispose() async {
     cancelRepeats();
+    _settings?.removeListener(_onSettingsChanged);
     await _player.dispose();
   }
 }
