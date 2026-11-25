@@ -64,8 +64,8 @@ class SettingsStore extends ChangeNotifier {
   /// Sound for workout complete.
   AlertTone finishTone = AlertTone.chime;
 
-  /// When true, timer beeps briefly duck other apps' audio. When false, beeps
-  /// mix so music/podcasts keep playing at full volume.
+  /// When true, other apps' audio is ducked for the whole running workout.
+  /// When false, music/podcasts keep full volume (beeps still mix in).
   bool lowerMusicDuringWorkout = false;
 
   /// Haptic feedback on phase / countdown / complete cues.

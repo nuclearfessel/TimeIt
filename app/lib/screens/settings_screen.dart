@@ -73,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Lower music during workout'),
                 subtitle: Text(
-                  'Duck other audio while timer beeps play',
+                  'Other audio, especially music, stays quieter the whole time a workout is running',
                   style: TextStyle(
                     color: colors.mute,
                     fontSize: 13,

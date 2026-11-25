@@ -1,6 +1,9 @@
 name: timeit
 description: Workout interval timer for iOS and Android — simple and advanced stacked timers.
 publish_to: 'none'
+# Versioning matches Shopped: patch runs 0..9, then minor +1 (1.0.9 → 1.1.0);
+# minor 0..9, then major +1 (9.9.9 → 10.0.0). The +build number increases by
+# one on every release. Use: python scripts/bump_release_version.py --write
 version: 1.0.20+21
 
 environment:

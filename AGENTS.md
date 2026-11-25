@@ -54,6 +54,7 @@ The owner will continue this work in **Cursor**. Cursor reads this `AGENTS.md` a
 Full detail: `.cursor/rules/workflow-triggers.mdc`.
 1. **`implement` / `implement it`** (case-insensitive) or **`New!`** (case-sensitive): create and check out `feature-update-fixes` (reuse that branch if it already exists), then continue the request.
 2. **`Go!`** (case-sensitive): commit, push, merge to `main`, GitHub Release, then **TestFlight via GitHub Actions** (App Store Connect API secrets + `.github/workflows/ios-testflight.yml`), then clean/delete merged feature branches (never delete `main`). Release builds + Release + TestFlight run unless scoped (e.g. docs only / no release builds / no TestFlight). See `.cursor/rules/workflow-triggers.mdc`.
+3. **Versioning (same as Shopped):** each release bumps via `python scripts/bump_release_version.py --write`. Patch `0..9` then minor +1 (`1.0.9` → `1.1.0`); minor `0..9` then major +1 (`9.9.9` → `10.0.0`). `+build` +1 every release. No free-form patches like `1.0.10`. Prefer keeping only the three newest GitHub Releases.
 
 ## Project contents
 - `README.md`: public app overview (no open-questions list).
@@ -97,7 +98,8 @@ Full detail: `.cursor/rules/workflow-triggers.mdc`.
 - Repo secrets (already set on `nuclearfessel/TimeIt`): `APP_STORE_CONNECT_KEY_ID`, `APP_STORE_CONNECT_ISSUER_ID`, `APP_STORE_CONNECT_PRIVATE_KEY` (`.p8` contents — same Apple account key pattern as Shopped).
 - Fastlane `produce` creates the Developer Portal App ID + Connect app record if missing, then signs, builds IPA, uploads to TestFlight.
 - **`Go!`** publishes a GitHub Release tag → workflow runs → build appears in App Store Connect → TestFlight after Apple processing. No personal Mac required.
-- GitHub Release Android assets must be named `TimeIt-IntervalTimer-<version>.apk` / `.aab` (e.g. `TimeIt-IntervalTimer-1.0.8.apk`), not Flutter’s `app-release.*`.
+- **Version bump** before tagging: `python scripts/bump_release_version.py --write` (Shopped scheme — see Workflow trigger phrases).
+- GitHub Release Android assets must be named `TimeIt-IntervalTimer-<version>.apk` / `.aab` (e.g. `TimeIt-IntervalTimer-1.1.0.apk`), not Flutter’s `app-release.*`.
 - Skip with owner scope: `docs only` / `no release builds` / `no TestFlight`.
 
 ## Suggested next steps
