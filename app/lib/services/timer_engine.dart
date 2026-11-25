@@ -93,7 +93,12 @@ class TimerEngine extends ChangeNotifier {
     status = EngineStatus.running;
     _phaseEndsAt = DateTime.now().add(seed);
     _lastSecond = seed.inSeconds;
-    unawaited(_audio.playRepeats(CueKind.phase, _startBeeps));
+    // Duck other audio for the whole run when Lower music is on (not only
+    // during the short beep), then play start cues.
+    unawaited(() async {
+      await _audio.setWorkoutActive(true);
+      await _audio.playRepeats(CueKind.phase, _startBeeps);
+    }());
     _startTicker();
     notifyListeners();
   }
@@ -101,6 +106,7 @@ class TimerEngine extends ChangeNotifier {
   void pause() {
     if (status != EngineStatus.running) return;
     _audio.cancelRepeats();
+    unawaited(_audio.setWorkoutActive(false));
     _remainingWhenPaused = remaining;
     _phaseEndsAt = null;
     status = EngineStatus.paused;
@@ -112,6 +118,7 @@ class TimerEngine extends ChangeNotifier {
     if (status != EngineStatus.paused) return;
     status = EngineStatus.running;
     _phaseEndsAt = DateTime.now().add(_remainingWhenPaused);
+    unawaited(_audio.setWorkoutActive(true));
     _startTicker();
     notifyListeners();
   }
@@ -135,6 +142,7 @@ class TimerEngine extends ChangeNotifier {
 
   void stop() {
     _audio.cancelRepeats();
+    unawaited(_audio.setWorkoutActive(false));
     _ticker?.cancel();
     _phaseEndsAt = null;
     _index = 0;
@@ -173,7 +181,11 @@ class TimerEngine extends ChangeNotifier {
       _phaseEndsAt = null;
       status = EngineStatus.finished;
       _remainingWhenPaused = Duration.zero;
-      unawaited(_audio.play(CueKind.complete));
+      // Keep ducking through the finish cue, then restore other apps' volume.
+      unawaited(() async {
+        await _audio.play(CueKind.complete);
+        await _audio.setWorkoutActive(false);
+      }());
       notifyListeners();
       return;
     }
@@ -194,6 +206,7 @@ class TimerEngine extends ChangeNotifier {
   @override
   void dispose() {
     _ticker?.cancel();
+    unawaited(_audio.setWorkoutActive(false));
     _audio.dispose();
     super.dispose();
   }

@@ -17,51 +17,69 @@ class CueAudio {
     // reliably for mix-with-others vs duck.
     _player.setPlayerMode(PlayerMode.mediaPlayer);
     _settings?.addListener(_onSettingsChanged);
-    unawaited(_applyAudioContext());
+    unawaited(_applyBeepContext());
   }
 
   final SettingsStore? _settings;
   late final AudioPlayer _player;
+  AudioPlayer? _duckHold;
+  bool _workoutActive = false;
+  bool _duckHoldPlaying = false;
   int _playGeneration = 0;
 
-  /// How timer beeps interact with other apps' audio.
-  ///
-  /// Off → mix: Spotify/etc. keep playing (no audio focus / mixWithOthers).
-  /// On → duck: briefly lower other audio for the cue (never exclusive gain,
-  /// which would pause other apps entirely).
+  /// Beep player context — always mixes; never steals exclusive focus.
+  /// Ducking other apps for a running workout is owned by [_duckHold].
   @visibleForTesting
-  static AudioContext audioContextFor({required bool lowerMusic}) {
+  static AudioContext beepContext() {
     return AudioContext(
-      android: AudioContextAndroid(
-        // Short UI beeps — not "music" — so OEMs are less likely to treat us
-        // as a competing media session.
+      android: const AudioContextAndroid(
         contentType: AndroidContentType.sonification,
         usageType: AndroidUsageType.assistanceSonification,
         audioMode: AndroidAudioMode.normal,
         isSpeakerphoneOn: false,
         stayAwake: false,
-        audioFocus: lowerMusic
-            ? AndroidAudioFocus.gainTransientMayDuck
-            : AndroidAudioFocus.none,
+        audioFocus: AndroidAudioFocus.none,
       ),
       iOS: AudioContextIOS(
         category: AVAudioSessionCategory.playback,
-        options: lowerMusic
-            ? {
-                AVAudioSessionOptions.mixWithOthers,
-                AVAudioSessionOptions.duckOthers,
-              }
-            : {
-                AVAudioSessionOptions.mixWithOthers,
-              },
+        options: const {AVAudioSessionOptions.mixWithOthers},
       ),
     );
   }
 
-  /// Apply the global + player context for the current Lower-music setting.
-  /// Safe to call before any [CueAudio] exists (e.g. from [main]).
+  /// Held for the whole running workout when Lower music is on.
+  /// Requests transient duck focus so Spotify/etc. stay quieter until we stop.
+  @visibleForTesting
+  static AudioContext duckHoldContext() {
+    return AudioContext(
+      android: const AudioContextAndroid(
+        contentType: AndroidContentType.music,
+        usageType: AndroidUsageType.media,
+        audioMode: AndroidAudioMode.normal,
+        isSpeakerphoneOn: false,
+        stayAwake: true,
+        audioFocus: AndroidAudioFocus.gainTransientMayDuck,
+      ),
+      iOS: AudioContextIOS(
+        category: AVAudioSessionCategory.playback,
+        options: const {
+          AVAudioSessionOptions.mixWithOthers,
+          AVAudioSessionOptions.duckOthers,
+        },
+      ),
+    );
+  }
+
+  /// Back-compat name used by tests / [applyGlobalContext].
+  @visibleForTesting
+  static AudioContext audioContextFor({required bool lowerMusic}) {
+    return lowerMusic ? duckHoldContext() : beepContext();
+  }
+
+  /// Apply the mix (non-ducking) global context before any player exists.
   static Future<void> applyGlobalContext({required bool lowerMusic}) async {
-    final ctx = audioContextFor(lowerMusic: lowerMusic);
+    // Startup always mixes; duck hold starts only when a workout is running.
+    final ctx = beepContext();
     try {
       await AudioPlayer.global.setAudioContext(ctx);
     } catch (_) {
@@ -70,17 +88,76 @@ class CueAudio {
   }
 
   void _onSettingsChanged() {
-    unawaited(_applyAudioContext());
+    unawaited(_syncDuckHold());
   }
 
-  Future<void> _applyAudioContext() async {
-    final lower = _settings?.lowerMusicDuringWorkout ?? false;
-    final ctx = audioContextFor(lowerMusic: lower);
+  Future<void> _applyBeepContext() async {
+    final ducking =
+        _workoutActive && (_settings?.lowerMusicDuringWorkout ?? false);
+    // While ducking, keep duckOthers on the shared iOS session — setting the
+    // beep player to mix-only would clear ducking mid-workout.
+    final sessionCtx = ducking ? duckHoldContext() : beepContext();
+    final beepCtx = ducking
+        ? AudioContext(
+            android: const AudioContextAndroid(
+              contentType: AndroidContentType.sonification,
+              usageType: AndroidUsageType.assistanceSonification,
+              audioMode: AndroidAudioMode.normal,
+              isSpeakerphoneOn: false,
+              stayAwake: false,
+              // Hold player already owns MAY_DUCK; beeps must not steal focus.
+              audioFocus: AndroidAudioFocus.none,
+            ),
+            iOS: AudioContextIOS(
+              category: AVAudioSessionCategory.playback,
+              options: const {
+                AVAudioSessionOptions.mixWithOthers,
+                AVAudioSessionOptions.duckOthers,
+              },
+            ),
+          )
+        : beepContext();
     try {
-      await AudioPlayer.global.setAudioContext(ctx);
-      await _player.setAudioContext(ctx);
+      await AudioPlayer.global.setAudioContext(sessionCtx);
+      await _player.setAudioContext(beepCtx);
     } catch (_) {
       // Context failure should never stop the timer UI.
+    }
+  }
+
+  /// Call when the run screen timer is running (start/resume) or not
+  /// (pause/stop/finished). When Lower music is on, holds a near-silent
+  /// looping stream that ducks other apps for the whole workout.
+  Future<void> setWorkoutActive(bool active) async {
+    _workoutActive = active;
+    await _syncDuckHold();
+  }
+
+  Future<void> _syncDuckHold() async {
+    final wantDuck =
+        _workoutActive && (_settings?.lowerMusicDuringWorkout ?? false);
+    try {
+      if (wantDuck) {
+        if (_duckHoldPlaying) return;
+        await AudioPlayer.global.setAudioContext(duckHoldContext());
+        final hold = _duckHold ??= AudioPlayer();
+        await hold.setReleaseMode(ReleaseMode.loop);
+        await hold.setPlayerMode(PlayerMode.mediaPlayer);
+        await hold.setAudioContext(duckHoldContext());
+        // Asset is a near-inaudible tone (not digital silence) so the OS
+        // keeps the duck session active; volume stays full on that tiny amp.
+        await hold.setVolume(1.0);
+        await hold.play(AssetSource('sounds/silence.wav'));
+        _duckHoldPlaying = true;
+      } else if (_duckHoldPlaying || _duckHold != null) {
+        _duckHoldPlaying = false;
+        await _duckHold?.stop();
+        await AudioPlayer.global.setAudioContext(beepContext());
+        await _player.setAudioContext(beepContext());
+      }
+    } catch (_) {
+      _duckHoldPlaying = false;
+      // Duck-hold failure should never stop the timer UI.
     }
   }
 
@@ -113,9 +190,7 @@ class CueAudio {
   /// Preview a tone from Settings (ignores the alert-sounds master switch).
   Future<void> playTone(AlertTone tone) async {
     try {
-      // Re-apply immediately before play so a mid-session toggle is honored
-      // and we never beep under the package default (exclusive focus).
-      await _applyAudioContext();
+      await _applyBeepContext();
       await _player.stop();
       await _player.play(AssetSource(tone.assetPath));
     } catch (_) {
@@ -159,7 +234,14 @@ class CueAudio {
 
   Future<void> dispose() async {
     cancelRepeats();
+    _workoutActive = false;
     _settings?.removeListener(_onSettingsChanged);
+    try {
+      await _duckHold?.stop();
+      await _duckHold?.dispose();
+    } catch (_) {}
+    _duckHold = null;
+    _duckHoldPlaying = false;
     await _player.dispose();
   }
 }
